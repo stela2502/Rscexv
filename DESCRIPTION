@@ -1,10 +1,28 @@
 Package: Rscexv
 Type: Package
-Title: What the package does (short line)
+Title: The backend for the SCExV (single cell expression view) server.
 Version: 1.0
 Date: 2016-03-21
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
+Author: person("Stefan", "Lang", email = "stefan.lang@med.lu.se",
+	role( 'aut','cre'))
+Description: This package does read and analyze data from the fluidigm biomark device. In addition it can add INDEXS sort data too.
 License: What license is it under?
 RoxygenNote: 5.0.1
+Depends:
+	abind,
+	boot,
+	cluster,
+	corrplot,
+	ggplot2,
+	gplots,
+	Hmisc,
+	MASS,
+	MAST, 
+	randomForest,
+	RDRToolbox,
+	reshape2,
+	rgl,
+	RSvgDevice,
+	stringr,
+	survival,
+	vioplot
