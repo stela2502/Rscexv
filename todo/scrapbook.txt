@@ -1,0 +1,57 @@
+FACS <-  paste('functionallity2implement', c('Array1_Index_sort.csv', 'Index_sort_Array2.csv','Index_sort_Array3.csv') ,sep='/') 
+PCR <-  paste('functionallity2implement', c( 'PCR_Array1.csv','PCR_Array2.csv','PCR_Array3.csv'),sep='/')
+
+negContrGenes <- NULL
+max.value=40
+ref.genes=c("Actb", "Gapdh")
+max.ct=25
+max.control=0
+norm.function='none'
+negContrGenes=NULL
+use_pass_fail = T
+methods <- c("none","mean control genes","max expression","median expression","quantile")
+
+
+data <- Rscexv( PCR, FACS, use_pass_fail)
+			
+data <- kick.expressed.negContr.samples(data, negContrGenes )
+			
+data <- plug.999(data, max.value ) ## does nothing for pre-processed data
+			
+if ( all ( data@data == 40 ) ){
+	system ( 'echo "Please check your filter settings - all samples have been removed from the analysis!" >> R_file_read_error.txt' )
+}
+			
+if ( ! is.null(ref.genes)){
+	data <- filter.on.controls.no.inv(data,ref.genes,max.ct,max.control)	
+}
+			
+## export the unfiltered_not_modified PCR data for publication
+write.table( data@data, file= paste( data@outpath, "/PCR_data_4_publication.xls",sep=''), sep='\t' )
+			
+data.filtered <- sd.filter( data )
+						
+plot.histograms( data.filtered ) ## this is needed for the web tool
+			
+data.filtered <- norm.PCR(data.filtered,norm.function,max.cyc=max.value, ctrl=ref.genes )
+write.table( data.filtered@data, file=paste( data@outpath,"/PCR_data_normalized_4_publication.xls",sep=''), sep='\t' )		
+
+for ( i in methods ) { norm.PCR(data.filtered,i,max.cyc=max.value, ctrl=ref.genes ) }
+
+
+
+onwhat='Expression'
+clusterby='MDS'
+mds.type='PCA'
+move.neg <- TRUE
+plot.neg <- TRUE
+beanplots = TRUE
+plotsvg = 0
+zscoredVioplot = 1
+cmethod='ward.D'
+LLEK='2'
+ctype= 'hierarchical clust'
+
+obj <- data.filtered
+
+

@@ -4,23 +4,23 @@
 #' @rdname plug.999-methods
 #' @docType methods
 #' @description this function replaces the 999 (failed) values by the plug value.
-#' @param tab the data.frame containge the read PCR table
+#' @param x the Rscexv object
 #' @param plug the replacement value (default=45)
 #' @title description of function plug.999
 #' @export 
 setGeneric('plug.999', ## Name
-		function (tab,plug=45) { ## Argumente der generischen Funktion
+		function (x,plug=45) { ## Argumente der generischen Funktion
 			standardGeneric('plug.999') ## der Aufruf von standardGeneric sorgt für das Dispatching
 		}
 )
 
-setMethod('plug.999', signature = c ('data.frame'),
-		definition = function (tab,plug=45) {
-			
-			ind <- which(tab==999)
-			tab[ind] <- plug
-			tab
-			
+setMethod('plug.999', signature = c ('Rscexv'),
+		definition = function (x,plug=45) {
+			ma <- as.matrix(x@data)
+			ind <- which(ma==999)
+			ma[ind] <- plug
+			x@data <- data.frame(ma)
+			x
 		} 
 )
 
@@ -49,5 +49,43 @@ setMethod('scale.FACS.data', signature = c ('data.frame'),
 		} 
 )
 
+#' @name sd.filter
+#' @aliases sd.filter,Rscexv-method
+#' @rdname sd.filter-methods
+#' @docType methods
+#' @description This function is removing cells and genes that do not show any variation in the data.
+#' @param dataObj the Rscexv object
+#' @title description of function sd.filter
+#' @export 
+setGeneric('sd.filter', ## Name
+		function (dataObj) { ## Argumente der generischen Funktion
+			standardGeneric('sd.filter') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		}
+)
 
+setMethod('sd.filter', signature = c ('Rscexv'),
+		definition = function (dataObj) {
+			
+			sds1 <- NULL
+			sds2 <- NULL
+
+			sds1 <- apply(dataObj@data,1,sd)
+			sds2 <- apply(dataObj@data,2,sd)
+			
+			cuto1 <- which(sds1==0)
+			cuto2 <- which(sds2==0)
+			
+			if(length(cuto1) >0){
+				write ( colnames(dataObj@data)[cuto2], file="./filtered_samples.txt",ncolumn=1, append=T )
+				dataObj <- remove.samples(dataObj, cuto1 )
+			}
+			
+			if(length(cuto2) >0){
+				write ( colnames(dataObj@data)[cuto2], file="./filtered_genes.txt",ncolumn=1, append=T )
+				dataObj <- remove.genes(dataObj, cuto2 )
+			}
+			
+			dataObj			
+		} 
+)
 

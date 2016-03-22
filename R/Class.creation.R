@@ -125,7 +125,7 @@ setGeneric('filter.on.controls.no.inv', ## Name
 setMethod('filter.on.controls.no.inv', signature = c ('Rscexv'),
 		definition = function (dataObj,ref.nms,thresh,howm) {
 			
-			conts <- dataObj@data[,ref.nms]
+			conts <- as.matrix(dataObj@data[,ref.nms ])
 			conts[which(conts < thresh)] <- 0
 			conts[conts>0] <- 1
 			
@@ -138,5 +138,171 @@ setMethod('filter.on.controls.no.inv', signature = c ('Rscexv'),
 			
 			dataObj <- remove.samples(dataObj, which(nums>howm) )
 			dataObj
+		} 
+)
+
+#' @name norm.PCR
+#' @aliases norm.PCR,Rscexv-method
+#' @rdname norm.PCR-methods
+#' @docType methods
+#' @description This function normalizes the expression data
+#' @param x the Rscexv object 
+#' @param meth The normalization method; one of "none","mean control genes","max expression","median expression","quantile" default="none"
+#' @param ctrl the control genes default=NA
+#' @param max.cyc this function does also invert the Ct values this is the value that is used as maximum default=NA
+#' @title description of function norm.PCR
+#' @export 
+setGeneric('norm.PCR', ## Name
+		function (x,meth=c("none","mean control genes","max expression","median expression","quantile"),ctrl=NA,max.cyc) { ## Argumente der generischen Funktion
+			standardGeneric('norm.PCR') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		}
+)
+
+setMethod('norm.PCR', signature = c ('Rscexv'),
+		definition = function (x, meth=c("none","mean control genes","max expression","median expression","quantile"),ctrl=NA,max.cyc) {
+			if ( !x@norm ){
+			tab.new <- NULL
+			tab.na <- which(x@data == max.cyc )
+			
+			if(meth=="none"){
+				tab.new <- as.matrix(x@data)
+			}
+			else if(meth=="mean control genes"){
+				if(length(ctrl)>0){
+					if ( length(ctrl)>1 ) {
+						mean.ctrl <- apply(x@data[,ctrl],1,mean)
+					}else {
+						mean.ctrl <- as.vector(x@data[,ctrl])
+					}
+					for(i in 1:nrow(x@data)){
+						tab.new <- rbind(tab.new,(x@data[i,]-mean.ctrl[i]))
+					} 
+				}
+			}
+			else if (meth== "max expression" ){
+				max.expr <- apply( x@data,1,min )
+				for(i in 1:nrow(x@data)){
+					tab.new <- rbind(tab.new,(x@data[i,]-max.expr[i]))
+				} 
+			} 
+			else if (meth== "median expression" ){
+				my.median <- function (x, max.cyc)  {median( x[which( x != max.cyc )] ) } 
+				median.expr <- apply( x@data,1,my.median, max.cyc  )
+				for(i in 1:nrow(x@data)){
+					tab.new <- rbind(tab.new,(x@data[i,]-median.expr[i]))
+				} 
+			} 
+			else if(meth=="quantile"){
+				rank.normalize <- function(ap) {
+					o.ap <- apply(ap,2,order)
+					ap.o <- NULL
+					for (i in 1:ncol(o.ap))
+						ap.o <- cbind(ap.o,ap[o.ap[,i],i])
+					m.ap <- apply(ap.o,1,median)
+					ap.n <- array(0,dim(ap))
+					for (i in 1:ncol(ap.n))
+						ap.n[o.ap[,i],i] <- m.ap
+					ap.n
+				}
+				tab.new <- rank.normalize(x@data)
+				colnames(tab.new) <- colnames(x@data)
+			}
+			else {
+				stop(paste ("norm method",meth, "is not implemented!" ) )
+			}
+			if ( is.null(rownames(tab.new))){
+				rownames(tab.new) <- rownames(x@data)
+			}
+			
+			#tab.ret <- as.matrix(max.cyc-tab.new)
+			tab.ret <- as.matrix(max.cyc-tab.new)
+			tab.ret[tab.na] <- 0
+			x@norm = T
+			x@raw <- x@data
+			x@data <- data.frame(tab.ret)
+			}
+			else {
+				print ("Unchanged as data was already normalized")
+			}
+			x
+		} 
+)
+
+#' @name z.score.PCR.mad
+#' @aliases z.score.PCR.mad,Rscexv-method
+#' @rdname z.score.PCR.mad-methods
+#' @docType methods
+#' @description This normlization method is re-implemented from the MAST package.
+#' @param dataObj the Rscexv object
+#' @title description of function z.score.PCR.mad
+#' @export 
+setGeneric('z.score.PCR.mad', ## Name
+		function (dataObj) { ## Argumente der generischen Funktion
+			standardGeneric('z.score.PCR.mad') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		}
+)
+
+setMethod('z.score.PCR.mad', signature = c ('Rscexv'),
+		definition = function (dataObj) {
+			if ( ! dataObj@zscored ){
+
+			arrays <- max(dataObj@samples$ArrayID)
+			
+			rem.inds <- NULL
+			
+			tab.pre <-NULL
+			
+			for (j in 1:arrays ){
+				
+				mads <- NULL
+				meds <- NULL
+				
+				tdat <- as.matrix(dataObj@data[which(dataObj@samples$ArrayID==j),])
+				
+				tab.new <- NULL
+				
+				for(i in 1:ncol(tdat)){
+					vec <- tdat[which(tdat[,i]!=0),i]
+					mads <- c(mads,mad(vec))
+					meds <- c(meds,median(vec))
+				}
+				
+				for(i in 1:ncol(tdat)){
+					new.v <- (tdat[,i]-meds[i])/(1.48*mads[i])
+					if(all(is.na(range(new.v))==T)){
+						rem.inds <- c(rem.inds,i)
+						plug.ind <- 1:length(tdat[,i])
+					}
+					else {
+						plug.ind <- which(tdat[,i] == 0)
+					}
+					
+					new.v[plug.ind] <- -20
+					tab.new <- cbind(tab.new,new.v)
+					
+				}
+				
+				tab.pre <- rbind(tab.pre,tab.new)
+				
+			}
+			
+			rem.ind.fin <- as.numeric( names(table(rem.inds))[which(table(rem.inds)==arrays)]) ### might fall
+
+						
+			if ( length(rem.ind.fin) > 0 ){
+				dataObj <- remove.genes (dataObj, rem.ind.fin)
+				tab.pre <- tab.pre[,-rem.ind.fin]
+			}
+						
+			colnames(tab.pre) <- colnames(dataObj@data) 
+			dataObj@snorm <- dataObj@data 
+			dataObj@data <- data.frame(tab.pre)
+			dataObj@zscored <- T
+			}
+			else {
+				print ( "Uncanged as data was already zscored!")
+			}
+			dataObj
+			
 		} 
 )

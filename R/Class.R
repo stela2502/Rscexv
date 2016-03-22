@@ -22,8 +22,9 @@ setClass(
 				wFACS='logical',
 				samples='data.frame',
 				raw="data.frame",
+				snorm="data.frame",
 				annotation='data.frame',
-				snorm='logical',
+				norm='logical',
 				normFunct='character',
 				outpath='character',
 				name='character',
@@ -36,8 +37,10 @@ setClass(
 		prototype(outpath ='', name = 'Rscexv',
 				sampleNamesCol=NA_character_,
 				facs=data.frame(),
+				snorm=data.frame(),
+				raw=data.frame(),
 				wFACS=F,
-				snorm=F,
+				norm=F,
 				normFunct='none',
 				zscored=F,
 				usedObj= list(),
@@ -64,4 +67,88 @@ setMethod('show', signature(object='Rscexv') ,
 			}
 			cat (paste("Annotation datasets (",paste(dim(object@annotation),collapse=','),"): '",paste( colnames(object@annotation ), collapse="', '"),"'  ",sep='' ),"\n")
 			cat (paste("Sample annotation (",paste(dim(object@samples),collapse=','),"): '",paste( colnames(object@samples ), collapse="', '"),"'  ",sep='' ),"\n")
-		})
+			cat ( paste ( "A total of",length(object@usedObj),"Other objects have been added to this Rscexv object:\n", paste( collapse=', ', names(object@usedObj))),"\n")
+		}
+)
+
+
+#' @name Rscexv
+#' @aliases Rscexv,Rscexv-method
+#' @rdname Rscexv-methods
+#' @docType methods
+#' @description create a new Rscexv object from the data files.
+#' @param PCR  the pcr data file names default=NULL
+#' @param FACS the FACS data file names MISSING default=NULL
+#' @param use_pass_fail whether or not to use the pass_fail, information in the PCR data files.
+#' @title description of function createDataObj
+#' @export 
+setGeneric('Rscexv', ## Name
+		function  ( PCR=NULL,  FACS=NULL, use_pass_fail = T ){ ## Argumente der generischen Funktion
+			standardGeneric('Rscexv') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		}
+)
+
+setMethod('Rscexv', signature = c ('character'),
+		definition = function ( PCR=NULL,  FACS=NULL, use_pass_fail = T ){
+			
+			
+			PCR <- read.PCR.set ( PCR, use_pass_fail )
+			
+			system ( 'rm filtered*' )
+			
+			try ( system ( 'rm R_file_read_error.txt' ) )
+			
+			if ( is.null(PCR) ){
+				system ( 'echo "You need to upload at least one PCR data set in order to start the analysis" > R.error')
+				stop("You need to upload at least one PCR data set in order to start the analysis")
+			}
+			
+			colnames(PCR$data) <- str_replace_all( colnames(PCR$data), '/', '_' )
+			wFACS=F
+			if ( ! is.null(FACS)){
+				FACS <- read.FACS.set ( FACS)
+				wFACS=T
+				## black magick with the FACS gene names
+				colnames(FACS$data) <- str_replace_all( colnames(FACS$data), '^P[0-9]+.', '' )
+				colnames(FACS$data) <- str_replace_all( colnames(FACS$data), '.Min$', '' )
+			}
+			
+			## check if the samples do overlapp
+			
+			
+			data <- check.dataObj(PCR, FACS)
+			
+			## now create the object and done
+			res <- new('Rscexv', data=data.frame(data$PCR), 
+					facs=data.frame(data$FACS), samples=data$samples, 
+					annotation=data$annotation, wFACS=wFACS, outpath=pwd() )
+			
+			res
+		}
+)
+
+#' @name pwd
+#' @aliases pwd
+#' @rdname pwd-methods
+#' @docType methods
+#' @description  uses the linux pwd command to determin the working directory 
+#' @return A string containing the working directory 
+#' @title description of function pwd
+#' @export 
+setGeneric('pwd', ## Name
+		function ( a ) { ## Argumente der generischen Funktion
+			standardGeneric('pwd') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		}
+)
+
+setMethod('pwd', signature = c () ,
+		definition = function ( a ) {
+			rm(a)
+			system( 'pwd > __pwd' )
+			t <- read.delim( file = '__pwd', header=F)
+			t <- as.vector(t[1,1])
+			t <- paste(t,"/",sep='')
+			unlink( '__pwd')
+			t
+		}
+)

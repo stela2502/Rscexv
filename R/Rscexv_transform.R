@@ -59,7 +59,9 @@ setMethod('remove.samples', signature = c ('Rscexv'),
 				print ( "No samples to filter out!" )
 			}
 			dataObj	
-		} )
+		} 
+)
+
 #' @name remove.FACS.genes
 #' @aliases remove.FACS.genes,Rscexv-method
 #' @rdname remove.FACS.genes-methods
@@ -85,7 +87,9 @@ setMethod('remove.FACS.genes', signature = c ('Rscexv'),
 				print ( "No genes to filter out!" )
 			}
 			dataObj	
-		} )
+		} 
+)
+
 #' @name remove.genes
 #' @aliases remove.genes,Rscexv-method
 #' @rdname remove.genes-methods
@@ -106,7 +110,7 @@ setMethod('remove.genes', signature = c ('Rscexv'),
 			if ( length(ids) > 0 ){
 				write ( colnames(dataObj@data)[ids], file="./filtered_genes.txt",ncolumn=1, append=T )
 				dataObj@data <- dataObj@data[,-ids]
-				dataObj@annotation <- dataObj@annotation[-ids,]
+				dataObj@annotation <- data.frame(dataObj@annotation[-ids,])
 			}
 			else {
 				print ( "No genes to filter out!" )
