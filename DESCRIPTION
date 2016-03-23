@@ -25,4 +25,4 @@ Depends:
 	RSvgDevice,
 	stringr,
 	survival,
-	vioplot
+	beanplot

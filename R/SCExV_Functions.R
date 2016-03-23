@@ -203,20 +203,19 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 				ma[neg] = mv
 			}
 			if ( beanplots ) {
-				plot.funct <-  plot.beans
+				plot.funct <-  function (x , ... ) { plot.beans( x, ...) }
 			}else{
-				plot.funct <-  plot.violines
+				plot.funct <-  function (x, ...) { plot.violines( x, ...) }
 			}
 			
-			## plot the violoines
-			if ( ! is.null(obj$FACS)){
-				plot.funct( obj$FACS, groups.n, clus =  obj@usedObj[['clusters']], boot = 1000, plot.neg=plot.neg, mv=mv )
-			}
-			print ( paste( 'plot.funct( ma , groups.n, clus =  obj@usedObj[["clusters"]], boot = 1000, plot.neg =',plot.neg,', mv =', mv))
-			plot.funct( ma , groups.n, clus =  obj@usedObj[['clusters']], boot = 1000, plot.neg=plot.neg, mv = mv  )
+			obj@usedObj[['for.plot']] = ma
+			plot.funct( obj$facs, groups.n, clus =  obj@usedObj[['clusters']], boot = 1000, plot.neg=plot.neg, mv=mv )
+			
+			#print ( paste( 'plot.funct( ma , groups.n, clus =  obj@usedObj[["clusters"]], boot = 1000, plot.neg =',plot.neg,', mv =', mv))
 			
 			obj
-		} )
+		} 
+)
 
 
 

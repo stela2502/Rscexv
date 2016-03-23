@@ -244,13 +244,76 @@ setMethod('FACS.heatmap', signature = c ('Rscexv'),
 		} 
 )
 
+#' @name plot.violines
+#' @aliases plot.violines,Rscexv-method
+#' @rdname plot.violines-methods
+#' @docType methods
+#' @description This fucntion converts the table into a format, that can be fead to the vioplot function
+#' @param x the Rscexv object
+#' @param groups.n  TEXT MISSING
+#' @param clus  TEXT MISSING
+#' @param boot  TEXT MISSING default= 1000
+#' @param plot.neg  TEXT MISSING default=FALSE
+#' @param mv  TEXT MISSING default=-20
+#' @title description of function plot.violines
+#' @export 
+setGeneric('plot.violines', ## Name
+		function ( x, groups.n, clus, boot = 1000, plot.neg=FALSE, mv=-20) { ## Argumente der generischen Funktion
+			standardGeneric('plot.violines') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		}
+)
 
+setMethod('plot.violines', signature = c ('Rscexv'),
+		definition = function ( x, groups.n, clus, boot = 1000, plot.neg=FALSE, mv=-20) {
+			ma <- NULL
+			if ( x@wFACS ){
+				ma <- t(cbind( x@usedObj[['for.plot']], x@facs ))
+			}else{
+				ma <- t(x@usedObj[['for.plot']])
+			}
+			
+			n <- rownames(ma)
+			cols = rainbow( groups.n )
+			s <-  split(seq(ncol(ma)), clus)
+			for ( i in 1:nrow( ma ) ) {
+			#	print (paste( 'plot.violines working on gene', n[i] ) )
+				png( file=paste(n[i],'.png',sep=''), width=800,height=800)
+				#create color info
+				lila <- lapply(s ,function(x) { ma[ i, x] } )
+				lila$names <- as.vector(unlist(lapply( lila, 
+							function(x) { 
+								lila$names <- c( lila$names, paste(length(which(x != mv)), length(x) ,sep='/' ) )
+							} ) ))
+				if ( ! plot.neg ){
+					lila = lapply( lila, function(x) { x[which(x != mv)] = NA; x } )
+				}
+				names(lila)[1]= 'x'
+				lila$col= cols
+				lila$main=n[i]
+				if ( ! plot.neg ) {
+					lila$neg = mv
+					lila$drawRect = FALSE
+				}else{
+					lila$neg = NULL
+				}
+				lila$h = 0.3
+				try(do.call(vioplot,lila), silent=F )
+				dev.off()
+				if ( plotsvg == 1 ) {
+					devSVG( file=paste(n[i],'.svg',sep=''), width=6,height=6)
+					lila$cex.axis=0.5
+					try(do.call(vioplot,lila), silent=F )
+					dev.off()
+				}
+			}
+		} 
+)
 
 #' @name vioplot
 #' @aliases vioplot,Rscexv-method
 #' @rdname vioplot-methods
 #' @docType methods
-#' @description 
+#' @description the vioplot function patched to allow different colors for the different violines.
 #' @param x  TEXT MISSING
 #' @param ...  TEXT MISSING
 #' @param range  TEXT MISSING default= 1.5
@@ -268,7 +331,7 @@ setGeneric('vioplot', ## Name
 			standardGeneric('vioplot') ## der Aufruf von standardGeneric sorgt für das Dispatching
 		}
 )
-setMethod('vioplot', signature = c ('Rscexv'),
+setMethod('vioplot', signature = c ('numeric'),
 		definition = function (x, ..., range = 1.5, h = NULL, ylim = NULL, names = NULL, 
 		horizontal = FALSE, col = 'magenta', border = 'black', lty = 1, 
 		lwd = 1, rectCol = 'black', colMed = 'white', pchMed = 19, 
@@ -407,4 +470,90 @@ setMethod('vioplot', signature = c ('Rscexv'),
 					q1 = q1, q3 = q3))
 }
 
+)
+
+#' @name col4bean
+#' @aliases col4bean,Rscexv-method
+#' @rdname col4bean-methods
+#' @docType methods
+#' @description get the color information for the beans
+#' @param x  TEXT MISSING
+#' @param tic  TEXT MISSING default='black'
+#' @title description of function col4bean
+#' @export 
+setGeneric('col4bean', ## Name
+		function (x, tic='black') { ## Argumente der generischen Funktion
+			standardGeneric('col4bean') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		}
+)
+
+setMethod('col4bean', signature = c ('character'),
+		definition = function (x, tic='black') {
+			ret <- list()
+			for ( i in 1:length(x) ){
+				ret[[i]] <- c(x[i], tic )
+			}
+			ret
+		}
+)
+
+
+#' @name plot.beans
+#' @aliases plot.beans,Rscexv-method
+#' @rdname plot.beans-methods
+#' @docType methods
+#' @description plot the beanplots
+#' @param x the Rscexv object
+#' @param groups.n  TEXT MISSING
+#' @param clus  TEXT MISSING
+#' @param boot  TEXT MISSING default= 1000
+#' @param plot.neg  TEXT MISSING default=TRUE
+#' @param mv  TEXT MISSING default=-20
+#' @title description of function plot.beans
+#' @export 
+setGeneric('plot.beans', ## Name
+		function ( x, groups.n, clus, boot = 1000, plot.neg=TRUE, mv=-20 ) { ## Argumente der generischen Funktion
+			standardGeneric('plot.beans') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		}
+)
+
+setMethod('plot.beans', signature = c ('Rscexv'),
+		definition = function ( x, groups.n, clus, boot = 1000, plot.neg=TRUE, mv=-20 ) {
+			ma <- NULL
+			if ( x@wFACS ){
+				ma <- t(cbind( x@usedObj[['for.plot']], x@facs ))
+			}else{
+				ma <- t(x@usedObj[['for.plot']])
+			}
+			n <- rownames(ma)
+			cols = col4bean(rainbow( groups.n ))	
+			s <-  split(seq(ncol(ma)), clus)
+			for ( i in 1:nrow( ma ) ) {
+				#print (paste( 'plot.beans working on gene', n[i] ) )
+				png( file=paste(n[i],'.png',sep=''), width=800,height=800)
+				lila <- vector('list', groups.n)
+				lila$names <- NULL
+				for( a in 1:groups.n){
+					lila[[a]]=ma[i,which(clus == a)]
+					lila$names <- c( lila$names, paste(length(which(lila[[a]] != mv)), length(lila[[a]]) ,sep='/' ) )
+					if ( ! plot.neg ){
+						lila[[a]][which(lila[[a]] == mv)] <- NA
+						if ( sum(is.na(lila[[a]]) ) == length( lila[[a]]) ){
+							lila[[a]] = c(0)
+						}
+					}
+				}
+				lila$main <- n[i]
+				lila$what <- c(1,1,0,1) ## not plot medain line
+				lila$col <- cols
+				try(do.call(beanplot,lila), silent=F )
+				dev.off()
+				if ( plotsvg == 1 ) {
+					devSVG( file=paste(n[i],'.svg',sep=''), width=6,height=6)
+					#lila$cex.axis=0.5
+					try(do.call(beanplot,lila), silent=F )
+					dev.off()
+				}
+			}
+		} 
 )

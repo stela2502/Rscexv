@@ -75,3 +75,59 @@ setMethod('coexpressionMatrix', signature = c ('Rscexv'),
 			dataObj
 		} 
 )
+
+#' @name coexpressGenes
+#' @aliases coexpressGenes,Rscexv-method
+#' @rdname coexpressGenes-methods
+#' @docType methods
+#' @description  calculates the coexpression for all genes in the data set
+#' @param dataObj the Rscexv object
+#' @title description of function coexpressGenes
+#' @export 
+setGeneric('coexpressGenes', ## Name
+		function ( dataObj ) { ## Argumente der generischen Funktion
+			standardGeneric('coexpressGenes') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		}
+)
+
+setMethod('coexpressGenes', signature = c ('Rscexv'),
+		definition = function ( dataObj ) {
+			
+			cor.funct <- function ( ma ){
+				ma <- ma[, which( apply( ma, 2, function ( x) { length(which( x != 0)) }) > 9 )]
+				if ( ncol(ma) < 2 ) {
+					NULL
+				}
+				else {
+					cor.t <- cor( ma , method='spearman')
+					cor.p <- cor.t
+					diag(cor.p) <- 1
+					for ( i in 1:(ncol(ma)-1) ) {
+						for (a in (i+1):ncol(ma) ) {
+							if ( length( as.vector(ma[,i]) ) != length(as.vector(ma[,a]))){
+								browser()
+							}
+							cor.p[a,i] <- cor.test( as.vector(ma[,i]), as.vector(ma[,a]),method='spearman')$p.value
+						}
+					}
+					cor.t.m <- melt(cor.t)
+					cor.p.m <- melt(cor.p)
+					cor.t.m <- cbind(cor.t.m, cor.p.m[,3])
+					cor.t.m <- cor.t.m[which(cor.t.m[,4] < 0.05), ]
+					cor.t.m
+				}
+			}
+			ret <- NULL
+			for (i in 1:max(dataObj@usedObj[['clusters']])){
+				t <- cor.funct ( dataObj@snorm[which(dataObj@usedObj[['clusters']] == i),] )
+				if ( ! is.null(t)){
+					if ( nrow(t) > 0  ){
+						t[,5] <- i
+						ret <- rbind(ret, t)
+					}
+				}
+			}
+			colnames(ret) <- c('Source.Node','Target.Node', 'rho', 'p.value','Group' )
+			ret
+		} 
+)

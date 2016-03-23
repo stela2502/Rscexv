@@ -1,3 +1,6 @@
+gimp <- function(x) { system( paste('gimp', paste(x, collapse=' '),'&')) }
+
+
 FACS <-  paste('functionallity2implement', c('Array1_Index_sort.csv', 'Index_sort_Array2.csv','Index_sort_Array3.csv') ,sep='/') 
 PCR <-  paste('functionallity2implement', c( 'PCR_Array1.csv','PCR_Array2.csv','PCR_Array3.csv'),sep='/')
 
@@ -32,11 +35,15 @@ write.table( data@data, file= paste( data@outpath, "/PCR_data_4_publication.xls"
 data.filtered <- sd.filter( data )
 						
 plot.histograms( data.filtered ) ## this is needed for the web tool
-			
+
+## if you want to check all filtering methods for errors:
+
+for ( i in methods ) { norm.PCR(data.filtered,i,max.cyc=max.value, ctrl=ref.genes ) }
+		
 data.filtered <- norm.PCR(data.filtered,norm.function,max.cyc=max.value, ctrl=ref.genes )
 write.table( data.filtered@data, file=paste( data@outpath,"/PCR_data_normalized_4_publication.xls",sep=''), sep='\t' )		
 
-for ( i in methods ) { norm.PCR(data.filtered,i,max.cyc=max.value, ctrl=ref.genes ) }
+data.filtered <- z.score.PCR.mad(data.filtered)
 
 
 
@@ -51,7 +58,139 @@ zscoredVioplot = 1
 cmethod='ward.D'
 LLEK='2'
 ctype= 'hierarchical clust'
+groups.n <- 5
 
 obj <- data.filtered
+
+cols = rainbow( groups.n )
+
+if ( is.null(obj@facs)) {
+	onwhat="Expression"
+} else if ( ncol(obj@facs)< 4 ) {
+	onwhat="Expression"
+}
+obj <- mds.and.clus(obj,onwhat= onwhat,groups.n = groups.n, cmethod=cmethod, clusterby=clusterby,ctype=ctype)
+
+plotcoma(obj)
+if ( length(which(obj@usedObj[['clusters']] == 0)) > 0 ){
+	obj@usedObj[['clusters']] <- obj@usedObj[['clusters']] + 1
+}
+obj@usedObj[['colors']] <- apply( t(col2rgb( cols ) ), 1, paste,collapse=' ')[obj@usedObj[['clusters']]]
+
+## plot the mds data
+try(plotDR( obj@usedObj[['mds.proj']][order(obj@usedObj[['clusters']]),], col=cols, labels=obj@usedObj[['clusters']][order(obj@usedObj[['clusters']])] ),silent=F)
+
+try(writeWebGL( width=470, height=470 ),silent=F)
+png(file='./webGL/MDS_2D.png', width=800,height=800)
+plotDR( obj@usedObj[['mds.proj']][order(obj@usedObj[['clusters']]),1:2], col=cols, labels=obj@usedObj[['clusters']][order(obj@usedObj[['clusters']])] )
+dev.off()
+#save( obj, file='clusters.RData')
+write.table (obj@usedObj[['mds.proj']][order(obj@usedObj[['clusters']]),1:2], file = './2D_data.xls' )
+sample.cols.rgb <-t(col2rgb( cols[obj@usedObj[['clusters']][order(obj@usedObj[['clusters']])]]))
+sample.cols.rgb <- cbind(sample.cols.rgb,  colorname = cols[obj@usedObj[['clusters']][order(obj@usedObj[['clusters']])]] )
+rownames(sample.cols.rgb) <- rownames(obj@data)[order(obj@usedObj[['clusters']])]
+write.table ( sample.cols.rgb , file = './2D_data_color.xls' )
+write.table (cbind( names = cols, t(col2rgb( cols))), file='./webGL/MDS_2D.png.cols', sep='\\t',  row.names=F,quote=F )
+
+obj@usedObj[['quality_of_fit']] = quality_of_fit(obj)
+
+RowV = TRUE
+RowSideColors = FALSE
+
+if ( exists ('geneGroups') ){
+	geneGroups$groupID = as.vector(geneGroups$groupID)
+	if ( is.vector(as.vector(geneGroups$groupID)) ) {
+		t <- obj
+		obj$z$PCR <- obj$z$PCR[, order(geneGroups$groupID)]
+		RowV = FALSE
+		RowSideColors=c(gray.colors(max(geneGroups$groupID),start = 0.3, end = 0.9))[as.numeric(geneGroups$groupID[order(geneGroups$groupID)])]
+	}
+}
+## plot the heatmaps
+
+try( PCR.heatmap ( obj , 
+				'./PCR_color_groups', 
+				title='PCR data', 
+				ColSideColors=cols[obj@usedObj[['clusters']]][order(obj@usedObj[['clusters']])],
+				RowSideColors=RowSideColors,
+				reorder=T,
+				width=12,
+				height=6, 
+				margins = c(1,11), 
+				lwid = c( 1,6), lhei=c(1,5),
+				Rowv=RowV,
+				Colv=F,
+				hclustfun = function(c){hclust( c, method=cmethod)}
+		), silent=T)
+			
+#	try( collapsed_heatmaps (obj, what='PCR', functions = c('median', 'mean', 'var', 'quantile70' )), silent=T)
+#	try( collapsed_heatmaps (obj, what='FACS', functions = c('median', 'mean', 'var', 'quantile70' )), silent=T)
+try( PCR.heatmap ( obj, 
+				'./PCR', 
+				title='PCR data', 
+				ColSideColors=cols[obj@usedObj[['clusters']]],
+				width=12,
+				height=6, 
+				margins = c(1,11), 
+				lwid = c( 1,6), lhei=c(1,5),
+				hclustfun = function(c){hclust( c, method=cmethod)}
+		), silent=T)
+try( FACS.heatmap ( obj, 
+				'./facs', 
+				title='FACS data', 
+				ColSideColors=cols[obj@usedObj[['clusters']]],
+				width=12,
+				height=6, 
+				hc.col= obj@usedObj[['hc']],
+				margins = c(1,11), 
+				lwid = c( 1,6), lhei=c(1,5),
+				hclustfun = function(c){hclust( c, method=cmethod)}
+		), silent=T)
+
+try( FACS.heatmap ( obj, 
+				'./facs_color_groups', 
+				reorder=T,
+				title='FACS data', 
+				ColSideColors=cols[obj@usedObj[['clusters']]][order(obj@usedObj[['clusters']])],
+				width=12,
+				height=6, 
+				hc.col= obj@usedObj[['hc']],
+				margins = c(1,11), 
+				lwid = c( 1,6), lhei=c(1,5),
+				Colv=F,
+				hclustfun = function(c){hclust( c, method=cmethod)}
+		), silent=T)
+
+ma  <- NULL
+mv <- NULL
+if ( zscoredVioplot == 1 ){
+	ma <- as.matrix(obj@data)
+	mv <- -20
+}else {
+	ma <- as.matrix(obj@snorm)
+	mv <- 0
+}
+
+if ( move.neg ){
+	neg <- which(ma == mv )
+	m <- min(ma[-neg])
+	mv <- m -1
+	ma[neg] = mv
+}
+if ( beanplots ) {
+	plot.funct <-  function (x , ... ) { plot.beans( x, ...) }
+}else{
+	plot.funct <-  function (x, ...) { plot.violines( x, ...) }
+}
+
+obj@usedObj[['for.plot']] = ma
+plot.funct( obj$facs, groups.n, clus =  obj@usedObj[['clusters']], boot = 1000, plot.neg=plot.neg, mv=mv )
+
+#print ( paste( 'plot.funct( ma , groups.n, clus =  obj@usedObj[["clusters"]], boot = 1000, plot.neg =',plot.neg,', mv =', mv))
+
+obj
+
+t <- coexpressGenes(obj)
+write.table(t,'Coexpression_4_Cytoscape.txt',row.names=F, sep=' ')
 
 
