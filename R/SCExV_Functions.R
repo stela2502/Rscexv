@@ -89,7 +89,7 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 		#	}
 			cols = rainbow( groups.n )
 			
-			if ( is.null(obj@facs)) {
+			if ( ! obj@wFACS ) {
 				onwhat="Expression"
 			} else if ( ncol(obj@facs)< 4 ) {
 				onwhat="Expression"
@@ -212,12 +212,47 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 			plot.funct( obj$facs, groups.n, clus =  obj@usedObj[['clusters']], boot = 1000, plot.neg=plot.neg, mv=mv )
 			
 			#print ( paste( 'plot.funct( ma , groups.n, clus =  obj@usedObj[["clusters"]], boot = 1000, plot.neg =',plot.neg,', mv =', mv))
+			if ( obj@wFACS ){
+				write.table( cbind( Samples = rownames(obj@facs), obj@facs ), file='merged_FACS_Table.xls' , row.names=F, sep='	',quote=F )
+				all.data <- cbind(obj@data, obj@facs )
+				write.table(cbind( Samples = rownames(all.data), all.data ), file='merged_data_Table.xls' , row.names=F, sep='	',quote=F )
+			}else {
+				write.table( cbind( Samples = rownames(obj@data), obj@data ), file='merged_data_Table.xls' , row.names=F, sep='	',quote=F )
+			}
+						
+			## the lists in one file
+			
+			write.table( obj@samples,file='Sample_Colors.xls' , row.names=F, sep='	',quote=F )
 			
 			obj
 		} 
 )
 
+#' @name plotDensity
+#' @aliases plotDensity,Rscexv-method
+#' @rdname plotDensity-methods
+#' @docType methods
+#' @description This function creates the density plot for the analysis page
+#' @param obj the Rscexv object
+#' @title description of function analyse.data
+#' @export 
+setGeneric('plotDensity', ## Name
+		function ( obj ){	## Argumente der generischen Funktion
+			standardGeneric('plotDensity') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		}
+)
 
-
-
-
+setMethod('plotDensity', signature = c ('Rscexv'),
+		definition = function ( obj ){
+			usable <- is.na(match( obj@usedObj[['clusters']], which(table(as.factor(obj@usedObj[['clusters']])) < 4 ) )) == T
+			
+			use <- obj
+			use@usedObj[['clusters']] <- obj@usedObj[['clusters']][usable]
+			use@usedObj[['mds.proj']] <- obj@usedObj[['mds.proj']][usable,]
+			cols <- rainbow(max(as.numeric(obj@usedObj[['clusters']])))
+			H <- Hkda( use@usedObj[['mds.proj']], use@usedObj[['clusters']], bw='plugin')
+			kda.fhat <- kda( use@usedObj[['mds.proj']], use@usedObj[['clusters']],Hs=H, compute.cont=TRUE)
+			try(plot(kda.fhat, size=0.001, colors = cols[as.numeric(names(table(use@usedObj[['clusters']])))] ),silent=F)
+			try( writeWebGL(dir = 'densityWebGL', width=470, height=470, prefix='K', template='libs/densityWebGL.html' ) ,silent=F )
+		}
+)

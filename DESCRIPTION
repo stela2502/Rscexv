@@ -25,4 +25,5 @@ Depends:
 	RSvgDevice,
 	stringr,
 	survival,
-	beanplot
+	beanplot,
+	ks

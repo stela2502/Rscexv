@@ -557,3 +557,5 @@ setMethod('plot.beans', signature = c ('Rscexv'),
 			}
 		} 
 )
+
+
