@@ -63,6 +63,7 @@ setGeneric('check.dataObj', ## Name
 setMethod('check.dataObj', signature = c ('list'),
 		definition = function ( PCR, FACS ) {
 			colnames( PCR$data ) = make.names( colnames( PCR$data ),unique=T)
+			new.facs = NULL
 			if ( ! is.null(FACS ) ){
 				colnames( FACS$data ) = make.names( colnames( FACS$data ),unique=T)
 				reject = 0

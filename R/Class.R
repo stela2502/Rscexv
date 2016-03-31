@@ -48,6 +48,31 @@ setClass(
 )
 
 
+#' @name InbuiltData
+#' @title This is the test dataset also available at the SCExV server page
+#' @description Please read PMID:26437766 for more details. No analysis performed.
+#' @docType data
+#' @usage data(InbuiltData)
+#' @format Rscexv object
+'InbuiltData'
+
+#' @name analyzed
+#' @title This is the analyzed data used for downstream testing
+#' @description This file can be re-created running the test scripts.
+#' @docType data
+#' @usage data(analyzed)
+#' @format Rscexv object
+'data'
+
+
+#' @name analyzedNOFACS
+#' @title This is the analyzed data used for downstream testing
+#' @description This file can be re-created running the test scripts.
+#' @docType data
+#' @usage data(analyzedNOFACS)
+#' @format Rscexv object
+'analyzedNOFACS'
+
 #' @name show
 #' @aliases show,Rscexv-method
 #' @rdname show-methods

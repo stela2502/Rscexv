@@ -11,16 +11,19 @@
 #' @param cmethod the hyclust method to use default='ward.D'
 #' @param ctype the clustering method ('hierarchical clust' or kmeans) default='hierarchical clust'
 #' @param onwhat cluster on FACS or Expression data default="Expression"
+#' @param useGrouping do not calculate a new grouping - use this column in the samples table (default=NULL)
 #' @title description of function mds.and.clus
 #' @export 
 setGeneric('mds.and.clus', ## Name
-		function (dataObj,clusterby="raw",mds.type="PCA", groups.n, LLEK=2, cmethod='ward.D', ctype='hierarchical clust',onwhat="Expression",... ) { ## Argumente der generischen Funktion
+		function (dataObj, ..., clusterby="raw", mds.type="PCA", groups.n, LLEK=2, cmethod='ward.D', 
+				ctype='hierarchical clust',onwhat="Expression",useGrouping=NULL ) { ## Argumente der generischen Funktion
 			standardGeneric('mds.and.clus') ## der Aufruf von standardGeneric sorgt für das Dispatching
 		}
 )
 
 setMethod('mds.and.clus', signature = c ('Rscexv'),
-		definition = function (dataObj,clusterby="raw",mds.type="PCA", groups.n, LLEK=2, cmethod='ward.D', ctype='hierarchical clust',onwhat="Expression",... ) {
+		definition = function (dataObj, ..., clusterby="raw", mds.type="PCA", groups.n, LLEK=2, 
+				cmethod='ward.D', ctype='hierarchical clust',onwhat="Expression", useGrouping=NULL ) {
 			if(onwhat=="Expression"){
 				tab <- as.matrix(dataObj@data)
 			} 
@@ -34,11 +37,12 @@ setMethod('mds.and.clus', signature = c ('Rscexv'),
 			if(mds.type == "PCA"){
 				pr <- prcomp(tab)
 				mds.proj <- pr$x[,1:3]
-				png ( file='loadings.png', width=1000, height=1000 )
+				png ( file=file.path( dataObj@outpath,'loadings.png'), width=1000, height=1000 )
 				plot (  pr$rotation[,1:2] , col='white' );
 				text( pr$rotation[,1:2], labels= rownames(pr$rotation), cex=1.5 )
 				dev.off()
-				write.table( cbind( Genes = rownames(pr$rotation), pr$rotation[,1:2] ), file='gene_loadings.xls' , row.names=F, sep='\t',quote=F )
+				write.table( cbind( Genes = rownames(pr$rotation), pr$rotation[,1:2] ), 
+						file=file.path( dataObj@outpath,'gene_loadings.xls') , row.names=F, sep='\t',quote=F )
 				#	mds.trans <- prcomp(t(tab))$x[,1:3]
 			} else if ( mds.type == "LLE"){
 				mds.proj <- LLE( tab, dim = 3, k = as.numeric(LLEK) )
@@ -52,7 +56,8 @@ setMethod('mds.and.clus', signature = c ('Rscexv'),
 			}
 			dataObj@usedObj[['mds.proj']] <- mds.proj
 			
-			dataObj <- clusters ( dataObj, onwhat=onwhat, clusterby=clusterby, groups.n = groups.n, ctype = ctype, cmethod=cmethod )
+			dataObj <- clusters ( dataObj, onwhat=onwhat, clusterby=clusterby, groups.n = groups.n,
+					ctype = ctype, cmethod=cmethod, useGrouping=useGrouping )
 			
 			dataObj
 		} 
@@ -68,28 +73,31 @@ setMethod('mds.and.clus', signature = c ('Rscexv'),
 #' @param ctype  TEXT MISSING default='hierarchical clust'
 #' @param onwhat  TEXT MISSING default="Expression"
 #' @param cmethod  TEXT MISSING default='ward.D'
+#' @param useGrouping do not calculate a new grouping - use this column in the samples table (default=NULL)
 #' @title description of function clusters
 #' @export 
 setGeneric('clusters', ## Name
-		function (dataObj,clusterby="raw", mds.proj=NULL,groups.n = 3, ctype='hierarchical clust',onwhat="Expression", cmethod='ward.D') { ## Argumente der generischen Funktion
+		function (dataObj,clusterby="raw", useGrouping=NULL, mds.proj=NULL,groups.n = 3,
+				ctype='hierarchical clust',onwhat="Expression", cmethod='ward.D') { ## Argumente der generischen Funktion
 			standardGeneric('clusters') ## der Aufruf von standardGeneric sorgt für das Dispatching
 		}
 )
 
 setMethod('clusters', signature = c ('Rscexv'),
-		definition = function (dataObj,clusterby="raw",groups.n = 3, ctype='hierarchical clust',onwhat="Expression", cmethod='ward.D' ) {
+		definition = function (dataObj,clusterby="raw", useGrouping=NULL, groups.n = 3,
+				ctype='hierarchical clust',onwhat="Expression", cmethod='ward.D' ) {
 			## custering	
 			clusters <- NULL
 			hc <- NULL
 			if(onwhat=="Expression"){
 				tab <- dataObj@data
-			} 
+			}
 			else {
 				print ( paste ( "I work on the FACS data!" ) )
 				tab <- dataObj@facs
 			}
-			if ( exists('userGroups') ) {
-				clusters <- userGroups$groupID
+			if ( ! is.null(useGrouping) ) {
+				clusters <- dataObj@samples[,useGrouping]
 			}else if(clusterby=="MDS"){
 				if ( ctype=='hierarchical clust'){
 					hc <- hclust(dist( dataObj@usedObj[['mds.proj']] ),method = cmethod)
@@ -110,17 +118,18 @@ setMethod('clusters', signature = c ('Rscexv'),
 				}
 				else { stop( paste('ctype',ctype, 'unknown!' ) )}
 			}
-			if ( ! exists('userGroups') ){
-				png ( file='hc_checkup_main_clustering_function.png', width=1600, height=800 )
+			if ( is.null(useGrouping) ){
+				png ( file=file.path( dataObj@outpath,'hc_checkup_main_clustering_function.png'), width=1600, height=800 )
 				plot ( hc);
 				dev.off()
+				if(is.null(dataObj@usedObj[['auto_clusters']])){
+					dataObj@usedObj[['auto_clusters']] = 0
+				}
+				dataObj@usedObj[['auto_clusters']] <- dataObj@usedObj[['auto_clusters']] +1
+				dataObj@samples <- cbind ( dataObj@samples, clusters )
+				colnames(dataObj@samples)[ncol(dataObj@samples)] = paste( 'auto_clusters', 
+						dataObj@usedObj[['auto_clusters']] ,sep='.')
 			}
-			if(is.null(dataObj@usedObj[['auto_clusters']])){
-				dataObj@usedObj[['auto_clusters']] = 0
-			}
-			dataObj@usedObj[['auto_clusters']] <- dataObj@usedObj[['auto_clusters']] +1
-			dataObj@samples <- cbind ( dataObj@samples, clusters )
-			colnames(dataObj@samples)[ncol(dataObj@samples)] = paste( 'auto_clusters', dataObj@usedObj[['auto_clusters']] ,sep='.')
 			dataObj@usedObj[['clusters']] <- clusters
 			dataObj@usedObj[['hc']] <- hc
 			dataObj

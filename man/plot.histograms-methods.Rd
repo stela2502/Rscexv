@@ -6,12 +6,14 @@
 \alias{plot.histograms,Rscexv-method}
 \title{description of function plot.histograms}
 \usage{
-plot.histograms(dataObj, cuts = vector("list", 1))
+plot.histograms(dataObj, cuts = vector("list", 1), subpath = "preprocess")
 }
 \arguments{
 \item{dataObj}{the Rscexv object}
 
 \item{cuts}{the cuts are used for the 1D gene groups default=vector('list',1)}
+
+\item{subpath}{the subpath to plot to ( default = preprocess)}
 }
 \description{
 This function plots all genes as histograms to check whether there ar4e clear expression differences in different plates.

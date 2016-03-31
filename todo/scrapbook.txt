@@ -14,7 +14,6 @@ negContrGenes=NULL
 use_pass_fail = T
 methods <- c("none","mean control genes","max expression","median expression","quantile")
 
-
 data <- Rscexv( PCR, FACS, use_pass_fail)
 			
 data <- kick.expressed.negContr.samples(data, negContrGenes )
@@ -38,7 +37,12 @@ plot.histograms( data.filtered ) ## this is needed for the web tool
 
 ## if you want to check all filtering methods for errors:
 
-for ( i in methods ) { norm.PCR(data.filtered,i,max.cyc=max.value, ctrl=ref.genes ) }
+for ( i in methods ) { 
+	t <- norm.PCR(data.filtered,i,max.cyc=max.value, ctrl=ref.genes ) 
+	## the original data is stored in the raw slot
+	all.equal(t@raw, data.filtered@data)
+	
+}
 		
 data.filtered <- norm.PCR(data.filtered,norm.function,max.cyc=max.value, ctrl=ref.genes )
 write.table( data.filtered@data, file=paste( data@outpath,"/PCR_data_normalized_4_publication.xls",sep=''), sep='\t' )		

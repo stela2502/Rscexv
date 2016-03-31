@@ -69,9 +69,11 @@ setMethod('coexpressionMatrix', signature = c ('Rscexv'),
 			rownames(mm) <- paste('Group',1:m)
 			coma <- cor(t(mm))
 			dataObj@usedObj[['coma']] <- coma
-			write.table (cbind(groups = rownames(coma), coma) , file='correlation_matrix_groups.xls', sep='\t',  row.names=F,quote=F )
+			write.table (cbind(groups = rownames(coma), coma) , 
+					file=file.path( dataObj@outpath,'correlation_matrix_groups.xls'), sep='\t',  row.names=F,quote=F )
 			colnames(mm) <- colnames(dataObj@data)
-			write.table (cbind(groups = rownames(mm), mm) , file='mean_expression_per_groups.xls', sep='\t',  row.names=F,quote=F )
+			write.table (cbind(groups = rownames(mm), mm) , 
+					file=file.path( dataObj@outpath,'mean_expression_per_groups.xls'), sep='\t',  row.names=F,quote=F )
 			dataObj
 		} 
 )

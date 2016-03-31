@@ -38,7 +38,8 @@ setMethod('createDataObj', signature = c ('character'),
 			}
 			
 			## export the unfiltered_not_modified PCR data for publication
-			write.table( data@data, file= paste( data@outpath, "/PCR_data_4_publication.xls",sep=''), sep='\t' )
+			
+			write.table( data@data, file= file.path(data@outpath,"InbuiltData.RData"), sep='\t' )
 			
 			data.filtered <- sd.filter( data )
 						
@@ -46,14 +47,14 @@ setMethod('createDataObj', signature = c ('character'),
 			
 			data.filtered <- norm.PCR(data.filtered,norm.function,max.cyc=max.value, ctrl=ref.genes )
 			#plot.heatmap( list( data = t(data.filtered$PCR), genes=colnames(data.filtered$PCR)), 'Contr_filtered_inverted_norm', title='SD filtered inverted data', width=12,height=6,Colv=F,hclustfun = function(c){hclust( c, method=cmethod)},distfun = function(x){ 1- cor(t(x),method='spearman')} )
-			write.table( data.filtered@data, file=paste( data@outpath,"/PCR_data_normalized_4_publication.xls",sep=''), sep='\t' )
+			write.table( data.filtered@data, file=file.path( data.filtered@outpath,"PCR_data_normalized_4_publication.xls"), sep='\t' )
 			
 			data.filtered <- z.score.PCR.mad(data.filtered)
+			
 			
 			data.filtered
 		} 
 )
-
 
 
 #' @name analyse.data
@@ -71,22 +72,20 @@ setMethod('createDataObj', signature = c ('character'),
 #' @param move.neg should the not expressed value be as set to the minimum expression value?
 #' @param plot.neg show the not expressing samples in the bean/violinplots?
 #' @param useGrouping do not calculate a new grouping - use this column in the samples table (default=NULL)
+#' @param plotsvg create svg figures in addition to the png ones (default=0)
 #' @title description of function analyse.data
 #' @export 
 setGeneric('analyse.data', ## Name
 		function (obj,onwhat='Expression',groups.n, cmethod, clusterby='MDS', 
-				ctype='hierarchical clust', beanplots=TRUE, move.neg = FALSE, plot.neg=TRUE, useGrouping=NULL, ...){	## Argumente der generischen Funktion
+				ctype='hierarchical clust', beanplots=TRUE, move.neg = FALSE, plot.neg=TRUE, useGrouping=NULL, plotsvg = 0, ...){	## Argumente der generischen Funktion
 			standardGeneric('analyse.data') ## der Aufruf von standardGeneric sorgt für das Dispatching
 		}
 )
 
 setMethod('analyse.data', signature = c ('Rscexv'),
 		definition = function (obj,onwhat='Expression',groups.n, cmethod, clusterby='MDS', 
-				ctype='hierarchical clust', beanplots=TRUE, move.neg = FALSE, plot.neg=TRUE, ...){
+				ctype='hierarchical clust', beanplots=TRUE, move.neg = FALSE, plot.neg=TRUE, useGrouping=NULL, plotsvg = 0, ...){
 			
-		#	if ( exists( 'userGroups' )) {
-		#		userGroups <- checkGrouping(userGroups, obj)
-		#	}
 			cols = rainbow( groups.n )
 			
 			if ( ! obj@wFACS ) {
@@ -94,7 +93,7 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 			} else if ( ncol(obj@facs)< 4 ) {
 				onwhat="Expression"
 			}
-			obj <- mds.and.clus(obj,onwhat= onwhat,groups.n = groups.n, cmethod=cmethod, clusterby=clusterby,ctype=ctype)
+			obj <- mds.and.clus(obj,onwhat= onwhat,groups.n = groups.n, cmethod=cmethod, clusterby=clusterby,ctype=ctype, useGrouping=useGrouping)
 			
 			plotcoma(obj)
 			if ( length(which(obj@usedObj[['clusters']] == 0)) > 0 ){
@@ -105,17 +104,17 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 			## plot the mds data
 			try(plotDR( obj@usedObj[['mds.proj']][order(obj@usedObj[['clusters']]),], col=cols, labels=obj@usedObj[['clusters']][order(obj@usedObj[['clusters']])] ),silent=F)
 			
-			try(writeWebGL( width=470, height=470 ),silent=F)
-			png(file='./webGL/MDS_2D.png', width=800,height=800)
+			try(writeWebGL( width=470, height=470, dir = file.path(obj@outpath,'webGL')),silent=F)
+			png(file=file.path(obj@outpath,'webGL', 'MDS_2D.png'), width=800,height=800)
 			plotDR( obj@usedObj[['mds.proj']][order(obj@usedObj[['clusters']]),1:2], col=cols, labels=obj@usedObj[['clusters']][order(obj@usedObj[['clusters']])] )
 			dev.off()
 			#save( obj, file='clusters.RData')
-			write.table (obj@usedObj[['mds.proj']][order(obj@usedObj[['clusters']]),1:2], file = './2D_data.xls' )
+			write.table (obj@usedObj[['mds.proj']][order(obj@usedObj[['clusters']]),1:2], file = file.path(obj@outpath,'2D_data.xls') )
 			sample.cols.rgb <-t(col2rgb( cols[obj@usedObj[['clusters']][order(obj@usedObj[['clusters']])]]))
 			sample.cols.rgb <- cbind(sample.cols.rgb,  colorname = cols[obj@usedObj[['clusters']][order(obj@usedObj[['clusters']])]] )
 			rownames(sample.cols.rgb) <- rownames(obj@data)[order(obj@usedObj[['clusters']])]
-			write.table ( sample.cols.rgb , file = './2D_data_color.xls' )
-			write.table (cbind( names = cols, t(col2rgb( cols))), file='./webGL/MDS_2D.png.cols', sep='\\t',  row.names=F,quote=F )
+			write.table ( sample.cols.rgb , file = file.path(obj@outpath,'2D_data_color.xls') )
+			write.table (cbind( names = cols, t(col2rgb( cols))), file=file.path(obj@outpath,'webGL','MDS_2D.png.cols'),sep='\\t',  row.names=F,quote=F )
 			
 			obj@usedObj[['quality_of_fit']] = quality_of_fit(obj)
 
@@ -134,7 +133,7 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 			## plot the heatmaps
 			
 			try( PCR.heatmap ( obj , 
-							'./PCR_color_groups', 
+							file.path(obj@outpath,'PCR_color_groups'), 
 							title='PCR data', 
 							ColSideColors=cols[obj@usedObj[['clusters']]][order(obj@usedObj[['clusters']])],
 							RowSideColors=RowSideColors,
@@ -146,12 +145,12 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 							Rowv=RowV,
 							Colv=F,
 							hclustfun = function(c){hclust( c, method=cmethod)}
-					), silent=T)
+					), silent=F)
 			
 #	try( collapsed_heatmaps (obj, what='PCR', functions = c('median', 'mean', 'var', 'quantile70' )), silent=T)
 #	try( collapsed_heatmaps (obj, what='FACS', functions = c('median', 'mean', 'var', 'quantile70' )), silent=T)
 			try( PCR.heatmap ( obj, 
-							'./PCR', 
+							file.path(obj@outpath,'PCR'), 
 							title='PCR data', 
 							ColSideColors=cols[obj@usedObj[['clusters']]],
 							width=12,
@@ -159,9 +158,9 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 							margins = c(1,11), 
 							lwid = c( 1,6), lhei=c(1,5),
 							hclustfun = function(c){hclust( c, method=cmethod)}
-					), silent=T)
+					), silent=F)
 			try( FACS.heatmap ( obj, 
-							'./facs', 
+							file.path(obj@outpath,'facs'), 
 							title='FACS data', 
 							ColSideColors=cols[obj@usedObj[['clusters']]],
 							width=12,
@@ -173,7 +172,7 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 					), silent=T)
 			
 			try( FACS.heatmap ( obj, 
-							'./facs_color_groups', 
+							file.path(obj@outpath,'facs_color_groups'), 
 							reorder=T,
 							title='FACS data', 
 							ColSideColors=cols[obj@usedObj[['clusters']]][order(obj@usedObj[['clusters']])],
@@ -209,20 +208,20 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 			}
 			
 			obj@usedObj[['for.plot']] = ma
-			plot.funct( obj$facs, groups.n, clus =  obj@usedObj[['clusters']], boot = 1000, plot.neg=plot.neg, mv=mv )
+			plot.funct( obj, groups.n, clus =  obj@usedObj[['clusters']], boot = 1000, plot.neg=plot.neg, mv=mv )
 			
 			#print ( paste( 'plot.funct( ma , groups.n, clus =  obj@usedObj[["clusters"]], boot = 1000, plot.neg =',plot.neg,', mv =', mv))
 			if ( obj@wFACS ){
-				write.table( cbind( Samples = rownames(obj@facs), obj@facs ), file='merged_FACS_Table.xls' , row.names=F, sep='	',quote=F )
+				write.table( cbind( Samples = rownames(obj@facs), obj@facs ), file=file.path(obj@outpath,'merged_FACS_Table.xls') , row.names=F, sep='	',quote=F )
 				all.data <- cbind(obj@data, obj@facs )
-				write.table(cbind( Samples = rownames(all.data), all.data ), file='merged_data_Table.xls' , row.names=F, sep='	',quote=F )
+				write.table(cbind( Samples = rownames(all.data), all.data ), file=file.path(obj@outpath,'merged_data_Table.xls') , row.names=F, sep='	',quote=F )
 			}else {
-				write.table( cbind( Samples = rownames(obj@data), obj@data ), file='merged_data_Table.xls' , row.names=F, sep='	',quote=F )
+				write.table( cbind( Samples = rownames(obj@data), obj@data ), file=file.path(obj@outpath,'merged_data_Table.xls') , row.names=F, sep='	',quote=F )
 			}
 						
 			## the lists in one file
 			
-			write.table( obj@samples,file='Sample_Colors.xls' , row.names=F, sep='	',quote=F )
+			write.table( obj@samples,file=file.path(obj@outpath,'Sample_Colors.xls') , row.names=F, sep='	',quote=F )
 			
 			obj
 		} 
@@ -253,6 +252,13 @@ setMethod('plotDensity', signature = c ('Rscexv'),
 			H <- Hkda( use@usedObj[['mds.proj']], use@usedObj[['clusters']], bw='plugin')
 			kda.fhat <- kda( use@usedObj[['mds.proj']], use@usedObj[['clusters']],Hs=H, compute.cont=TRUE)
 			try(plot(kda.fhat, size=0.001, colors = cols[as.numeric(names(table(use@usedObj[['clusters']])))] ),silent=F)
-			try( writeWebGL(dir = 'densityWebGL', width=470, height=470, prefix='K', template='libs/densityWebGL.html' ) ,silent=F )
+			try( writeWebGL(
+							dir = file.path(obj@outpath,'densityWebGL'), 
+							width=470, height=470, prefix='K', 
+							template= system.file(file.path("densityWebGL.html"), 
+									package = "Rscexv") 
+							),
+					silent=F 
+			)
 		}
 )

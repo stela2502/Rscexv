@@ -5,28 +5,29 @@
 #' @description This function plots all genes as histograms to check whether there ar4e clear expression differences in different plates.
 #' @param dataObj the Rscexv object
 #' @param cuts the cuts are used for the 1D gene groups default=vector('list',1)
+#' @param subpath the subpath to plot to ( default = preprocess)
 #' @title description of function plot.histograms
 #' @export 
 setGeneric('plot.histograms', ## Name
-		function ( dataObj, cuts=vector('list',1) ) { ## Argumente der generischen Funktion
+		function ( dataObj, cuts=vector('list',1), subpath='preprocess' ) { ## Argumente der generischen Funktion
 			standardGeneric('plot.histograms') ## der Aufruf von standardGeneric sorgt für das Dispatching
 		}
 )
 
 setMethod('plot.histograms', signature = c ('Rscexv'),
-		definition = function ( dataObj, cuts=vector('list',1) ) {
+		definition = function ( dataObj, cuts=vector('list',1), subpath='preprocess' ) {
 			ma <- t(dataObj@data)
-			if ( ! is.null(dataObj@facs)){
+			if ( dataObj@wFACS ){
 				ma <- rbind( ma, t( dataObj@facs) )
 			}
 			n <- rownames(ma)
 			arrays <- max(dataObj@samples$ArrayID)
 			cols <- rainbow(arrays)
 			n.cuts <- names(cuts)
-			opath = file.path(dataObj@outpath, 'preprocess')
+			opath = file.path(dataObj@outpath,subpath )
 			dir.create(opath, showWarnings = FALSE)
 			for ( i in 1:nrow(ma) ) {
-				png( file=paste(opath,"/",n[i],'.png',sep=''),width=800, height=800 )
+				png( file=file.path( opath, paste(n[i],'png',sep='.')),width=800, height=800 )
 				temp <- vector('list',arrays)
 				m <- NULL
 				for (a in 1:arrays ) {
@@ -88,7 +89,7 @@ setMethod('PCR.heatmap', signature = c ('Rscexv'),
 				if ( reorder ){
 					data <- data[,order(dataObj@usedObj[['clusters']])]
 				}
-				brks <- as.vector(c(-20,quantile(data[which(data!= -20)],seq(0,1,by=0.1)),max(data)))
+				brks <- unique(as.vector(c(-20,quantile(data[which(data!= -20)],seq(0,1,by=0.1)),max(data))))
 				#rownames( data ) <- paste( dataObj$genes, dataObj$names)
 				if ( is.na(hc.row) ){
 					hc.row <- hclustfun(distfun(data)) #hclust( as.dist( 1- cor(t(data), method='spearman')), method='ward')
@@ -255,16 +256,17 @@ setMethod('FACS.heatmap', signature = c ('Rscexv'),
 #' @param boot  TEXT MISSING default= 1000
 #' @param plot.neg  TEXT MISSING default=FALSE
 #' @param mv  TEXT MISSING default=-20
+#' @param subpath the path to write the figures to (default = '')
 #' @title description of function plot.violines
 #' @export 
 setGeneric('plot.violines', ## Name
-		function ( x, groups.n, clus, boot = 1000, plot.neg=FALSE, mv=-20) { ## Argumente der generischen Funktion
+		function ( x, groups.n, clus, boot = 1000, plot.neg=FALSE, mv=-20, subpath='') { ## Argumente der generischen Funktion
 			standardGeneric('plot.violines') ## der Aufruf von standardGeneric sorgt für das Dispatching
 		}
 )
 
 setMethod('plot.violines', signature = c ('Rscexv'),
-		definition = function ( x, groups.n, clus, boot = 1000, plot.neg=FALSE, mv=-20) {
+		definition = function ( x, groups.n, clus, boot = 1000, plot.neg=FALSE, mv=-20, subpath='') {
 			ma <- NULL
 			if ( x@wFACS ){
 				ma <- t(cbind( x@usedObj[['for.plot']], x@facs ))
@@ -276,8 +278,9 @@ setMethod('plot.violines', signature = c ('Rscexv'),
 			cols = rainbow( groups.n )
 			s <-  split(seq(ncol(ma)), clus)
 			for ( i in 1:nrow( ma ) ) {
+				fn <- file.path(x@outpath,subpath, n[i] )
 			#	print (paste( 'plot.violines working on gene', n[i] ) )
-				png( file=paste(n[i],'.png',sep=''), width=800,height=800)
+				png( file=paste(fn,'.png',sep=''), width=800,height=800)
 				#create color info
 				lila <- lapply(s ,function(x) { ma[ i, x] } )
 				lila$names <- as.vector(unlist(lapply( lila, 
@@ -300,7 +303,7 @@ setMethod('plot.violines', signature = c ('Rscexv'),
 				try(do.call(vioplot,lila), silent=F )
 				dev.off()
 				if ( plotsvg == 1 ) {
-					devSVG( file=paste(n[i],'.svg',sep=''), width=6,height=6)
+					devSVG( file=paste(fn,'.svg',sep=''), width=6,height=6)
 					lila$cex.axis=0.5
 					try(do.call(vioplot,lila), silent=F )
 					dev.off()
@@ -509,16 +512,17 @@ setMethod('col4bean', signature = c ('character'),
 #' @param boot  TEXT MISSING default= 1000
 #' @param plot.neg  TEXT MISSING default=TRUE
 #' @param mv  TEXT MISSING default=-20
+#' @param subpath the subpath for the plots (default = '')
 #' @title description of function plot.beans
 #' @export 
 setGeneric('plot.beans', ## Name
-		function ( x, groups.n, clus, boot = 1000, plot.neg=TRUE, mv=-20 ) { ## Argumente der generischen Funktion
+		function ( x, groups.n, clus, boot = 1000, plot.neg=TRUE, mv=-20, subpath='' ) { ## Argumente der generischen Funktion
 			standardGeneric('plot.beans') ## der Aufruf von standardGeneric sorgt für das Dispatching
 		}
 )
 
 setMethod('plot.beans', signature = c ('Rscexv'),
-		definition = function ( x, groups.n, clus, boot = 1000, plot.neg=TRUE, mv=-20 ) {
+		definition = function ( x, groups.n, clus, boot = 1000, plot.neg=TRUE, mv=-20, subpath='' ) {
 			ma <- NULL
 			if ( x@wFACS ){
 				ma <- t(cbind( x@usedObj[['for.plot']], x@facs ))
@@ -530,7 +534,8 @@ setMethod('plot.beans', signature = c ('Rscexv'),
 			s <-  split(seq(ncol(ma)), clus)
 			for ( i in 1:nrow( ma ) ) {
 				#print (paste( 'plot.beans working on gene', n[i] ) )
-				png( file=paste(n[i],'.png',sep=''), width=800,height=800)
+				fn <- file.path(x@outpath,subpath, n[i] )
+				png( file=paste(fn,'.png',sep=''), width=800,height=800)
 				lila <- vector('list', groups.n)
 				lila$names <- NULL
 				for( a in 1:groups.n){
@@ -549,9 +554,9 @@ setMethod('plot.beans', signature = c ('Rscexv'),
 				try(do.call(beanplot,lila), silent=F )
 				dev.off()
 				if ( plotsvg == 1 ) {
-					devSVG( file=paste(n[i],'.svg',sep=''), width=6,height=6)
+					devSVG( file=paste(fn,'.svg',sep=''), width=6,height=6)
 					#lila$cex.axis=0.5
-					try(do.call(beanplot,lila), silent=F )
+					try(do.call(beanplot,lila), silent=T )
 					dev.off()
 				}
 			}
