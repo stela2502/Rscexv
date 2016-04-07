@@ -668,10 +668,10 @@ setGeneric('mergeSampleGroupings', ## Name
 
 setMethod('mergeSampleGroupings', signature = c ('Rscexv'),
 		definition = function ( x, g1, g2, newName ){
-	if (length( table( data@samples[,g2] ) ) > 2) {
+	if (length( table( x@samples[,g2] ) ) > 2) {
 		stop( "This function can only merge one comülex grouping with a yes/no information")
 	}
-	if ( ! all.equal( names( table(data@samples[,g2] )), c('no','yes')) ){
+	if ( ! all.equal( names( table(x@samples[,g2] )), c('no','yes')) ){
 		stop( "This function can only merge one comülex grouping with a yes/no information")
 	}
 	if(is.null( x@usedObj[['colorRange']] ) ){
@@ -684,7 +684,7 @@ setMethod('mergeSampleGroupings', signature = c ('Rscexv'),
 		c(v1,v2)[order(c(ord1,ord2))]
 	}
 	newG <- (as.vector(t(x@samples[, g1])) *2)-1
-	newG[ which( data@samples[,g2] == 'yes') ] = newG[ which( data@samples[,g2] == 'yes') ] +1
+	newG[ which( x@samples[,g2] == 'yes') ] = newG[ which( x@samples[,g2] == 'yes') ] +1
 	if ( is.na(match( newName, colnames(x@samples))) ){
 		x@samples =cbind( x@samples, newName=newG )
 		colnames(x@samples)[ncol(x@samples)] = newName
