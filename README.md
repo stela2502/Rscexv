@@ -12,6 +12,7 @@ R and several R packages, that should all be installed when installing this pack
 All, but the MAST dependency, which is also hosted on GitHub:
 
 library(devtools)
+
 install_github('RGLab/MAST')
 
 # Installation
@@ -19,6 +20,7 @@ install_github('RGLab/MAST')
 Installation is extremely simple:
 
 library(devtools)
+
 install_github('stela2502/Rscexv')
 
 
