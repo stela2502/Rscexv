@@ -200,6 +200,9 @@ setMethod('complexHeatmap', signature = c ('Rscexv'),
 				ColSideColorsSize <- length(colGroups)
 				x <- reorder.samples(x, colGroups[1] )
 				for ( i in colGroups ){
+					if ( is.na(match( i, names(colColors))) ){
+						stop( paste( "No colours for the grouping", i ) )
+					}
 					ColSideColors <- cbind(ColSideColors, colColors[[ match( i, names(colColors)) ]][x@samples[, i]] )
 				}
 				colnames(ColSideColors) = colGroups
@@ -235,7 +238,6 @@ setMethod('complexHeatmap', signature = c ('Rscexv'),
 			}else{
 				png( file=paste(file.path(x@outpath,ofile),'png',sep='.'), width=1600, height=800)
 			}
-			
 			heatmap.3(
 					data, breaks=brks,col=c("darkgrey",bluered(length(brks)-2)), Rowv=F, Colv = F,  key=F, symkey=FALSE,
 					trace='none', 

@@ -177,8 +177,8 @@ setMethod('rfCluster', signature = c ('Rscexv'),
 					}
 					groups <- createGroups( x@usedObj[['rfObj']][[i]], k=k, name=tname )
 					x@usedObj[['rfExpressionSets']][[i]]@samples <- cbind ( x@usedObj[['rfExpressionSets']][[i]]@samples, groups[,3:(2+length(k))] )
-					
-					le <- nrow(x@usedObj[['rfExpressionSets']][[i]]@samples)
+										
+					le <- ncol(x@usedObj[['rfExpressionSets']][[i]]@samples)
 					colnames(x@usedObj[['rfExpressionSets']][[i]]@samples)[(le-length(k)+1):le] <- paste('group n=',k)
 					
 					## create the required RF object
@@ -187,7 +187,9 @@ setMethod('rfCluster', signature = c ('Rscexv'),
 					## the 'predictive RFobj group n=' object is created by the bestGrouping call
 					x@samples[, paste( single_res_col, i) ] <-
 							predict( x@usedObj[['rfExpressionSets']][[i]]@usedObj[[paste( 'predictive RFobj group n=',m) ]], as.matrix(x@data) )
+					x@usedObj[['colorRange']][[paste( single_res_col, i)]] <- rainbow( length(levels( x@samples[, paste( single_res_col, i) ])))
 					if ( pics ){
+						
 						fn <- paste(OPATH,'/heatmap_rfExpressionSets_',i,'.png', sep='')
 						png ( file=fn, width=800, height=1600 )
 						gg.heatmap.list( x, groupCol=paste( single_res_col , i) )
