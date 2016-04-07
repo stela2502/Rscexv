@@ -8,7 +8,7 @@
 \usage{
 rfCluster(x, rep = 5, SGE = F, email, k = 16, slice = 30,
   subset = 200, pics = F, nforest = 500, ntree = 500,
-  name = "RFclust")
+  name = "RFclust", recover = F)
 }
 \arguments{
 \item{x}{the single cells ngs object}
@@ -32,6 +32,8 @@ rfCluster(x, rep = 5, SGE = F, email, k = 16, slice = 30,
 \item{ntree}{the numer of trees per forest (default = 500)}
 
 \item{name}{if you want to run multiple RFclusterings on e.g. using different input genes you need to specify a name (default ='RFclust')}
+
+\item{recover}{in case some problem has occured you could recover the objects from the saved files (default =F)}
 
 \item{bestColname}{the column name to store the results in}
 }
