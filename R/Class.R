@@ -32,6 +32,7 @@ setClass(
 				sampleNamesCol='character',
 				zscored = 'logical',
 				simple = 'character',
+				baseSamplesCol='numeric',
 				usedObj = 'list'
 		),
 		prototype(outpath ='', name = 'Rscexv',
@@ -65,13 +66,6 @@ setClass(
 'data'
 
 
-#' @name analyzedNOFACS
-#' @title This is the analyzed data used for downstream testing
-#' @description This file can be re-created running the test scripts.
-#' @docType data
-#' @usage data(analyzedNOFACS)
-#' @format Rscexv object
-'analyzedNOFACS'
 
 #' @name show
 #' @aliases show,Rscexv-method
@@ -116,7 +110,8 @@ setGeneric('Rscexv', ## Name
 setMethod('Rscexv', signature = c ('character'),
 		definition = function ( PCR=NULL,  FACS=NULL, use_pass_fail = T ){
 			
-			
+			fnamesPCR <- PCR
+			fnamesFACS <- FACS
 			PCR <- read.PCR.set ( PCR, use_pass_fail )
 			
 			system ( 'rm filtered*' )
@@ -143,10 +138,18 @@ setMethod('Rscexv', signature = c ('character'),
 			
 			data <- check.dataObj(PCR, FACS)
 			
+			data$samples$fnamesPCR <- fnamesPCR[data$samples$ArrayID]
+			if ( wFACS ) {
+				data$samples$fnamesFACS <- fnamesFACS[data$samples$ArrayID]
+			}
+			missing <- setdiff( 1:length(fnamesPCR), unique(data$samples$ArrayID) )
+			if ( length(missing) > 0 ){
+				stop( paste( length(missing),"files failed to load into the analysis:", paste( collapse= ', ', fnamesPCR[missing] ),". Most likely due to gene name missmatches." ))
+			}
 			## now create the object and done
 			res <- new('Rscexv', data=data.frame(data$PCR), 
 					facs=data.frame(data$FACS), samples=data$samples, 
-					annotation=data$annotation, wFACS=wFACS, outpath=pwd() )
+					annotation=data$annotation, wFACS=wFACS, outpath=pwd(), baseSamplesCol=ncol(data$samples) )
 			
 			res
 		}

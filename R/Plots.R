@@ -60,7 +60,7 @@ setMethod('plot.histograms', signature = c ('Rscexv'),
 #' @param dataObj  TEXT MISSING
 #' @param ofile  TEXT MISSING
 #' @param title  TEXT MISSING default='Heatmap'
-#' @param nmax  TEXT MISSING default=500
+#' @param nmax  TEXT MISSING default=4000
 #' @param hc.row  TEXT MISSING default=NA
 #' @param ColSideColors  TEXT MISSING default=NA
 #' @param RowSideColors  TEXT MISSING default=F
@@ -69,14 +69,14 @@ setMethod('plot.histograms', signature = c ('Rscexv'),
 #' @title description of function PCR.heatmap
 #' @export 
 setGeneric('PCR.heatmap', ## Name
-		function ( dataObj, ofile,reorder =F,  title='Heatmap', nmax=500, hc.row=NA, ColSideColors=NA, RowSideColors=F,
+		function ( dataObj, ofile,reorder =F,  title='Heatmap', nmax=4000, hc.row=NA, ColSideColors=NA, RowSideColors=F,
 				width=6, height=6, margins = c(1,11) ,lwid = c( 1,6), lhei=c(1,5), hclustfun = function(c){hclust( c, method='ward.D')}, distfun = function (x) as.dist( 1- cor(t(x), method='pearson') ), Rowv=T, ... ) {## Argumente der generischen Funktion
 			standardGeneric('PCR.heatmap') ## der Aufruf von standardGeneric sorgt für das Dispatching
 		}
 )
 
 setMethod('PCR.heatmap', signature = c ('Rscexv'),
-		definition = function ( dataObj, ofile,reorder =F,  title='Heatmap', nmax=500, hc.row=NA, 
+		definition = function ( dataObj, ofile,reorder =F,  title='Heatmap', nmax=4000, hc.row=NA, 
 				ColSideColors=NA, RowSideColors=F, width=6, height=6, margins = c(1,11),
 				lwid = c( 1,6), lhei=c(1,5), hclustfun = function(c){hclust( c, method='ward.D')}, 
 				distfun = function (x) as.dist( 1- cor(t(x), method='pearson') ), Rowv=T, ... ) {
@@ -163,6 +163,90 @@ setMethod('PCR.heatmap', signature = c ('Rscexv'),
 			dataObj@usedObj[['expression.hc.row']] = hc.row
 			dataObj
 		} 
+)
+
+#' @name complexHeatmap
+#' @aliases complexHeatmap,Rscexv-method
+#' @rdname complexHeatmap-methods
+#' @docType methods
+#' @description plot the PCR heatmap using the heatmap.3 function included in this package 
+#' @param x the Rscexv object
+#' @param ofile the outfile to create in the x@outpath folder
+#' @param colGroups columns in the samples table to use to order the data (first == order)
+#' @param rowGroups rows in the annotation table to use to color the heatmap rows (first == order)
+#' @param colColors a named list of column color vectors
+#' @param rowColors a named list of row color vectors
+#' @param pdf export as pdf (default = FALSE)
+#' @param subpath the subpath for the plots (default = '')
+#' @title description of function plot.beans
+#' @export 
+setGeneric('complexHeatmap', ## Name
+		function ( x,  ofile, colGroups=NULL, rowGroups=NULL, colColors=NULL, rowColors=NULL, pdf=FALSE, subpath='', main = '' ) { ## Argumente der generischen Funktion
+			standardGeneric('complexHeatmap') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		}
+)
+
+setMethod('complexHeatmap', signature = c ('Rscexv'),
+		definition = function ( x,  ofile, colGroups=NULL, rowGroups=NULL, colColors=NULL, rowColors=NULL, pdf=FALSE, subpath='', main = '' ) {
+			
+			Rowv = FALSE
+			Colv = FALSE
+			dendrogram = 'both'
+			ColSideColors <- NULL
+			RowSideColors <- NULL
+			ColSideColorsSize <- 1
+			RowSideColorsSize <- 1
+			if ( ! is.null(colGroups) ) {
+				ColSideColorsSize <- length(colGroups)
+				x <- reorder.samples(x, colGroups[1] )
+				for ( i in colGroups ){
+					ColSideColors <- cbind(ColSideColors, colColors[[ match( i, names(colColors)) ]][x@samples[, i]] )
+				}
+				colnames(ColSideColors) = colGroups
+				Colv = FALSE
+				if ( !is.null(rowGroups)){
+					dendrogram = 'none'
+				}else{
+					dendrogram= 'none'
+				}
+			}else {
+				## probably calculate the clustering??
+			}
+			if ( ! is.null(rowGroups) ) {
+				RowSideColorsSize <- length(rowGroups)
+				x <- reorder.genes(x, rowGroups[1] )
+				for ( i in rowGroups ){
+					RowSideColors <- cbind( RowSideColors,rowColors[[ match( i, names(rowColors)) ]][x@annotation[, i]] )
+				}
+				colnames(RowSideColors) = rowGroups
+				Rowv = FALSE
+				if ( !is.null(colGroups)){
+					dendrogram = 'none'
+				}else{
+					dendrogram= 'none'
+				}
+			}else {
+				## probably calculate the clustering??
+			}
+			data <- as.matrix(t(x@data))
+			brks <- unique(as.vector(c(-20,quantile(data[which(data!= -20)],seq(0,1,by=0.1)),max(data))))
+			if ( pdf ) {
+				pdf( file=paste(file.path(x@outpath,ofile),'pdf',sep='.'), width=10, height=8)
+			}else{
+				png( file=paste(file.path(x@outpath,ofile),'png',sep='.'), width=1600, height=800)
+			}
+			
+			heatmap.3(
+					data, breaks=brks,col=c("darkgrey",bluered(length(brks)-2)), Rowv=F, Colv = F,  key=F, symkey=FALSE,
+					trace='none', 
+					ColSideColors=ColSideColors,ColSideColorsSize=ColSideColorsSize, 
+					RowSideColors=RowSideColors,RowSideColorsSize=RowSideColorsSize, 
+					cexRow=0.6,cexCol=0.7,main=main, dendrogram=dendrogram, labCol = "", lwid=c(0.5,4), lhei=c(1,4)
+			)
+			
+			dev.off()
+			
+		}
 )
 
 #' @name FACS.heatmap
@@ -563,4 +647,54 @@ setMethod('plot.beans', signature = c ('Rscexv'),
 		} 
 )
 
+#' @name mergeSampleGroupings
+#' @aliases mergeSampleGroupings,Rscexv-method
+#' @rdname mergeSampleGroupings-methods
+#' @docType methods
+#' @description Create a new group and create shaded rainbow color shemata stored in the x@usedObj[['colorRange']] variable
+#' @param x the Rscexv object
+#' @param g1 the first grouping name (can be complex)
+#' @param g2 the second grouping name (has to be simple yes/no!)
+#' @param newName the name of the new variable to create
+#' @title description of function mergeSampleGroupings
+#' @export 
+setGeneric('mergeSampleGroupings', ## Name
+		function ( x,  g1, g2, newName ) { ## Argumente der generischen Funktion
+			standardGeneric('mergeSampleGroupings') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		}
+)
+
+setMethod('mergeSampleGroupings', signature = c ('Rscexv'),
+		definition = function ( x, g1, g2, newName ){
+	if (length( table( data@samples[,g2] ) ) > 2) {
+		stop( "This function can only merge one comülex grouping with a yes/no information")
+	}
+	if ( ! all.equal( names( table(data@samples[,g2] )), c('no','yes')) ){
+		stop( "This function can only merge one comülex grouping with a yes/no information")
+	}
+	if(is.null( x@usedObj[['colorRange']] ) ){
+		x@usedObj[['colorRange']] <- list()
+	}
+	interleave <- function(v1,v2)
+	{
+		ord1 <- 2*(1:length(v1))-1
+		ord2 <- 2*(1:length(v2))
+		c(v1,v2)[order(c(ord1,ord2))]
+	}
+	newG <- (as.vector(t(x@samples[, g1])) *2)-1
+	newG[ which( data@samples[,g2] == 'yes') ] = newG[ which( data@samples[,g2] == 'yes') ] +1
+	if ( is.na(match( newName, colnames(x@samples))) ){
+		x@samples =cbind( x@samples, newName=newG )
+		colnames(x@samples)[ncol(x@samples)] = newName
+	}else{
+		x@samples[,newName] = newG
+	}
+	if ( is.na( match( newName, names(x@usedObj[['colorRange']]) ) ) ) {
+		x@usedObj[['colorRange']][[length(x@usedObj[['colorRange']])+1]] <- 1
+		names(x@usedObj[['colorRange']])[[length(x@usedObj[['colorRange']])]] = newName
+	}
+	x@usedObj[['colorRange']][[ match( newName, names(x@usedObj[['colorRange']])) ]] <- interleave ( rainbow( max(x@samples[,g1])), rainbow( max(x@samples[,g1]), s=0.5, v=0.5) )
+	x
+	}
+)
 

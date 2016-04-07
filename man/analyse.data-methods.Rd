@@ -8,7 +8,8 @@
 \usage{
 analyse.data(obj, onwhat = "Expression", groups.n, cmethod,
   clusterby = "MDS", ctype = "hierarchical clust", beanplots = TRUE,
-  move.neg = FALSE, plot.neg = TRUE, useGrouping = NULL, ...)
+  move.neg = FALSE, plot.neg = TRUE, useGrouping = NULL, plotsvg = 0,
+  ...)
 }
 \arguments{
 \item{obj}{the Rscexv object}
@@ -30,6 +31,8 @@ analyse.data(obj, onwhat = "Expression", groups.n, cmethod,
 \item{plot.neg}{show the not expressing samples in the bean/violinplots?}
 
 \item{useGrouping}{do not calculate a new grouping - use this column in the samples table (default=NULL)}
+
+\item{plotsvg}{create svg figures in addition to the png ones (default=0)}
 }
 \description{
 This function implements the backend functionallity of the SCExV analyse page.

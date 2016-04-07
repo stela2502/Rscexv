@@ -95,7 +95,7 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 			}
 			obj <- mds.and.clus(obj,onwhat= onwhat,groups.n = groups.n, cmethod=cmethod, clusterby=clusterby,ctype=ctype, useGrouping=useGrouping)
 			
-			plotcoma(obj)
+			try(plotcoma(obj) )
 			if ( length(which(obj@usedObj[['clusters']] == 0)) > 0 ){
 				obj@usedObj[['clusters']] <- obj@usedObj[['clusters']] + 1
 			}
@@ -223,9 +223,76 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 			
 			write.table( obj@samples,file=file.path(obj@outpath,'Sample_Colors.xls') , row.names=F, sep='	',quote=F )
 			
+			## now I need to write a groungs info file with all possible groupings to choose from
+			exportGroups( obj )
 			obj
 		} 
 )
+
+#' @name exportGroups
+#' @aliases exportGroups,Rscexv-method
+#' @rdname exportGroups-methods
+#' @docType methods
+#' @description This function exports the group names necessary for the SCExV server
+#' @param obj the Rscexv object
+#' @param file theoutfile default='SCExV_Grps.txt'
+#' @title description of function analyse.data
+#' @export 
+setGeneric('exportGroups', ## Name
+		function ( obj, file='SCExV_Grps.txt' ){	## Argumente der generischen Funktion
+			standardGeneric('exportGroups') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		}
+)
+
+setMethod('exportGroups', signature = c ('Rscexv'),
+		definition = function ( obj, file='SCExV_Grps.txt' ){
+			v <- NULL
+			if ( ! exists('useGrouping') ){
+				useGrouping = NULL
+			}
+			if ( ! is.null(useGrouping)){
+				if ( useGrouping == 'ArrayID') {
+					v <-'Group by plateID'
+				}else {
+					v <- useGrouping
+				}
+			}
+			v <- c( v, 'none', 'Group by plateID')
+			if ( ncol(obj@samples) > obj@baseSamplesCol ) {
+				v <- c( v, colnames(obj@samples)[(obj@baseSamplesCol+1):ncol(obj@samples)] )
+			}
+			write( v, file= file.path(obj@outpath,file))
+		}
+)
+
+#' @name saveObj
+#' @aliases saveObj,Rscexv-method
+#' @rdname saveObj-methods
+#' @docType methods
+#' @description This function saves the object either as analysis.RData or norm_data.RData if the analysi.RData has not been produced before
+#' @param obj the Rscexv object
+#' @param file theoutfile default='SCExV_Grps.txt'
+#' @title description of function analyse.data
+#' @export 
+setGeneric('saveObj', ## Name
+		function ( data, file='analysis.RData' ){	## Argumente der generischen Funktion
+			standardGeneric('saveObj') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		}
+)
+
+setMethod('saveObj', signature = c ('Rscexv'),
+		definition = function ( data, file='analysis.RData' ){
+			exportGroups(data)
+			if ( file.exists( file.path(data@outpath, file) ) ){
+				print ( 'data exported to analysis.RData')
+				save(data , file=file.path(data@outpath, file) )
+			}else {
+				data.filtered <- data
+				save(data , file= file.path(data@outpath, 'norm_data.RData') )
+			}
+		}
+)
+
 
 #' @name plotDensity
 #' @aliases plotDensity,Rscexv-method

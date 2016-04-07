@@ -44,6 +44,22 @@ expect_that(
 		equals(c(colnames(data@samples) , 'CD41.Alexa.Fluor.488.A 1D Group' ) ) 
 )
 
+## check that the values are also OK
+expect_that ( all( data2@facs[ which(data2@samples[,'CD41.Alexa.Fluor.488.A 1D Group'] == 1), 'CD41.Alexa.Fluor.488.A' ] <= 0.5), is_true() )
+expect_that ( all( data2@facs[ which(data2@samples[,'CD41.Alexa.Fluor.488.A 1D Group'] == 2), 'CD41.Alexa.Fluor.488.A' ] <= 1), is_true() )
+expect_that ( all( data2@facs[ which(data2@samples[,'CD41.Alexa.Fluor.488.A 1D Group'] == 3), 'CD41.Alexa.Fluor.488.A' ] <= 1.5), is_true() )
+expect_that ( all( data2@facs[ which(data2@samples[,'CD41.Alexa.Fluor.488.A 1D Group'] == 4), 'CD41.Alexa.Fluor.488.A' ] <= 2), is_true() )
+expect_that ( all( data2@facs[ which(data2@samples[,'CD41.Alexa.Fluor.488.A 1D Group'] == 5), 'CD41.Alexa.Fluor.488.A' ] <= 2.5), is_true() )
+expect_that ( all( data2@facs[ which(data2@samples[,'CD41.Alexa.Fluor.488.A 1D Group'] == 6), 'CD41.Alexa.Fluor.488.A' ] <= 3), is_true() )
+expect_that ( all( data2@facs[ which(data2@samples[,'CD41.Alexa.Fluor.488.A 1D Group'] == 7), 'CD41.Alexa.Fluor.488.A' ] >= 3), is_true() )
+
+data2 <- group_1D (data2, 'Actb', c( 26,30,32))
+
+expect_that ( all( data2@data[ which(data2@samples[,'Actb 1D Group'] == 1), 'Actb' ] <= 26), is_true() )
+expect_that ( all( data2@data[ which(data2@samples[,'Actb 1D Group'] == 2), 'Actb' ] <= 30), is_true() )
+expect_that ( all( data2@data[ which(data2@samples[,'Actb 1D Group'] == 3), 'Actb' ] <= 32), is_true() )
+expect_that ( all( data2@data[ which(data2@samples[,'Actb 1D Group'] == 4), 'Actb' ] >= 32), is_true() )
+
 gr_old <- split( data2@samples[,1], data2@samples[,4])
 l <- list()
 expect_that(names(gr_old), equals( paste(1:7)) )
@@ -58,4 +74,12 @@ expect_that(t[c(2,7+5,7*2+4,7*3+1,7*4+3,7*5+6,7*6+7)],equals( c(12,62,161,9,33,4
 data2 <- group_on_strings( data2, strings=c( ' P1', ' P2', ' P3' ) )
 t <- table (data2@samples[,c(2,6)])
 expect_that(t[c(1,2,3,4,8,12)],equals( c(5,5,3,89,89,91)) )
+
+colColors = list(
+		ArrayID=rainbow(max(data2@samples$ArrayID)), 
+		'auto_clusters.1' = rainbow(max(data2@samples$'auto_clusters.1')), 
+		'CD41.Alexa.Fluor.488.A 1D Group' = gray.colors( max(data2@samples$'CD41.Alexa.Fluor.488.A 1D Group')) 
+) 
+
+complexHeatmap( data2, ofile= 'notUsed', colGroups= c('ArrayID', 'auto_clusters.1', 'CD41.Alexa.Fluor.488.A 1D Group' ),colColors= colColors)
 

@@ -13,15 +13,15 @@ setGeneric('checkGrouping', ## Name
 		}
 )
 
-setMethod('checkGrouping', signature = c ('numeric'),
+setMethod('checkGrouping', signature = c ('data.frame'),
 		definition = function ( userGroups,  data=NULL ) {
 			## there can not be any sample problems!
-			if ( max(userGroups) != 0){ 
-				if ( min(userGroups) == 0 ){
-					userGroups <- userGroups +1
+			if ( max(userGroups[,3]) != 0){ 
+				if ( min(userGroups[,3]) == 0 ){
+					userGroups[,3] <- userGroups[,3] +1
 				}
 			}
-			userGroups
+			as.vector(t(userGroups[,3]))
 		} 
 )
 
@@ -104,7 +104,7 @@ setMethod('group_1D_worker', signature = c ('data.frame'),
 				userGroups$userInput[now] = paste(ranges[length(ranges)],'<= x < max')
 				userGroups$groupID[now] = length(ranges) +1
 			}
-			checkGrouping ( as.vector(t(userGroups[,3])) )
+			checkGrouping ( userGroups )
 		} 
 )
 
@@ -144,7 +144,7 @@ setMethod('regroup', signature = c ('Rscexv'),
 					userGroups[ match(group2sample[[i]], userGroups$cellName) ,3] = i - minor
 				}
 			}
-			gr <- checkGrouping ( userGroups[,3] )
+			gr <- checkGrouping ( userGroups )
 			dataObj@samples[,name] = gr
 			dataObj
 		} 
@@ -181,7 +181,7 @@ setMethod('group_on_strings', signature = c ('Rscexv'),
 					userGroups[g ,2] = strings[i]
 				}
 			}
-			gr <- checkGrouping ( userGroups[,3], dataObj )
+			gr <- checkGrouping ( userGroups, dataObj )
 			dataObj@samples[,name] = gr
 			dataObj
 		} 

@@ -6,7 +6,7 @@
 \alias{PCR.heatmap,Rscexv-method}
 \title{description of function PCR.heatmap}
 \usage{
-PCR.heatmap(dataObj, ofile, reorder = F, title = "Heatmap", nmax = 500,
+PCR.heatmap(dataObj, ofile, reorder = F, title = "Heatmap", nmax = 4000,
   hc.row = NA, ColSideColors = NA, RowSideColors = F, width = 6,
   height = 6, margins = c(1, 11), lwid = c(1, 6), lhei = c(1, 5),
   hclustfun = function(c) {     hclust(c, method = "ward.D") },
@@ -22,7 +22,7 @@ PCR.heatmap(dataObj, ofile, reorder = F, title = "Heatmap", nmax = 500,
 
 \item{title}{TEXT MISSING default='Heatmap'}
 
-\item{nmax}{TEXT MISSING default=500}
+\item{nmax}{TEXT MISSING default=4000}
 
 \item{hc.row}{TEXT MISSING default=NA}
 

@@ -247,13 +247,13 @@ setMethod('z.score.PCR.mad', signature = c ('Rscexv'),
 		definition = function (dataObj) {
 			if ( ! dataObj@zscored ){
 
-			arrays <- max(dataObj@samples$ArrayID)
+			arrays <- unique(dataObj@samples$ArrayID)
 			
 			rem.inds <- NULL
 			
 			tab.pre <-NULL
 			
-			for (j in 1:arrays ){
+			for (j in arrays ){
 				
 				mads <- NULL
 				meds <- NULL
@@ -282,12 +282,11 @@ setMethod('z.score.PCR.mad', signature = c ('Rscexv'),
 					tab.new <- cbind(tab.new,new.v)
 					
 				}
-				
 				tab.pre <- rbind(tab.pre,tab.new)
 				
 			}
 			
-			rem.ind.fin <- as.numeric( names(table(rem.inds))[which(table(rem.inds)==arrays)]) ### might fall
+			rem.ind.fin <- as.numeric( names(table(rem.inds))[which(table(rem.inds)==length(arrays))]) ### might fail
 
 						
 			if ( length(rem.ind.fin) > 0 ){
