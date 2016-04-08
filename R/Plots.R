@@ -181,13 +181,13 @@ setMethod('PCR.heatmap', signature = c ('Rscexv'),
 #' @title description of function plot.beans
 #' @export 
 setGeneric('complexHeatmap', ## Name
-		function ( x,  ofile, colGroups=NULL, rowGroups=NULL, colColors=NULL, rowColors=NULL, pdf=FALSE, subpath='', main = '' ) { ## Argumente der generischen Funktion
+		function ( x,  ofile=NULL, colGroups=NULL, rowGroups=NULL, colColors=NULL, rowColors=NULL, pdf=FALSE, subpath='', main = '' ) { ## Argumente der generischen Funktion
 			standardGeneric('complexHeatmap') ## der Aufruf von standardGeneric sorgt für das Dispatching
 		}
 )
 
 setMethod('complexHeatmap', signature = c ('Rscexv'),
-		definition = function ( x,  ofile, colGroups=NULL, rowGroups=NULL, colColors=NULL, rowColors=NULL, pdf=FALSE, subpath='', main = '' ) {
+		definition = function ( x,  ofile=NULL, colGroups=NULL, rowGroups=NULL, colColors=NULL, rowColors=NULL, pdf=FALSE, subpath='', main = '' ) {
 			
 			Rowv = FALSE
 			Colv = FALSE
@@ -206,6 +206,7 @@ setMethod('complexHeatmap', signature = c ('Rscexv'),
 					ColSideColors <- cbind(ColSideColors, colColors[[ match( i, names(colColors)) ]][x@samples[, i]] )
 				}
 				colnames(ColSideColors) = colGroups
+				#ColSideColors <- matrix( ColSideColors, ncol= ColSideColorsSize)
 				Colv = FALSE
 				if ( !is.null(rowGroups)){
 					dendrogram = 'none'
@@ -219,10 +220,11 @@ setMethod('complexHeatmap', signature = c ('Rscexv'),
 				RowSideColorsSize <- length(rowGroups)
 				x <- reorder.genes(x, rowGroups[1] )
 				for ( i in rowGroups ){
-					RowSideColors <- cbind( RowSideColors,rowColors[[ match( i, names(rowColors)) ]][x@annotation[, i]] )
+					RowSideColors <- rbind( RowSideColors,rowColors[[ match( i, names(rowColors)) ]][x@annotation[, i]] )
 				}
-				colnames(RowSideColors) = rowGroups
+				rownames(RowSideColors) = rowGroups
 				Rowv = FALSE
+				#RowSideColors <- matrix( RowSideColors, nrow= RowSideColorsSize)
 				if ( !is.null(colGroups)){
 					dendrogram = 'none'
 				}else{
@@ -233,11 +235,14 @@ setMethod('complexHeatmap', signature = c ('Rscexv'),
 			}
 			data <- as.matrix(t(x@data))
 			brks <- unique(as.vector(c(-20,quantile(data[which(data!= -20)],seq(0,1,by=0.1)),max(data))))
-			if ( pdf ) {
-				pdf( file=paste(file.path(x@outpath,ofile),'pdf',sep='.'), width=10, height=8)
-			}else{
-				png( file=paste(file.path(x@outpath,ofile),'png',sep='.'), width=1600, height=800)
+			if ( ! is.null(ofile)){
+				if ( pdf ) {
+					pdf( file=paste(file.path(x@outpath,ofile),'pdf',sep='.'), width=10, height=8)
+				}else{
+					png( file=paste(file.path(x@outpath,ofile),'png',sep='.'), width=1600, height=800)
+				}
 			}
+			
 			heatmap.3(
 					data, breaks=brks,col=c("darkgrey",bluered(length(brks)-2)), Rowv=F, Colv = F,  key=F, symkey=FALSE,
 					trace='none', 
@@ -245,8 +250,9 @@ setMethod('complexHeatmap', signature = c ('Rscexv'),
 					RowSideColors=RowSideColors,RowSideColorsSize=RowSideColorsSize, 
 					cexRow=0.6,cexCol=0.7,main=main, dendrogram=dendrogram, labCol = "", lwid=c(0.5,4), lhei=c(1,4)
 			)
-			
-			dev.off()
+			if ( ! is.null(ofile)){
+				dev.off()
+			}
 			
 		}
 )
@@ -683,7 +689,7 @@ setMethod('mergeSampleGroupings', signature = c ('Rscexv'),
 		ord2 <- 2*(1:length(v2))
 		c(v1,v2)[order(c(ord1,ord2))]
 	}
-	newG <- (as.vector(t(x@samples[, g1])) *2)-1
+	newG <- (as.numeric(t(x@samples[, g1])) *2)-1
 	newG[ which( x@samples[,g2] == 'yes') ] = newG[ which( x@samples[,g2] == 'yes') ] +1
 	if ( is.na(match( newName, colnames(x@samples))) ){
 		x@samples =cbind( x@samples, newName=newG )
@@ -695,7 +701,7 @@ setMethod('mergeSampleGroupings', signature = c ('Rscexv'),
 		x@usedObj[['colorRange']][[length(x@usedObj[['colorRange']])+1]] <- 1
 		names(x@usedObj[['colorRange']])[[length(x@usedObj[['colorRange']])]] = newName
 	}
-	x@usedObj[['colorRange']][[ match( newName, names(x@usedObj[['colorRange']])) ]] <- interleave ( rainbow( max(x@samples[,g1])), rainbow( max(x@samples[,g1]), s=0.5, v=0.5) )
+	x@usedObj[['colorRange']][[ match( newName, names(x@usedObj[['colorRange']])) ]] <- interleave ( rainbow( max(as.numeric(x@samples[,g1]))), rainbow( max(as.numeric(x@samples[,g1])), s=0.5, v=0.5) )
 	x
 	}
 )

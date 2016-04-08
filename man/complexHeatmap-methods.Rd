@@ -6,7 +6,7 @@
 \alias{complexHeatmap,Rscexv-method}
 \title{description of function plot.beans}
 \usage{
-complexHeatmap(x, ofile, colGroups = NULL, rowGroups = NULL,
+complexHeatmap(x, ofile = NULL, colGroups = NULL, rowGroups = NULL,
   colColors = NULL, rowColors = NULL, pdf = FALSE, subpath = "",
   main = "")
 }
