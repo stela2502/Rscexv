@@ -103,7 +103,6 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 			
 			## plot the mds data
 			try(plotDR( obj@usedObj[['mds.proj']][order(obj@usedObj[['clusters']]),], col=cols, labels=obj@usedObj[['clusters']][order(obj@usedObj[['clusters']])] ),silent=F)
-			
 			try(writeWebGL( width=470, height=470, dir = file.path(obj@outpath,'webGL')),silent=F)
 			png(file=file.path(obj@outpath,'webGL', 'MDS_2D.png'), width=800,height=800)
 			plotDR( obj@usedObj[['mds.proj']][order(obj@usedObj[['clusters']]),1:2], col=cols, labels=obj@usedObj[['clusters']][order(obj@usedObj[['clusters']])] )
@@ -262,6 +261,15 @@ setMethod('exportGroups', signature = c ('Rscexv'),
 				v <- c( v, colnames(obj@samples)[(obj@baseSamplesCol+1):ncol(obj@samples)] )
 			}
 			write( v, file= file.path(obj@outpath,file))
+			## and the important Sample_Colors.xls file
+			write.table( cbind( 
+							Samples = obj@samples[,1], 
+							ArrayID = obj@samples[,2], 
+							Cluster =  obj@usedObj[['clusters']], 
+							'color.[rgb]' =  obj@usedObj[['colors']] 
+						  ),
+					file='Sample_Colors.xls' , row.names=F, sep='\t',quote=F )
+			write.table( obj@samples, file='Sample_complete_Data.xls' , row.names=F, sep='\t',quote=F )
 		}
 )
 

@@ -8,7 +8,7 @@
 \usage{
 complexHeatmap(x, ofile = NULL, colGroups = NULL, rowGroups = NULL,
   colColors = NULL, rowColors = NULL, pdf = FALSE, subpath = "",
-  main = "")
+  main = "", heapmapCols = function(x) {     c("darkgrey", bluered(x)) })
 }
 \arguments{
 \item{x}{the Rscexv object}
@@ -26,6 +26,8 @@ complexHeatmap(x, ofile = NULL, colGroups = NULL, rowGroups = NULL,
 \item{pdf}{export as pdf (default = FALSE)}
 
 \item{subpath}{the subpath for the plots (default = '')}
+
+\item{heapmapCols}{the color function to calculate the heatmap colours ( default function (x) { c("darkgrey",bluered(x)) } )}
 }
 \description{
 plot the PCR heatmap using the heatmap.3 function included in this package

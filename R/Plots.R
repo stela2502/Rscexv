@@ -178,16 +178,17 @@ setMethod('PCR.heatmap', signature = c ('Rscexv'),
 #' @param rowColors a named list of row color vectors
 #' @param pdf export as pdf (default = FALSE)
 #' @param subpath the subpath for the plots (default = '')
+#' @param heapmapCols the color function to calculate the heatmap colours ( default function (x) { c("darkgrey",bluered(x)) } )
 #' @title description of function plot.beans
 #' @export 
 setGeneric('complexHeatmap', ## Name
-		function ( x,  ofile=NULL, colGroups=NULL, rowGroups=NULL, colColors=NULL, rowColors=NULL, pdf=FALSE, subpath='', main = '' ) { ## Argumente der generischen Funktion
+		function ( x,  ofile=NULL, colGroups=NULL, rowGroups=NULL, colColors=NULL, rowColors=NULL, pdf=FALSE, subpath='', main = '',  heapmapCols= function(x){ c("darkgrey",bluered(x))} ) { ## Argumente der generischen Funktion
 			standardGeneric('complexHeatmap') ## der Aufruf von standardGeneric sorgt für das Dispatching
 		}
 )
 
 setMethod('complexHeatmap', signature = c ('Rscexv'),
-		definition = function ( x,  ofile=NULL, colGroups=NULL, rowGroups=NULL, colColors=NULL, rowColors=NULL, pdf=FALSE, subpath='', main = '' ) {
+		definition = function ( x,  ofile=NULL, colGroups=NULL, rowGroups=NULL, colColors=NULL, rowColors=NULL, pdf=FALSE, subpath='', main = '' ,  heapmapCols= function(x){ c("darkgrey",bluered(x))} ) {
 			
 			Rowv = FALSE
 			Colv = FALSE
@@ -196,6 +197,12 @@ setMethod('complexHeatmap', signature = c ('Rscexv'),
 			RowSideColors <- NULL
 			ColSideColorsSize <- 1
 			RowSideColorsSize <- 1
+			if ( is.null(colColors) ){
+				colColors <- x@usedObj[['colorRange']]
+			}
+			if ( is.null(rowColors) ){
+				rowColors <- x@usedObj[['colorRange']]
+			}
 			if ( ! is.null(colGroups) ) {
 				ColSideColorsSize <- length(colGroups)
 				x <- reorder.samples(x, colGroups[1] )
@@ -244,7 +251,7 @@ setMethod('complexHeatmap', signature = c ('Rscexv'),
 			}
 			
 			heatmap.3(
-					data, breaks=brks,col=c("darkgrey",bluered(length(brks)-2)), Rowv=F, Colv = F,  key=F, symkey=FALSE,
+					data, breaks=brks,col=heapmapCols(length(brks)-2), Rowv=F, Colv = F,  key=F, symkey=FALSE,
 					trace='none', 
 					ColSideColors=ColSideColors,ColSideColorsSize=ColSideColorsSize, 
 					RowSideColors=RowSideColors,RowSideColorsSize=RowSideColorsSize, 
