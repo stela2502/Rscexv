@@ -256,7 +256,7 @@ setGeneric('createRFgrouping_samples', ## Name
 setMethod('createRFgrouping_samples', signature = c ('Rscexv'),
 		definition = function ( x, RFname, k=10, single_res_col = paste('RFgrouping',RFname)) {
 			if ( is.na( match( RFname, names(x@usedObj[['rfObj']])))){
-				stop( paste("the RFname",RFname,"is not defined in this object; defined grouings are:",paste(names(x@usedObj[['rfObj']]), collapse=", ",sep=', ') ) )
+				stop( paste("the RFname",RFname,"is not defined in this object; defined grouings are:",paste(names(x@usedObj[['rfObj']]), collapse=" ",sep=', ') ) )
 			}
 			groups <- createGroups( x@usedObj[['rfObj']][[RFname]], k=k, name=RFname )
 			x@usedObj[['rfExpressionSets']][[RFname]]@samples <- cbind ( x@usedObj[['rfExpressionSets']][[RFname]]@samples, groups[,3:(2+length(k))] )
