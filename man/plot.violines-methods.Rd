@@ -6,8 +6,8 @@
 \alias{plot.violines,Rscexv-method}
 \title{description of function plot.violines}
 \usage{
-plot.violines(x, groups.n, clus, boot = 1000, plot.neg = FALSE, mv = -20,
-  subpath = "")
+plot.violines(x, groups.n, clus, plot.neg = FALSE, mv = -20, subpath = "",
+  names = NULL, col = NULL)
 }
 \arguments{
 \item{x}{the Rscexv object}
@@ -16,13 +16,13 @@ plot.violines(x, groups.n, clus, boot = 1000, plot.neg = FALSE, mv = -20,
 
 \item{clus}{TEXT MISSING}
 
-\item{boot}{TEXT MISSING default= 1000}
-
 \item{plot.neg}{TEXT MISSING default=FALSE}
 
 \item{mv}{TEXT MISSING default=-20}
 
 \item{subpath}{the path to write the figures to (default = '')}
+
+\item{col}{a colour vector for colouring the violines (default=NULL  -> rainbow )}
 }
 \description{
 This fucntion converts the table into a format, that can be fead to the vioplot function
