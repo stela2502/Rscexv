@@ -6,8 +6,8 @@
 \alias{plot.beans,Rscexv-method}
 \title{description of function plot.beans}
 \usage{
-plot.beans(x, groups.n, clus, boot = 1000, plot.neg = TRUE, mv = -20,
-  subpath = "")
+plot.beans(x, groups.n, clus, plot.neg = TRUE, mv = -20, subpath = "",
+  names = NULL, col = NULL)
 }
 \arguments{
 \item{x}{the Rscexv object}
@@ -16,13 +16,15 @@ plot.beans(x, groups.n, clus, boot = 1000, plot.neg = TRUE, mv = -20,
 
 \item{clus}{TEXT MISSING}
 
-\item{boot}{TEXT MISSING default= 1000}
-
 \item{plot.neg}{TEXT MISSING default=TRUE}
 
 \item{mv}{TEXT MISSING default=-20}
 
 \item{subpath}{the subpath for the plots (default = '')}
+
+\item{names}{a vector of grou names (default NULL)}
+
+\item{col}{a colour vector for colouring the beans (default=NULL -> rainbow )}
 }
 \description{
 plot the beanplots
