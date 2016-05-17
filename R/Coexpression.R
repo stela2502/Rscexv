@@ -82,18 +82,19 @@ setMethod('coexpressionMatrix', signature = c ('Rscexv'),
 #' @aliases coexpressGenes,Rscexv-method
 #' @rdname coexpressGenes-methods
 #' @docType methods
-#' @description  calculates the coexpression for all genes in the data set
+#' @description  calculates the coexpression for all genes in all groups in the data set
 #' @param dataObj the Rscexv object
+#' @param grouping the column in the samples table that describes the grouping to use
 #' @title description of function coexpressGenes
 #' @export 
 setGeneric('coexpressGenes', ## Name
-		function ( dataObj ) { ## Argumente der generischen Funktion
+		function ( dataObj, grouping=NULL ) { ## Argumente der generischen Funktion
 			standardGeneric('coexpressGenes') ## der Aufruf von standardGeneric sorgt für das Dispatching
 		}
 )
 
 setMethod('coexpressGenes', signature = c ('Rscexv'),
-		definition = function ( dataObj ) {
+		definition = function ( dataObj, grouping=NULL ) {
 			
 			cor.funct <- function ( ma ){
 				ma <- ma[, which( apply( ma, 2, function ( x) { length(which( x != 0)) }) > 9 )]
@@ -120,8 +121,8 @@ setMethod('coexpressGenes', signature = c ('Rscexv'),
 				}
 			}
 			ret <- NULL
-			for (i in 1:max(dataObj@usedObj[['clusters']])){
-				t <- cor.funct ( dataObj@snorm[which(dataObj@usedObj[['clusters']] == i),] )
+			for (i in unique(as.vector(dataObj@samples[,grouping] ))){
+				t <- cor.funct ( dataObj@snorm[which(dataObj@samples[,grouping]== i),] )
 				if ( ! is.null(t)){
 					if ( nrow(t) > 0  ){
 						t[,5] <- i
@@ -129,7 +130,16 @@ setMethod('coexpressGenes', signature = c ('Rscexv'),
 					}
 				}
 			}
+			i <- 0
+			t <- cor.funct ( dataObj@snorm )
+			if ( ! is.null(t)){
+				if ( nrow(t) > 0  ){
+					t[,5] <- i
+					ret <- rbind(ret, t)
+				}
+			}
 			colnames(ret) <- c('Source.Node','Target.Node', 'rho', 'p.value','Group' )
 			ret
 		} 
 )
+

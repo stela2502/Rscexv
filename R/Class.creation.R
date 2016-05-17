@@ -221,6 +221,7 @@ setMethod('norm.PCR', signature = c ('Rscexv'),
 			x@norm = T
 			x@raw <- x@data
 			x@data <- data.frame(tab.ret)
+			x@normFunct <- meth
 			}
 			else {
 				print ("Unchanged as data was already normalized")

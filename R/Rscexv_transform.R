@@ -53,6 +53,12 @@ setMethod('remove.samples', signature = c ('Rscexv'),
 				if ( dataObj@wFACS ){
 					dataObj@facs <- dataObj@facs[-ids,]
 				}
+				if ( ncol(dataObj@snorm) > 0 ){
+					dataObj@snorm <- dataObj@snorm[-ids,]
+				}
+				if ( ncol(dataObj@raw) > 0 ){
+					dataObj@raw <- dataObj@raw[-ids,]
+				}
 				dataObj@samples <- dataObj@samples[-ids,]
 			}
 			else {
@@ -111,6 +117,12 @@ setMethod('remove.genes', signature = c ('Rscexv'),
 				write ( colnames(dataObj@data)[ids], file="./filtered_genes.txt",ncolumn=1, append=T )
 				dataObj@data <- dataObj@data[,-ids]
 				dataObj@annotation <- data.frame(dataObj@annotation[-ids,])
+				if ( ncol(dataObj@snorm) > 0 ){
+					dataObj@snorm <- dataObj@snorm[,-ids]
+				}
+				if ( ncol(dataObj@raw) > 0 ){
+					dataObj@raw <- dataObj@raw[,-ids]
+				}
 			}
 			else {
 				print ( "No genes to filter out!" )

@@ -45,7 +45,7 @@ setClass(
 				normFunct='none',
 				zscored=F,
 				usedObj= list(),
-				simple= c( 'outpath', 'rownamescol', 'sampleNamesCol', 'simple', 'snorm', 'zscored') )
+				simple= c( 'outpath', 'rownamescol', 'sampleNamesCol', 'simple', 'zscored') )
 )
 
 

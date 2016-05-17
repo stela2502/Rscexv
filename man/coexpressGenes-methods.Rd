@@ -6,12 +6,14 @@
 \alias{coexpressGenes,Rscexv-method}
 \title{description of function coexpressGenes}
 \usage{
-coexpressGenes(dataObj)
+coexpressGenes(dataObj, grouping = NULL)
 }
 \arguments{
 \item{dataObj}{the Rscexv object}
+
+\item{grouping}{the column in the samples table that describes the grouping to use}
 }
 \description{
-calculates the coexpression for all genes in the data set
+calculates the coexpression for all genes in all groups in the data set
 }
 
