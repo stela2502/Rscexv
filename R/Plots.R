@@ -249,7 +249,6 @@ setMethod('complexHeatmap', signature = c ('Rscexv'),
 					png( file=paste(file.path(x@outpath,ofile),'png',sep='.'), width=1600, height=800)
 				}
 			}
-			
 			heatmap.3(
 					data, breaks=brks,col=heapmapCols(length(brks)-2), Rowv=F, Colv = F,  key=F, symkey=FALSE,
 					trace='none', 
@@ -258,6 +257,12 @@ setMethod('complexHeatmap', signature = c ('Rscexv'),
 					cexRow=0.6,cexCol=0.7,main=main, dendrogram=dendrogram, labCol = "", lwid=c(0.5,4), lhei=c(1,4)
 			)
 			if ( ! is.null(ofile)){
+				dev.off()
+				browser()
+				pdf( file=paste(file.path(x@outpath,ofile),'_legend_values.pdf',sep='.'), width=8, height=4)
+				Z <- as.matrix(1:(length(brks)-2))
+				image(Z, col=heapmapCols(length(brks)-2),axes = FALSE, main='color key')
+				axis( 1, at=c(0,0.1,1), labels=c('NA','low','high'))
 				dev.off()
 			}
 			

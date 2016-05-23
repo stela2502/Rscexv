@@ -6,12 +6,16 @@
 \alias{coexpressGenes,Rscexv-method}
 \title{description of function coexpressGenes}
 \usage{
-coexpressGenes(dataObj, grouping = NULL)
+coexpressGenes(dataObj, grouping = NULL, pcutoff = 0.05, file = NULL)
 }
 \arguments{
 \item{dataObj}{the Rscexv object}
 
 \item{grouping}{the column in the samples table that describes the grouping to use}
+
+\item{pcutoff}{the minimum p value to report the co-expression for}
+
+\item{file}{an optional filename to store the correlation to. This file can be read by Cytoscape (default = NULL)}
 }
 \description{
 calculates the coexpression for all genes in all groups in the data set

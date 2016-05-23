@@ -85,16 +85,18 @@ setMethod('coexpressionMatrix', signature = c ('Rscexv'),
 #' @description  calculates the coexpression for all genes in all groups in the data set
 #' @param dataObj the Rscexv object
 #' @param grouping the column in the samples table that describes the grouping to use
+#' @param pcutoff the minimum p value to report the co-expression for
+#' @param file an optional filename to store the correlation to. This file can be read by Cytoscape (default = NULL)
 #' @title description of function coexpressGenes
 #' @export 
 setGeneric('coexpressGenes', ## Name
-		function ( dataObj, grouping=NULL ) { ## Argumente der generischen Funktion
+		function ( dataObj, grouping=NULL, pcutoff= 0.05, file=NULL ) { ## Argumente der generischen Funktion
 			standardGeneric('coexpressGenes') ## der Aufruf von standardGeneric sorgt für das Dispatching
 		}
 )
 
 setMethod('coexpressGenes', signature = c ('Rscexv'),
-		definition = function ( dataObj, grouping=NULL ) {
+		definition = function ( dataObj, grouping=NULL, pcutoff= 0.05, file=NULL ) {
 			
 			cor.funct <- function ( ma ){
 				ma <- ma[, which( apply( ma, 2, function ( x) { length(which( x != 0)) }) > 9 )]
@@ -104,19 +106,17 @@ setMethod('coexpressGenes', signature = c ('Rscexv'),
 				else {
 					cor.t <- cor( ma , method='spearman')
 					cor.p <- cor.t
-					diag(cor.p) <- 1
+					cor.p[] <- NA 
+					#diag(cor.p) <- 1
 					for ( i in 1:(ncol(ma)-1) ) {
 						for (a in (i+1):ncol(ma) ) {
-							if ( length( as.vector(ma[,i]) ) != length(as.vector(ma[,a]))){
-								browser()
-							}
 							cor.p[a,i] <- cor.test( as.vector(ma[,i]), as.vector(ma[,a]),method='spearman')$p.value
 						}
 					}
 					cor.t.m <- melt(cor.t)
 					cor.p.m <- melt(cor.p)
 					cor.t.m <- cbind(cor.t.m, cor.p.m[,3])
-					cor.t.m <- cor.t.m[which(cor.t.m[,4] < 0.05), ]
+					cor.t.m <- cor.t.m[which(cor.t.m[,4] < pcutoff), ]
 					cor.t.m
 				}
 			}
@@ -139,6 +139,9 @@ setMethod('coexpressGenes', signature = c ('Rscexv'),
 				}
 			}
 			colnames(ret) <- c('Source.Node','Target.Node', 'rho', 'p.value','Group' )
+			if ( ! is.null(file) ) {
+				write.table( ret, file , sep=" ",quote=F, row.names=F )
+			}
 			ret
 		} 
 )
