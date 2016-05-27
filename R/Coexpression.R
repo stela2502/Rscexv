@@ -110,10 +110,10 @@ setMethod('coexpressGenes', signature = c ('Rscexv'),
 				}
 				else {
 					cor.t <- cor( ma , method='spearman')
-					diag(cor.t) <- NA
+					diag(cor.t) <- 1
 					cor.p <- cor.t
 					cor.p[] <- 1 
-					#diag(cor.p) <- 1
+					diag(cor.p) <- 0
 					for ( i in 1:(ncol(ma)-1) ) {
 						for (a in (i+1):ncol(ma) ) {
 							cor.p[a,i] <- cor.test( as.vector(ma[,i]), as.vector(ma[,a]),method='spearman')$p.value
