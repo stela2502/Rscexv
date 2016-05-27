@@ -88,6 +88,8 @@ setMethod('coexpressionMatrix', signature = c ('Rscexv'),
 #' @param pcutoff the minimum p value to report the co-expression for
 #' @param file an optional filename to store the correlation to. This file can be read by Cytoscape (default = NULL)
 #' @title description of function coexpressGenes
+#' @return A table that contains correlation for EVERY gene gene combination in all groups + all data.
+#' @return falied correlations will have a NA value but still a p value of 1.
 #' @export 
 setGeneric('coexpressGenes', ## Name
 		function ( dataObj, grouping=NULL, pcutoff= 0.05, file=NULL ) { ## Argumente der generischen Funktion
@@ -99,7 +101,7 @@ setMethod('coexpressGenes', signature = c ('Rscexv'),
 		definition = function ( dataObj, grouping=NULL, pcutoff= 0.05, file=NULL ) {
 			
 			cor.funct <- function ( ma ){
-				ma <- ma[, which( apply( ma, 2, function ( x) { length(which( x != 0)) }) > 9 )]
+				#ma <- ma[, which( apply( ma, 2, function ( x) { length(which( x != 0)) }) > 9 )]
 				if ( ncol(ma) < 2 ) {
 					NULL
 				}
