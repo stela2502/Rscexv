@@ -106,7 +106,7 @@ setMethod('coexpressGenes', signature = c ('Rscexv'),
 				else {
 					cor.t <- cor( ma , method='spearman')
 					cor.p <- cor.t
-					cor.p[] <- NA 
+					cor.p[] <- 1 
 					#diag(cor.p) <- 1
 					for ( i in 1:(ncol(ma)-1) ) {
 						for (a in (i+1):ncol(ma) ) {
