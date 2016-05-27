@@ -110,6 +110,7 @@ setMethod('coexpressGenes', signature = c ('Rscexv'),
 				}
 				else {
 					cor.t <- cor( ma , method='spearman')
+					diag(cor.p) <- NA
 					cor.p <- cor.t
 					cor.p[] <- 1 
 					#diag(cor.p) <- 1
