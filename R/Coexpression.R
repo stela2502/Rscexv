@@ -87,19 +87,22 @@ setMethod('coexpressionMatrix', signature = c ('Rscexv'),
 #' @param grouping the column in the samples table that describes the grouping to use
 #' @param pcutoff the minimum p value to report the co-expression for
 #' @param file an optional filename to store the correlation to. This file can be read by Cytoscape (default = NULL)
+#' @param keepCrap sometimes you want to collect each and every correlation value - even the useless ones (default = 0)
 #' @title description of function coexpressGenes
 #' @return A table that contains correlation for EVERY gene gene combination in all groups + all data.
 #' @return falied correlations will have a NA value but still a p value of 1.
 #' @export 
 setGeneric('coexpressGenes', ## Name
-		function ( dataObj, grouping=NULL, pcutoff= 0.05, file=NULL ) { ## Argumente der generischen Funktion
+		function ( dataObj, grouping=NULL, pcutoff= 0.05, file=NULL, keepCrap=0  ) { ## Argumente der generischen Funktion
 			standardGeneric('coexpressGenes') ## der Aufruf von standardGeneric sorgt für das Dispatching
 		}
 )
 
 setMethod('coexpressGenes', signature = c ('Rscexv'),
-		definition = function ( dataObj, grouping=NULL, pcutoff= 0.05, file=NULL ) {
-			
+		definition = function ( dataObj, grouping=NULL, pcutoff= 0.05, file=NULL, keepCrap=0 ) {
+			if ( keepCrap ==1 ){
+				pcutoff = 1
+			}
 			cor.funct <- function ( ma ){
 				#ma <- ma[, which( apply( ma, 2, function ( x) { length(which( x != 0)) }) > 9 )]
 				if ( ncol(ma) < 2 ) {
@@ -118,7 +121,10 @@ setMethod('coexpressGenes', signature = c ('Rscexv'),
 					cor.t.m <- melt(cor.t)
 					cor.p.m <- melt(cor.p)
 					cor.t.m <- cbind(cor.t.m, cor.p.m[,3])
-					cor.t.m <- cor.t.m[which(cor.t.m[,4] < pcutoff), ]
+					if ( keepCrap==1) {
+						cor.t.m[which(is.na(cor.t.m[,4])),4] <- 1
+					}
+					cor.t.m <- cor.t.m[which(cor.t.m[,4] <= pcutoff), ]
 					cor.t.m
 				}
 			}
