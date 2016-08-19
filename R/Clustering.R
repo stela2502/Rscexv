@@ -127,8 +127,10 @@ setMethod('clusters', signature = c ('Rscexv'),
 				}
 				dataObj@usedObj[['auto_clusters']] <- dataObj@usedObj[['auto_clusters']] +1
 				dataObj@samples <- cbind ( dataObj@samples, clusters )
-				colnames(dataObj@samples)[ncol(dataObj@samples)] = paste( 'auto_clusters', 
+				n <- paste( 'auto_clusters', 
 						dataObj@usedObj[['auto_clusters']] ,sep='.')
+				colnames(dataObj@samples)[ncol(dataObj@samples)] = n
+				dataObj <- colors_4(dataObj, n )
 			}
 			dataObj@usedObj[['clusters']] <- clusters
 			dataObj@usedObj[['hc']] <- hc

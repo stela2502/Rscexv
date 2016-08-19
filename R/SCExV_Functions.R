@@ -207,7 +207,7 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 			}
 			
 			obj@usedObj[['for.plot']] = ma
-			plot.funct( obj, groups.n, clus =  obj@usedObj[['clusters']], boot = 1000, plot.neg=plot.neg, mv=mv )
+			plot.funct( obj, groups.n, clus =  obj@usedObj[['clusters']], plot.neg=plot.neg, mv=mv )
 			
 			#print ( paste( 'plot.funct( ma , groups.n, clus =  obj@usedObj[["clusters"]], boot = 1000, plot.neg =',plot.neg,', mv =', mv))
 			if ( obj@wFACS ){

@@ -6,7 +6,8 @@
 \alias{coexpressGenes,Rscexv-method}
 \title{description of function coexpressGenes}
 \usage{
-coexpressGenes(dataObj, grouping = NULL, pcutoff = 0.05, file = NULL)
+coexpressGenes(dataObj, grouping = NULL, pcutoff = 0.05, file = NULL,
+  keepCrap = 0)
 }
 \arguments{
 \item{dataObj}{the Rscexv object}
@@ -16,6 +17,13 @@ coexpressGenes(dataObj, grouping = NULL, pcutoff = 0.05, file = NULL)
 \item{pcutoff}{the minimum p value to report the co-expression for}
 
 \item{file}{an optional filename to store the correlation to. This file can be read by Cytoscape (default = NULL)}
+
+\item{keepCrap}{sometimes you want to collect each and every correlation value - even the useless ones (default = 0)}
+}
+\value{
+A table that contains correlation for EVERY gene gene combination in all groups + all data.
+
+falied correlations will have a NA value but still a p value of 1.
 }
 \description{
 calculates the coexpression for all genes in all groups in the data set

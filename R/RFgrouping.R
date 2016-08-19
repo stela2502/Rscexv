@@ -98,7 +98,7 @@ setMethod('predict.rf', signature = c ('Rscexv'),
 #' @param rep how many repetitions for the random forest grouping should be run (default = 5)
 #' @param slice how many processes should be started for each random forest clustering (default = 30)
 #' @param bestColname the column name to store the results in
-#' @param k the numer of expected clusters (metter more than to view)
+#' @param k the numer of expected clusters (better more than to view)
 #' @param subset how many cells should be randomly selected for the unsupervised clustering (default = 200)
 #' @param name if you want to run multiple RFclusterings on e.g. using different input genes you need to specify a name (default ='RFclust')
 #' @param pics create a heatmap for each grouping that has been accessed (in the outpath folder; default = FALSE)

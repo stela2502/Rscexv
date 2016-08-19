@@ -19,7 +19,7 @@ rfCluster(x, rep = 5, SGE = F, email, k = 16, slice = 30,
 
 \item{email}{your email to use together with the SGE option}
 
-\item{k}{the numer of expected clusters (metter more than to view)}
+\item{k}{the numer of expected clusters (better more than to view)}
 
 \item{slice}{how many processes should be started for each random forest clustering (default = 30)}
 
