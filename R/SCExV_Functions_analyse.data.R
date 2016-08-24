@@ -37,7 +37,7 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 			obj <- mds.and.clus(obj,onwhat= onwhat,groups.n = groups.n, cmethod=cmethod, 
 					clusterby=clusterby,ctype=ctype, useGrouping=useGrouping)
 			
-			cols = this.color( useGrouping )
+			cols = this.color( obj, useGrouping )
 			
 			try(plotcoma(obj) )
 			if ( length(which(obj@usedObj[['clusters']] == 0)) > 0 ){
@@ -65,6 +65,7 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 			RowSideColors = FALSE
 			
 			if ( exists ('geneGroups') ){
+				stop( "Sorry, but the gene grouping part needs to be re-coded!")
 				geneGroups$groupID = as.vector(geneGroups$groupID)
 				if ( is.vector(as.vector(geneGroups$groupID)) ) {
 					t <- obj

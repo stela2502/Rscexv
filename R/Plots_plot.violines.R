@@ -31,7 +31,7 @@ setMethod('plot.violines', signature = c ('Rscexv'),
 			}
 			n <- rownames(ma)
 			if ( is.null(col)){
-				col = rainbow( groups.n )
+				col = this.color(x,useGrouping)
 			}
 			cols = col
 			
@@ -42,13 +42,14 @@ setMethod('plot.violines', signature = c ('Rscexv'),
 				png( file=paste(fn,'.png',sep=''), width=800,height=800)
 				#create color info
 				lila <- lapply(s ,function(x) { ma[ i, x] } )
+				
+				if ( ! plot.neg ){
+					lila = lapply( lila, function(x) { x[which(x == mv)] = NA; x } )
+				}
 				lila$names <- as.vector(unlist(lapply( lila, 
 							function(x) { 
-								lila$names <- c( lila$names, paste(length(which(x != mv)), length(x) ,sep='/' ) )
-							} ) ))
-				if ( ! plot.neg ){
-					lila = lapply( lila, function(x) { x[which(x != mv)] = NA; x } )
-				}
+								lila$names <- c( lila$names, paste(length(which(is.na(x)==F)), length(x) ,sep='/' ) )
+				} ) ))
 				if ( ! is.null(names) && length(names) == length(lila$names) ){
 					lila$names= paste( names, lila$names)
 				}
@@ -57,7 +58,7 @@ setMethod('plot.violines', signature = c ('Rscexv'),
 				lila$main=n[i]
 				if ( ! plot.neg ) {
 					lila$neg = mv
-					lila$drawRect = FALSE
+					#lila$drawRect = FALSE
 				}else{
 					lila$neg = NULL
 				}

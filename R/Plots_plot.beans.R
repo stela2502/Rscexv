@@ -29,7 +29,7 @@ setMethod('plot.beans', signature = c ('Rscexv'),
 			}
 			n <- rownames(ma)
 			if ( is.null(col)){
-				col = rainbow( groups.n )
+				col = this.color(x,useGrouping)
 			}
 			cols = col4bean(col)	
 			s <-  split(seq(ncol(ma)), clus)

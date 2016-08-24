@@ -34,6 +34,9 @@ setMethod('clusters', signature = c ('Rscexv'),
 			}
 			if ( ! is.null(useGrouping) ) {
 				clusters <- dataObj@samples[,useGrouping]
+				if ( is.factor( clusters)) {
+					clusters = as.numeric(clusters)
+				}
 				dataObj <- colors_4 (dataObj, useGrouping )
 			}else if(clusterby=="MDS"){
 				if ( ctype=='hierarchical clust'){
