@@ -27,14 +27,17 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 		definition = function (obj,onwhat='Expression',groups.n, cmethod, clusterby='MDS', 
 				ctype='hierarchical clust', beanplots=TRUE, move.neg = FALSE, plot.neg=TRUE, useGrouping=NULL, plotsvg = 0, ...){
 			
-			cols = rainbow( groups.n )
+			
 			
 			if ( ! obj@wFACS ) {
 				onwhat="Expression"
 			} else if ( ncol(obj@facs)< 4 ) {
 				onwhat="Expression"
 			}
-			obj <- mds.and.clus(obj,onwhat= onwhat,groups.n = groups.n, cmethod=cmethod, clusterby=clusterby,ctype=ctype, useGrouping=useGrouping)
+			obj <- mds.and.clus(obj,onwhat= onwhat,groups.n = groups.n, cmethod=cmethod, 
+					clusterby=clusterby,ctype=ctype, useGrouping=useGrouping)
+			
+			cols = this.color( useGrouping )
 			
 			try(plotcoma(obj) )
 			if ( length(which(obj@usedObj[['clusters']] == 0)) > 0 ){

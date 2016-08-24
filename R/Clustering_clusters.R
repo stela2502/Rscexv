@@ -34,6 +34,7 @@ setMethod('clusters', signature = c ('Rscexv'),
 			}
 			if ( ! is.null(useGrouping) ) {
 				clusters <- dataObj@samples[,useGrouping]
+				dataObj <- colors_4 (dataObj, useGrouping )
 			}else if(clusterby=="MDS"){
 				if ( ctype=='hierarchical clust'){
 					hc <- hclust(dist( dataObj@usedObj[['mds.proj']] ),method = cmethod)
