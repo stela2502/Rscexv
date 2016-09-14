@@ -144,7 +144,7 @@ setMethod('rfCluster', signature = c ('Rscexv'),
 						dev.off()
 						print ( paste('heatmap stored in', fn) )
 					}
-					print ( paste("Done with cluster",i))
+					print ( paste("Done with cluster",i) )
 					processed = TRUE
 				}
 			}

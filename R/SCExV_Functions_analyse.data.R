@@ -14,18 +14,19 @@
 #' @param plot.neg show the not expressing samples in the bean/violinplots?
 #' @param useGrouping do not calculate a new grouping - use this column in the samples table (default=NULL)
 #' @param plotsvg create svg figures in addition to the png ones (default=0)
+#' @param mds.type which mds algorithm to use (PCA, LLE, ISOMAP or ZIFA) default = PCA
 #' @title description of function analyse.data
 #' @export 
 setGeneric('analyse.data', ## Name
 		function (obj,onwhat='Expression',groups.n, cmethod, clusterby='MDS', 
-				ctype='hierarchical clust', beanplots=TRUE, move.neg = FALSE, plot.neg=TRUE, useGrouping=NULL, plotsvg = 0, ...){	## Argumente der generischen Funktion
+				ctype='hierarchical clust', beanplots=TRUE, move.neg = FALSE, plot.neg=TRUE, useGrouping=NULL, plotsvg = 0, mds.type='PCA', ...){	## Argumente der generischen Funktion
 			standardGeneric('analyse.data') ## der Aufruf von standardGeneric sorgt für das Dispatching
 		}
 )
 
 setMethod('analyse.data', signature = c ('Rscexv'),
 		definition = function (obj,onwhat='Expression',groups.n, cmethod, clusterby='MDS', 
-				ctype='hierarchical clust', beanplots=TRUE, move.neg = FALSE, plot.neg=TRUE, useGrouping=NULL, plotsvg = 0, ...){
+				ctype='hierarchical clust', beanplots=TRUE, move.neg = FALSE, plot.neg=TRUE, useGrouping=NULL, plotsvg = 0, mds.type='PCA', ...){
 			
 			
 			
@@ -35,7 +36,7 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 				onwhat="Expression"
 			}
 			obj <- mds.and.clus(obj,onwhat= onwhat,groups.n = groups.n, cmethod=cmethod, 
-					clusterby=clusterby,ctype=ctype, useGrouping=useGrouping)
+					clusterby=clusterby,ctype=ctype, useGrouping=useGrouping,mds.type=mds.type)
 			
 			cols = this.color( obj, useGrouping )
 			
@@ -44,10 +45,10 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 				obj@usedObj[['clusters']] <- obj@usedObj[['clusters']] + 1
 			}
 			obj@usedObj[['colors']] <- apply( t(col2rgb( cols ) ), 1, paste,collapse=' ')[obj@usedObj[['clusters']]]
-			
+			silent= F
 			## plot the mds data
-			try(plotDR( obj@usedObj[['mds.proj']][order(obj@usedObj[['clusters']]),], col=cols, labels=obj@usedObj[['clusters']][order(obj@usedObj[['clusters']])] ),silent=F)
-			try(writeWebGL( width=470, height=470, dir = file.path(obj@outpath,'webGL')),silent=F)
+			try(plotDR( obj@usedObj[['mds.proj']][order(obj@usedObj[['clusters']]),], col=cols, labels=obj@usedObj[['clusters']][order(obj@usedObj[['clusters']])] ),silent=silent)
+			try(writeWebGL( width=470, height=470, dir = file.path(obj@outpath,'webGL')),silent=silent)
 			png(file=file.path(obj@outpath,'webGL', 'MDS_2D.png'), width=800,height=800)
 			plotDR( obj@usedObj[['mds.proj']][order(obj@usedObj[['clusters']]),1:2], col=cols, labels=obj@usedObj[['clusters']][order(obj@usedObj[['clusters']])] )
 			dev.off()

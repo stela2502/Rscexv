@@ -9,7 +9,7 @@
 analyse.data(obj, onwhat = "Expression", groups.n, cmethod,
   clusterby = "MDS", ctype = "hierarchical clust", beanplots = TRUE,
   move.neg = FALSE, plot.neg = TRUE, useGrouping = NULL, plotsvg = 0,
-  ...)
+  mds.type = "PCA", ...)
 }
 \arguments{
 \item{obj}{the Rscexv object}
@@ -33,6 +33,8 @@ analyse.data(obj, onwhat = "Expression", groups.n, cmethod,
 \item{useGrouping}{do not calculate a new grouping - use this column in the samples table (default=NULL)}
 
 \item{plotsvg}{create svg figures in addition to the png ones (default=0)}
+
+\item{mds.type}{which mds algorithm to use (PCA, LLE, ISOMAP or ZIFA) default = PCA}
 }
 \description{
 This function implements the backend functionallity of the SCExV analyse page.

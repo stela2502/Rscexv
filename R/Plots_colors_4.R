@@ -76,7 +76,7 @@ setGeneric('this.color', ## Name
 setMethod('this.color', signature = c ('Rscexv'),
 		definition = function ( x, name=NULL ) {
 			if ( is.null(name) ){
-				name = paste( 'auto_clusters', dataObj@usedObj[['auto_clusters']] ,sep='.')
+				name = paste( 'auto_clusters', x@usedObj[['auto_clusters']] ,sep='.')
 			}
 			if (is.null( x@usedObj$colorRange[[name]] )) {
 				x <- colors_4( x, name )	

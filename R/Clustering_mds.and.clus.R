@@ -50,6 +50,20 @@ setMethod('mds.and.clus', signature = c ('Rscexv'),
 			}else if ( mds.type == "ISOMAP"){
 				mds.proj <- Isomap( tab, dim = 3, k = as.numeric(LLEK) )$dim3
 				#	mds.trans <- Isomap( t(tab), dim = 3, k = as.numeric(LLEK) )$dim3
+			}else if ( mds.type == "ZIFA" ) {
+				print ( "Running external python script to apply ZIFA dimensional reduction (PCR data only)" )
+				ZIFA <- 40.000001 - dataObj@raw
+				write.table( ZIFA, file="ZIFA_input.dat", sep=" ", col.names=F, row.names=F , quote=F)
+				write( c("from ZIFA import ZIFA","from ZIFA import block_ZIFA", "import numpy as np",
+						"Y = np.loadtxt('ZIFA_input.dat')", "Z, model_params = ZIFA.fitModel( Y, 3 )", 
+						"np.savetxt('TheMDS_ZIFA.xls', Z )" ), 
+				       file= 'ZIFA_calc.py' )
+			    system( "python ZIFA_calc.py" )
+				Sys.sleep(5)
+				mds.proj <- read.delim( "TheMDS_ZIFA.xls", sep=' ', header=F)
+				rownames(mds.proj) <- rownames(ZIFA)
+				colnames(mds.proj) <- c( 'x','y','z')
+				
 			}
 			else {
 				print( paste("Sory I can not work on the option",mds.type) )
