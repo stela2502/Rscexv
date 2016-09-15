@@ -31,6 +31,12 @@ setMethod('mds.and.clus', signature = c ('Rscexv'),
 				print ( paste ( "I work on the FACS data!" ) )
 				tab <- as.matrix(dataObj@facs)
 			}
+			this.k <- paste(onwhat,mds.type)
+			if ( is.null( dataObj@usedObj$MDSkey) ) {
+				dataObj@usedObj$MDSkey = "none"
+			}
+			if ( (dataObj@usedObj$MDSkey != this.k) ||  all.equal( rownames(dataObj@usedObj$mds.proj), rownames(dataObj@data) )==F ) {
+
 			mds.proj <- NULL
 			pr <- NULL
 			system ( 'rm  loadings.png' )
@@ -69,7 +75,7 @@ setMethod('mds.and.clus', signature = c ('Rscexv'),
 				print( paste("Sory I can not work on the option",mds.type) )
 			}
 			dataObj@usedObj[['mds.proj']] <- mds.proj
-			
+			}
 			dataObj <- clusters ( dataObj, onwhat=onwhat, clusterby=clusterby, groups.n = groups.n,
 					ctype = ctype, cmethod=cmethod, useGrouping=useGrouping )
 			

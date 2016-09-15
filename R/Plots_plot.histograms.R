@@ -21,7 +21,7 @@ setMethod('plot.histograms', signature = c ('Rscexv'),
 				ma <- rbind( ma, t( dataObj@facs) )
 			}
 			n <- rownames(ma)
-			arrays <- max(dataObj@samples$ArrayID)
+			arrays <- max(as.numeric(dataObj@samples$ArrayID))
 			cols <- rainbow(arrays)
 			n.cuts <- names(cuts)
 			opath = file.path(dataObj@outpath,subpath )
