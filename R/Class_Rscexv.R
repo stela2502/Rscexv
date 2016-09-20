@@ -57,7 +57,7 @@ setMethod('Rscexv', signature = c ('character'),
 			res <- new('Rscexv', data=data.frame(data$PCR), 
 					facs=data.frame(data$FACS), samples=data$samples, 
 					annotation=data$annotation, wFACS=wFACS, outpath=pwd(), baseSamplesCol=ncol(data$samples) )
-			
+			colnames(res@annotation) <- c('Gene Name' )
 			res
 		}
 )

@@ -55,7 +55,7 @@ setMethod('check.dataObj', signature = c ('list'),
 				}
 			}
 			samples <- data.frame( SampleName = rownames(PCR$data), ArrayID = PCR$order )
-			list( PCR= PCR$data, FACS = new.facs, samples= samples, annotation=data.frame('GeneID' = colnames(PCR$data) ) )
+			list( PCR= PCR$data, FACS = new.facs, samples= samples, annotation=data.frame('Gene Name' = colnames(PCR$data) ) )
 		}
 )
 

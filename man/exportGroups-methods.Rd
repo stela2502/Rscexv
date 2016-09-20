@@ -6,12 +6,15 @@
 \alias{exportGroups,Rscexv-method}
 \title{description of function analyse.data}
 \usage{
-exportGroups(obj, file = "SCExV_Grps.txt")
+exportGroups(obj, sample.file = "SCExV_Grps.txt",
+  gene.file = "GeneGroupings.txt")
 }
 \arguments{
 \item{obj}{the Rscexv object}
 
-\item{file}{theoutfile default='SCExV_Grps.txt'}
+\item{sample.file}{the outfile for the sample groups; default='SCExV_Grps.txt'}
+
+\item{gene.file}{the outfile for the gene groups; default ='GeneGroupings.txt'}
 }
 \description{
 This function exports the group names necessary for the SCExV server

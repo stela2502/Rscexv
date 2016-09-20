@@ -16,13 +16,13 @@ setGeneric('saveObj', ## Name
 setMethod('saveObj', signature = c ('Rscexv'),
 		definition = function ( data, file='analysis.RData' ){
 			exportGroups(data)
-			if ( file.exists( file.path(data@outpath, file) ) ){
-				print ( 'data exported to analysis.RData')
-				save(data , file=file.path(data@outpath, file) )
-			}else {
-				data.filtered <- data
-				save(data , file= file.path(data@outpath, 'norm_data.RData') )
+			print ( paste('data exported to', file ) )
+			save(data , file=file.path(data@outpath, file) )
+			
+			if ( ! is.null( data@usedObj$usedGrouping )) {
+				write( data@usedObj$usedGrouping , file= file.path(data@outpath,'usedGrouping.txt') )
 			}
+			
 		}
 )
 

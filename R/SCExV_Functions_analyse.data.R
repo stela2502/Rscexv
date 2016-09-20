@@ -35,12 +35,24 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 			} else if ( ncol(obj@facs)< 4 ) {
 				onwhat="Expression"
 			}
+			
+			if ( !is.null(useGrouping) ) {
+				if ( useGrouping == 'none' ){
+					useGrouping = NULL
+					obj@usedObj$usedGrouping = NULL
+				}
+			}else {
+				obj@usedObj$usedGrouping = NULL
+			}
+			
 			obj <- mds.and.clus(obj,onwhat= onwhat,groups.n = groups.n, cmethod=cmethod, 
 					clusterby=clusterby,ctype=ctype, useGrouping=useGrouping,mds.type=mds.type)
 			
-			cols = this.color( obj, useGrouping )
+			useGrouping = obj@usedObj$usedGrouping
+			cols = obj@usedObj$colorRange[[useGrouping]]
 			
 			try(plotcoma(obj) )
+			
 			if ( length(which(obj@usedObj[['clusters']] == 0)) > 0 ){
 				obj@usedObj[['clusters']] <- obj@usedObj[['clusters']] + 1
 			}

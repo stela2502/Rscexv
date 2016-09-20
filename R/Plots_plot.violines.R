@@ -31,7 +31,8 @@ setMethod('plot.violines', signature = c ('Rscexv'),
 			}
 			n <- rownames(ma)
 			if ( is.null(col)){
-				col = this.color(x,useGrouping)
+				x = this.color(x,useGrouping)
+				col = x@usedObj$colorRange[[x@usedObj$usedGrouping]]
 			}
 			cols = col
 			

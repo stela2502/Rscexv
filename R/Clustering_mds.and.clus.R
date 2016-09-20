@@ -36,7 +36,7 @@ setMethod('mds.and.clus', signature = c ('Rscexv'),
 				dataObj@usedObj$MDSkey = "none"
 			}
 			if ( (dataObj@usedObj$MDSkey != this.k) ||  all.equal( rownames(dataObj@usedObj$mds.proj), rownames(dataObj@data) )==F ) {
-
+				dataObj@usedObj$MDSkey = mds.type
 			mds.proj <- NULL
 			pr <- NULL
 			system ( 'rm  loadings.png' )

@@ -51,6 +51,7 @@ setMethod('createDataObj', signature = c ('character'),
 			
 			data.filtered <- z.score.PCR.mad(data.filtered)
 			
+			colnames(data.filtered@annotation) <- c('Gene Name')
 			
 			data.filtered
 		} 

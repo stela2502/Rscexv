@@ -62,6 +62,7 @@ setMethod('clusters', signature = c ('Rscexv'),
 				png ( file=file.path( dataObj@outpath,'hc_checkup_main_clustering_function.png'), width=1600, height=800 )
 				plot ( hc);
 				dev.off()
+				## define the group name n and populate the samples table
 				if(is.null(dataObj@usedObj[['auto_clusters']])){
 					dataObj@usedObj[['auto_clusters']] = 0
 				}
@@ -70,7 +71,14 @@ setMethod('clusters', signature = c ('Rscexv'),
 				n <- paste( 'auto_clusters', 
 						dataObj@usedObj[['auto_clusters']] ,sep='.')
 				colnames(dataObj@samples)[ncol(dataObj@samples)] = n
+				dataObj <- implyCloseOrder( dataObj, groupName = n)
+				clusters <- dataObj@usedObj[['clusters']]
+				dataObj@usedObj$usedGrouping <- n
 				dataObj <- colors_4(dataObj, n )
+				print ("used a new grouing")
+			}else {
+				print ( "reusing old grouping" )
+				dataObj@usedObj$usedGrouping <- useGrouping
 			}
 			dataObj@usedObj[['clusters']] <- clusters
 			dataObj@usedObj[['hc']] <- hc
