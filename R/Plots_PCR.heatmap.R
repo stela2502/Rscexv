@@ -50,7 +50,6 @@ setMethod('PCR.heatmap', signature = c ('Rscexv'),
 					dendrogram='row'
 				}
 				if ( ! RowSideColors==F ) {
-					ma <- ma[match(geneGroups[order(geneGroups[,3]),1],rownames(ma)),]
 					if ( dendrogram=='both'){
 						dendrogram='col'
 					}else {

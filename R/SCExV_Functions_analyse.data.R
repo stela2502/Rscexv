@@ -15,18 +15,19 @@
 #' @param useGrouping do not calculate a new grouping - use this column in the samples table (default=NULL)
 #' @param plotsvg create svg figures in addition to the png ones (default=0)
 #' @param mds.type which mds algorithm to use (PCA, LLE, ISOMAP or ZIFA) default = PCA
+#' @param geneGroups the annotation gene group to use in the heatmaps (default = NULL)
 #' @title description of function analyse.data
 #' @export 
 setGeneric('analyse.data', ## Name
 		function (obj,onwhat='Expression',groups.n, cmethod, clusterby='MDS', 
-				ctype='hierarchical clust', beanplots=TRUE, move.neg = FALSE, plot.neg=TRUE, useGrouping=NULL, plotsvg = 0, mds.type='PCA', ...){	## Argumente der generischen Funktion
+				ctype='hierarchical clust', beanplots=TRUE, move.neg = FALSE, plot.neg=TRUE, useGrouping=NULL, plotsvg = 0, mds.type='PCA', geneGroups=NULL, ...){	## Argumente der generischen Funktion
 			standardGeneric('analyse.data') ## der Aufruf von standardGeneric sorgt für das Dispatching
 		}
 )
 
 setMethod('analyse.data', signature = c ('Rscexv'),
 		definition = function (obj,onwhat='Expression',groups.n, cmethod, clusterby='MDS', 
-				ctype='hierarchical clust', beanplots=TRUE, move.neg = FALSE, plot.neg=TRUE, useGrouping=NULL, plotsvg = 0, mds.type='PCA', ...){
+				ctype='hierarchical clust', beanplots=TRUE, move.neg = FALSE, plot.neg=TRUE, useGrouping=NULL, plotsvg = 0, mds.type='PCA', geneGroups=NULL, ...){
 			
 			
 			
@@ -77,15 +78,12 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 			RowV = TRUE
 			RowSideColors = FALSE
 			
-			if ( exists ('geneGroups') ){
-				stop( "Sorry, but the gene grouping part needs to be re-coded!")
-				geneGroups$groupID = as.vector(geneGroups$groupID)
-				if ( is.vector(as.vector(geneGroups$groupID)) ) {
-					t <- obj
-					obj$z$PCR <- obj$z$PCR[, order(geneGroups$groupID)]
-					RowV = FALSE
-					RowSideColors=c(gray.colors(max(geneGroups$groupID),start = 0.3, end = 0.9))[as.numeric(geneGroups$groupID[order(geneGroups$groupID)])]
-				}
+			if ( ! is.null(geneGroups) ){
+				geneGroup <- as.numeric(obj@annotation[,geneGroups])
+				t <- obj
+				obj@data <- obj@data[, order(geneGroup) ]
+				RowV = FALSE
+				RowSideColors=c(gray.colors(max(geneGroup),start = 0.3, end = 0.9))[geneGroup[order(geneGroup)] ]
 			}
 			## plot the heatmaps
 			
