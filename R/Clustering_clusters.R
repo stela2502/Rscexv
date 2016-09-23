@@ -80,6 +80,16 @@ setMethod('clusters', signature = c ('Rscexv'),
 				print ( "reusing old grouping" )
 				dataObj@usedObj$usedGrouping <- useGrouping
 			}
+			## now I want to create some gene clusters too based on hclust only
+			if ( is.null(dataObj@annotation$'hclust Order')){
+				hcG <- hclust(as.dist( 1- cor(dataObj@data, method='pearson') ),method = cmethod )
+				dataObj@annotation$'hclust Order' <- hcG$order
+				dataObj@annotation$'hclust 5 groups' <- factor(cutree(hcG,k=5) )
+				dataObj@annotation$'hclust 10 groups' <- factor(cutree(hcG,k=10) )
+				for ( i in c('hclust Order', 'hclust 5 groups', 'hclust 10 groups' )){
+					dataObj <- colors_4(dataObj, i )
+				}
+			}
 			dataObj@usedObj[['clusters']] <- clusters
 			dataObj@usedObj[['hc']] <- hc
 			dataObj
