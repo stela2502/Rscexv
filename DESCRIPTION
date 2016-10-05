@@ -20,7 +20,6 @@ Depends:
 	MASS,
 	MAST, 
 	randomForest,
-	RDRToolbox,
 	reshape2,
 	rgl,
 	RSvgDevice,
@@ -30,3 +29,6 @@ Depends:
 	ks,
 	RFclust.SGE,
 	sm
+biocViews:
+	RDRToolbox,
+	destiny

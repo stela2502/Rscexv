@@ -50,7 +50,12 @@ setMethod('mds.and.clus', signature = c ('Rscexv'),
 				write.table( cbind( Genes = rownames(pr$rotation), pr$rotation[,1:2] ), 
 						file=file.path( dataObj@outpath,'gene_loadings.xls') , row.names=F, sep='\t',quote=F )
 				#	mds.trans <- prcomp(t(tab))$x[,1:3]
-			} else if ( mds.type == "LLE"){
+			} else if ( mds.type=='DM') {
+				browser()
+				dm <- DiffusionMap(data@raw, distance = "cosine", sigma = .26)
+				mds.proj <- as.data.frame(dm)[,1:3]
+			}
+			else if ( mds.type == "LLE"){
 				mds.proj <- LLE( tab, dim = 3, k = as.numeric(LLEK) )
 				#	mds.trans <- LLE( t(tab), dim = 3, k = as.numeric(LLEK) )
 			}else if ( mds.type == "ISOMAP"){

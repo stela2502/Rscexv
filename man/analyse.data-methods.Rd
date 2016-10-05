@@ -9,7 +9,7 @@
 analyse.data(obj, onwhat = "Expression", groups.n, cmethod,
   clusterby = "MDS", ctype = "hierarchical clust", beanplots = TRUE,
   move.neg = FALSE, plot.neg = TRUE, useGrouping = NULL, plotsvg = 0,
-  mds.type = "PCA", ...)
+  mds.type = "PCA", geneGroups = NULL, ...)
 }
 \arguments{
 \item{obj}{the Rscexv object}
@@ -35,6 +35,8 @@ analyse.data(obj, onwhat = "Expression", groups.n, cmethod,
 \item{plotsvg}{create svg figures in addition to the png ones (default=0)}
 
 \item{mds.type}{which mds algorithm to use (PCA, LLE, ISOMAP or ZIFA) default = PCA}
+
+\item{geneGroups}{the annotation gene group to use in the heatmaps (default = NULL)}
 }
 \description{
 This function implements the backend functionallity of the SCExV analyse page.

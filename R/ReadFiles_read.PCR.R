@@ -55,7 +55,7 @@ setMethod('read.PCR', signature = c ('character'),
 		colnames(tab) <- make.names(paste( unlist(strsplit(top20[line.start-1],',')), unlist(strsplit(top20[line.start],',') ), sep='_' ),unique=T)
 		#
 		#browser()
-		fin.wells <- force.unique.sample ( as.vector(tab$Sample_Name))
+		fin.wells <- force.unique.sample ( paste (str_replace( tab$Chamber_ID, '-.*', ''), tab$Sample_Name) )
 		#fin.wells <- unique(as.vector(tab$Name))
 		tab$Sample_Name <- fin.wells$replacement
 		fin.wells <- fin.wells$unique
