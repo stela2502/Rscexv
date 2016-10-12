@@ -29,6 +29,8 @@ Depends:
 	ks,
 	RFclust.SGE,
 	sm
+Suggests:
+	MAST
 biocViews:
 	RDRToolbox,
 	destiny
