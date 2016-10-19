@@ -86,8 +86,8 @@ setMethod('rfCluster', signature = c ('Rscexv'),
 					}
 					else {
 					total <- nrow(x@data)
-					if ( total-subset <= 20 ) {
-						stop( paste( 'You have only', total, 'samples in this dataset and request to draw random',subset, "samples, which leaves less than 20 cells to draw on random!") )
+					if ( total-subset <= 2 ) {
+						stop( paste( 'You have only', total, 'samples in this dataset and request to draw random',subset, "samples, which leaves less than 2 cells to draw on random!") )
 					}
 					
 					if ( length( x@usedObj[['rfExpressionSets']] ) < i  ) {

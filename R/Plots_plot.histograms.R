@@ -26,8 +26,7 @@ setMethod('plot.histograms', signature = c ('Rscexv'),
 			n.cuts <- names(cuts)
 			opath = file.path(dataObj@outpath,subpath )
 			dir.create(opath, showWarnings = FALSE)
-			for ( i in 1:nrow(ma) ) {
-				png( file=file.path( opath, paste(n[i],'png',sep='.')),width=800, height=800 )
+			plot.this <- function( i ) {
 				temp <- vector('list',arrays)
 				m <- NULL
 				for (a in 1:arrays ) {
@@ -47,6 +46,10 @@ setMethod('plot.histograms', signature = c ('Rscexv'),
 						abline( v= cuts[[pos]][c], col='black', lwd = 3, lty = 2 )
 					}
 				}
+			}
+			for ( i in 1:nrow(ma) ) {
+				png( file=file.path( opath, paste(n[i],'png',sep='.')),width=800, height=800 )
+				try(plot.this ( i )) 
 				dev.off()
 			}
 		} 
