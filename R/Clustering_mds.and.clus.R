@@ -75,6 +75,12 @@ setMethod('mds.and.clus', signature = c ('Rscexv'),
 				rownames(mds.proj) <- rownames(ZIFA)
 				colnames(mds.proj) <- c( 'x','y','z')
 				
+			} else if ( mds.type == "DDRTree" ) {
+				DDRTree_res <- DDRTree( as.matrix(t(data@data)), dimensions=3)
+				mds.proj <- t(DDRTree_res$Z)
+				rownames(mds.proj) <- rownames(dataObj@data)
+				dataObj@usedObj$DRRTree <- DDRTree_res
+				
 			}
 			else {
 				print( paste("Sory I can not work on the option",mds.type) )

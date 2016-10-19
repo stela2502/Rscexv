@@ -28,7 +28,10 @@ Depends:
 	beanplot,
 	ks,
 	RFclust.SGE,
-	sm
+	sm,
+	DDRTree,
+	RDRToolbox,
+	destiny
 Suggests:
 	MAST
 biocViews:
