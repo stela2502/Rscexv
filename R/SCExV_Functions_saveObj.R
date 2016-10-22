@@ -18,7 +18,9 @@ setMethod('saveObj', signature = c ('Rscexv'),
 			exportGroups(data)
 			print ( paste('data exported to', file ) )
 			save(data , file=file.path(data@outpath, file) )
-			
+			if ( locked(file)){
+				release.lock( file )
+			}
 			if ( ! is.null( data@usedObj$usedGrouping )) {
 				write( data@usedObj$usedGrouping , file= file.path(data@outpath,'usedGrouping.txt') )
 			}
