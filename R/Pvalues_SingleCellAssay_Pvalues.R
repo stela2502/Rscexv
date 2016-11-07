@@ -19,8 +19,9 @@ setMethod('SingleCellAssay_Pvalues', signature = c ('Rscexv'),
 			d[which(d==-20)] <- NA
 			x <- as.matrix(d)
 			d[is.na(d)] <- 0
-			sca <- FromMatrix('SingleCellAssay', as.matrix(d), data.frame(wellKey=rownames(d)), data.frame(primerid=colnames(d)) )
-			groups <- cData(sca)$GroupName <- obj@usedObj[['clusters']]
+			sca <- FromMatrix(class='SingleCellAssay', exprsArray= t(as.matrix(d)), cData= data.frame(wellKey=rownames(d)), fData=data.frame(primerid=colnames(d)) )
+			#sca <- FromMatrix('SingleCellAssay', as.matrix(d), data.frame(wellKey=rownames(d)), data.frame(primerid=colnames(d)) )
+			groups <- colData(sca)$GroupName <- obj@usedObj[['clusters']]
 			zlm.output <- zlm.SingleCellAssay(~ GroupName, sca, method='glm', ebayes=T)
 			zlm.lr <- lrTest(zlm.output,'GroupName')
 			pvalue <- ggplot(melt(zlm.lr[,,'Pr(>Chisq)']), aes(x=primerid, y=-log10(value)))+ geom_bar(stat='identity')+facet_wrap(~test.type) + coord_flip()
