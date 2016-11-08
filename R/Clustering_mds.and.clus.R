@@ -52,7 +52,7 @@ setMethod('mds.and.clus', signature = c ('Rscexv'),
 				#	mds.trans <- prcomp(t(tab))$x[,1:3]
 			} else if ( mds.type=='DM') {
 				browser()
-				dm <- DiffusionMap(data@raw, distance = "cosine", sigma = .26)
+				dm <- DiffusionMap(dataObj@raw, distance = "cosine", sigma = .26)
 				mds.proj <- as.data.frame(dm)[,1:3]
 			}
 			else if ( mds.type == "LLE"){
@@ -76,7 +76,7 @@ setMethod('mds.and.clus', signature = c ('Rscexv'),
 				colnames(mds.proj) <- c( 'x','y','z')
 				
 			} else if ( mds.type == "DDRTree" ) {
-				DDRTree_res <- DDRTree( as.matrix(t(data@data)), dimensions=3)
+				DDRTree_res <- DDRTree( as.matrix(t(dataObj@data)), dimensions=3)
 				mds.proj <- t(DDRTree_res$Z)
 				rownames(mds.proj) <- rownames(dataObj@data)
 				dataObj@usedObj$DRRTree <- DDRTree_res

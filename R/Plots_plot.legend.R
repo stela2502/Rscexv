@@ -37,16 +37,29 @@ setMethod('plot.legend', signature = c ('Rscexv'),
 			if ( is.null(col) ){
 				col=x@usedObj[['colorRange']][[colname]]
 			}
+			n =1
+			if (! is.na(match(colname, colnames(x@annotation) ))) {
+				n <- length( levels( x@annotation[, colname] ) )
+			}else if ( ! is.na(match(colname, colnames(x@samples) ))){
+				n <- length( levels( x@samples[, colname] ) )
+			}else{
+				stop ( paste( 'The column name',colname, 
+								'is nether defined in the samples nor the annotation table:', 
+								paste(colnames(x@samples),collapse=' '),
+								paste(x@annotation, collapse=' ')
+						))
+			}
 			if ( ! is.null(file) ) {
 				file = file.path(x@outpath, paste( collapse='_',unlist(strsplit( c(file, colname), '\\s+', perl=T))))
+				h = 4 * ceiling(n / 9)
 				if ( svg ) {
-					devSVG( file=paste(file,'svg',sep='.'), width= 4, height=4 )
+					devSVG( file=paste(file,'svg',sep='.'), width= 4, height=h )
 				}
 				else if ( pdf ) {
-					pdf( file=paste(file, 'pdf', sep='.'), width= 4, height=4 )
+					pdf( file=paste(file, 'pdf', sep='.'), width= 4, height=h )
 				}
 				else {
-					png(file=paste(file, 'png', sep='.'), width= 400, height=400 )
+					png(file=paste(file, 'png', sep='.'), width= 400, height=h *100 )
 				}
 			}
 			plot(1, type="n", axes=F, xlab="", ylab="", main=colname)
