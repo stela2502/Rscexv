@@ -32,7 +32,7 @@ setGeneric('release.lock', ## Name
 
 setMethod('release.lock', signature = c ('character'),
 		definition = function ( filename ) {
-			system ( paste('rm ',filename,'.lock', sep='') )
+			system ( paste('rm -f ',filename,'.lock', sep='') )
 		} )
 #' @name locked
 #' @aliases locked,Rscexv-method
