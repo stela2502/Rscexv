@@ -39,7 +39,7 @@ setMethod('createDataObj', signature = c ('character'),
 			
 			## export the unfiltered_not_modified PCR data for publication
 			
-			write.table( data@data, file= file.path(data@outpath,"InbuiltData.RData"), sep='\t' )
+			write.table( t(data@data), file= file.path(data@outpath,"PCR_data_RawExpression_4_GEO.xls"), sep='\t' )
 			
 			data.filtered <- sd.filter( data )
 						
@@ -47,9 +47,11 @@ setMethod('createDataObj', signature = c ('character'),
 			
 			data.filtered <- norm.PCR(data.filtered,norm.function,max.cyc=max.value, ctrl=ref.genes )
 			#plot.heatmap( list( data = t(data.filtered$PCR), genes=colnames(data.filtered$PCR)), 'Contr_filtered_inverted_norm', title='SD filtered inverted data', width=12,height=6,Colv=F,hclustfun = function(c){hclust( c, method=cmethod)},distfun = function(x){ 1- cor(t(x),method='spearman')} )
-			write.table( data.filtered@data, file=file.path( data.filtered@outpath,"PCR_data_normalized_4_publication.xls"), sep='\t' )
+			write.table( t(data.filtered@data), file=file.path( data.filtered@outpath,"PCR_data_normalized_4_GEO.xls"), sep='\t' )
 			
 			data.filtered <- z.score.PCR.mad(data.filtered)
+			
+			write.table( t(data.filtered@data), file=file.path( data.filtered@outpath,"PCR_data_zscored_4_GEO.xls"), sep='\t' )
 			
 			colnames(data.filtered@annotation) <- c('Gene Name')
 			
