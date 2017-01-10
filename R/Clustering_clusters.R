@@ -21,7 +21,7 @@ setGeneric('clusters', ## Name
 
 setMethod('clusters', signature = c ('Rscexv'),
 		definition = function (dataObj,clusterby="raw", useGrouping=NULL, groups.n = 3,
-				ctype='hierarchical clust',onwhat="Expression", cmethod='ward.D' ) {
+				ctype='hierarchical clust',onwhat="Expression", cmethod='ward.D2' ) {
 			## custering	
 			clusters <- NULL
 			hc <- NULL

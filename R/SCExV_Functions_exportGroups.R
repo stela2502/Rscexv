@@ -41,10 +41,11 @@ setMethod('exportGroups', signature = c ('Rscexv'),
 			write( g, file= file.path(obj@outpath,gene.file))
 			
 			## and the important Sample_Colors.xls file
+			obj <- colors_4 ( obj, obj@usedObj$usedGrouping )
 			write.table( cbind( obj@samples[,c(1,2)],
-							grouping =  obj@usedObj[['clusters']], 
-							'colors' =  obj@usedObj[['colors']] 
-						  ),
+							grouping = obj@samples[,obj@usedObj$usedGrouping],
+							t(col2rgb( obj@usedObj$colorRange[[obj@usedObj$usedGrouping]][obj@samples[,obj@usedObj$usedGrouping]]))
+							),
 					file='Sample_Colors.xls' , row.names=F, sep='\t',quote=F )
 			write.table( obj@samples, file='Sample_complete_Data.xls' , row.names=F, sep='\t',quote=F )
 		}
