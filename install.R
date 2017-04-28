@@ -10,4 +10,5 @@ if (!library("MAST", quietly = TRUE,logical.return=TRUE )) {
 if (!library("RFclust", quietly = TRUE,logical.return=TRUE )) {
 	install_github('stela2502/RFclust.SGE')
 }
+install_github( 'RGLab/MAST', ref="MASTClassic" )
 install()

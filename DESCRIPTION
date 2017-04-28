@@ -34,7 +34,5 @@ Depends:
 Suggests:
 	MAST
 biocViews:
-    SummarizedExperiment, #fix for MAST
-    MAST, 
 	RDRToolbox,
 	destiny
