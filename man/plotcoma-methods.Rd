@@ -18,4 +18,3 @@ This function plots the correlation plot for the grouping.
 
 It will create an svg file if the global variable plotsvg ==1.
 }
-

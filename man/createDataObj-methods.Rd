@@ -32,4 +32,3 @@ createDataObj(PCR = NULL, FACS = NULL, max.value = 40, ref.genes = NULL,
 \description{
 This function is the main function used by SCExV. In a script the steps should be executed one by one.
 }
-

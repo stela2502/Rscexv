@@ -18,4 +18,3 @@ Rscexv(PCR = NULL, FACS = NULL, use_pass_fail = T)
 \description{
 create a new Rscexv object from the data files.
 }
-

@@ -16,4 +16,3 @@ implyCloseOrder(dataObj, groupName = NULL, hclust.method = "complete")
 \description{
 This function reorderes a grouping using hclust. The grouing will simply be converted into a factor.
 }
-

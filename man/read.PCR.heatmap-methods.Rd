@@ -16,4 +16,3 @@ read.PCR.heatmap(fname, use_pass_fail = T)
 \description{
 reads one fluidigm data file in heatmap format
 }
-

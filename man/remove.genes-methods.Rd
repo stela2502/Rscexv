@@ -16,4 +16,3 @@ remove.genes(dataObj, ids)
 \description{
 this function removes a list of PCR genes from the analysis
 }
-

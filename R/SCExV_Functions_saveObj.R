@@ -24,6 +24,7 @@ setMethod('saveObj', signature = c ('Rscexv'),
 			if ( ! is.null( data@usedObj$usedGrouping )) {
 				write( data@usedObj$usedGrouping , file= file.path(data@outpath,'usedGrouping.txt') )
 			}
+			write(as.character(data@annotation$'Gene Name') , file=file.path(data@outpath,'GeneNames.txt') )
 			
 		}
 )

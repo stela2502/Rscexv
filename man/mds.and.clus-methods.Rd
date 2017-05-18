@@ -32,4 +32,3 @@ mds.and.clus(dataObj, ..., clusterby = "raw", mds.type = "PCA", groups.n,
 \description{
 this function calculates the MDS and creates the grouping if necessary.
 }
-

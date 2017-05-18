@@ -16,4 +16,3 @@ difference(x, obj)
 \description{
 This function calculates the
 }
-

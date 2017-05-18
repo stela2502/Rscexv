@@ -21,4 +21,3 @@ create_p_values(obj, boot = 1000, lin_lang_file = "lin_lang_stats.xls",
 \description{
 This is the main function called by the SCExV server.
 }
-

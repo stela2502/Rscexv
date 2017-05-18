@@ -16,4 +16,3 @@ col4bean(x, tic = "black")
 \description{
 get the color information for the beans
 }
-

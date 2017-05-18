@@ -16,4 +16,3 @@ remove.samples(dataObj, ids)
 \description{
 Remove samples by id.
 }
-

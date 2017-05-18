@@ -18,4 +18,3 @@ group_1D(dataObj, gene, ranges)
 \description{
 Create grouping based on the expression of one gene
 }
-

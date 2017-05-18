@@ -14,4 +14,3 @@ force.unique.sample(x)
 \description{
 This function will just make sure, that all samples have uniaue sample names, even if they come from different arrays.
 }
-

@@ -30,4 +30,3 @@ vioplot(x, ..., range = 1.5, h = NULL, ylim = NULL, names = NULL,
 \description{
 the vioplot function patched to allow different colors for the different violines.
 }
-

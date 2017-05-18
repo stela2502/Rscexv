@@ -16,4 +16,3 @@ reorder.genes(dataObj, column)
 \description{
 this function reorderes the Rscexv object based on a column in the annotation table (e.g. for plotting)
 }
-

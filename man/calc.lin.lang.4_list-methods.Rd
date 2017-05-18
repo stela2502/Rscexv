@@ -14,4 +14,3 @@ calc.lin.lang.4_list(l = list())
 \description{
 This function calculates the correlation between the median expression value of a group and the fraction of expression cells in the group.
 }
-

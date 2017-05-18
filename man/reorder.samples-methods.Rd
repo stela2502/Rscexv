@@ -16,4 +16,3 @@ reorder.samples(dataObj, column)
 \description{
 this function reorderes the Rscexv object based on a column in the samples table (e.g. for plotting)
 }
-

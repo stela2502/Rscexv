@@ -27,4 +27,3 @@ plot.violines(x, groups.n, clus, plot.neg = FALSE, mv = -20, subpath = "",
 \description{
 This fucntion converts the table into a format, that can be fead to the vioplot function
 }
-

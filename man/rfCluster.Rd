@@ -2,8 +2,8 @@
 % Please edit documentation in R/RFgrouping_rfCluster.R
 \docType{methods}
 \name{rfCluster}
-\alias{'rfCluster,Rscexv-method}
 \alias{rfCluster}
+\alias{'rfCluster,Rscexv-method}
 \title{rfCluster}
 \usage{
 rfCluster(x, rep = 5, SGE = F, email, k = 16, slice = 30,
@@ -55,4 +55,3 @@ all clusters with less than 10 cells have been merged into the 'gr. 0'.
 
 The final results will be reported as new columns in the samples table containing the 'name'
 }
-

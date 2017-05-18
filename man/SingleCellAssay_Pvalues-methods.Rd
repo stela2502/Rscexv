@@ -16,4 +16,3 @@ SingleCellAssay_Pvalues(obj, ofile = "Significant_genes.csv")
 \description{
 USes the SingleCellAssay package to calculate p values.
 }
-

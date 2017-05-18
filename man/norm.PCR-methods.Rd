@@ -21,4 +21,3 @@ norm.PCR(x, meth = c("none", "mean control genes", "max expression",
 \description{
 This function normalizes the expression data
 }
-

@@ -34,4 +34,3 @@ FACS.heatmap(dataObj, ofile, title = "Heatmap", reorder = F, nmax = 500,
 \description{
 Plots the FACS heatmaps
 }
-

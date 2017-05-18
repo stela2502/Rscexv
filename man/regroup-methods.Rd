@@ -19,4 +19,3 @@ regroup(dataObj, group2sample = list(`1` = c("Sample1", "Sample2")),
 \description{
 This function is used to re-group the data from within SCExV - there should be easier ways in R.
 }
-

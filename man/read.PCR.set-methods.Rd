@@ -16,4 +16,3 @@ read.PCR.set(fnames, use_pass_fail = T)
 \description{
 reads a whole set of PCR data files
 }
-

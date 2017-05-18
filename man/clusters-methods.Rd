@@ -28,4 +28,3 @@ clusters(dataObj, clusterby = "raw", useGrouping = NULL, mds.proj = NULL,
 \description{
 create the grouping based on the MDS or raw data.
 }
-

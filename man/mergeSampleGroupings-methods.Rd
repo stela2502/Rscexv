@@ -20,4 +20,3 @@ mergeSampleGroupings(x, g1, g2, newName)
 \description{
 Create a new group and create shaded rainbow color shemata stored in the x@usedObj[['colorRange']] variable
 }
-

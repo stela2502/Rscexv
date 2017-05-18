@@ -16,4 +16,3 @@ match.sample.names(PCR.s, FACS.s)
 \description{
 This function makes sure, that both the FACS and the PCR data samples are matched in the object
 }
-

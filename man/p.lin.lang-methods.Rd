@@ -20,4 +20,3 @@ p.lin.lang(x, groups.n, clus, n = 1000)
 \description{
 Calculates the linear hypothesis p value.
 }
-

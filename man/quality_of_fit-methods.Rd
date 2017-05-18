@@ -14,4 +14,3 @@ quality_of_fit(obj)
 \description{
 Calculates a quality of fit
 }
-

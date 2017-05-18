@@ -14,4 +14,3 @@ coexpressionMatrix(dataObj)
 \description{
 this function calculates the coexpression matrix for the expression data.
 }
-

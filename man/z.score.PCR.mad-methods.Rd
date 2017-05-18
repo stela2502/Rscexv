@@ -14,4 +14,3 @@ z.score.PCR.mad(dataObj)
 \description{
 This normlization method is re-implemented from the MAST package.
 }
-

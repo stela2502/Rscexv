@@ -14,4 +14,3 @@ plotDensity(obj)
 \description{
 This function creates the density plot for the analysis page
 }
-

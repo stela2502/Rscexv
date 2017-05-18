@@ -35,4 +35,3 @@ PCR.heatmap(dataObj, ofile, reorder = F, title = "Heatmap", nmax = 4000,
 \description{
 This function plots the heatmaps
 }
-

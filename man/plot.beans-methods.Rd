@@ -29,4 +29,3 @@ plot.beans(x, groups.n, clus, plot.neg = TRUE, mv = -20, subpath = "",
 \description{
 plot the beanplots
 }
-

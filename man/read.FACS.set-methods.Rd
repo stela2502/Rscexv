@@ -14,4 +14,3 @@ read.FACS.set(fnames)
 \description{
 reads a whole set of FACS data files
 }
-

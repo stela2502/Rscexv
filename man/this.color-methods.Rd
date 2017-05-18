@@ -16,4 +16,3 @@ this.color(x, name = NULL)
 \description{
 Get the actual color range from the object
 }
-

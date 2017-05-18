@@ -18,4 +18,3 @@ group_on_strings(dataObj, strings = c(), name = "GroupOnStrings")
 \description{
 group_an_strings allows the user to group based on a string in the sample names.
 }
-

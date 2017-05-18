@@ -21,4 +21,3 @@ createRFgrouping_samples(x, RFname, k = 10,
 \description{
 Create a sample grouping data from one RFclust.SGE object
 }
-

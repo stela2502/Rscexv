@@ -16,4 +16,3 @@ checkGrouping(userGroups, data = NULL)
 \description{
 This function checks that there is no 0 group - probably more later on
 }
-

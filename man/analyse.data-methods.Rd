@@ -41,4 +41,3 @@ analyse.data(obj, onwhat = "Expression", groups.n, cmethod,
 \description{
 This function implements the backend functionallity of the SCExV analyse page.
 }
-

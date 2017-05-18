@@ -16,4 +16,3 @@ write.stats(stats = NULL, file = "lin_lang_stats.xls")
 \description{
 write a statistics table from the lin lang list
 }
-

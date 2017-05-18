@@ -14,4 +14,3 @@ read.FACS(fname)
 \description{
 THis function reads one INDEX data file.
 }
-

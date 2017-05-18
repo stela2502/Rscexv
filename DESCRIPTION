@@ -7,7 +7,7 @@ Author: person("Stefan", "Lang", email = "stefan.lang@med.lu.se",
 	role( 'aut','cre'))
 Description: This package does read and analyze data from the fluidigm biomark device. In addition it can add INDEXS sort data too.
 License: What license is it under?
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 Depends:
 	R (>= 3.2.0),
 	abind,

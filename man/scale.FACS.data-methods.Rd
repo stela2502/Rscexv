@@ -14,4 +14,3 @@ scale.FACS.data(dataObj)
 \description{
 This function applies a simple log10 onto all expression data.
 }
-

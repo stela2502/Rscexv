@@ -18,4 +18,3 @@ boot_p_value(cmp, real_val, i)
 \description{
 calculates the p value from the boot strap distribution for the lin_lang analysis
 }
-

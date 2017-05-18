@@ -16,4 +16,3 @@ remove.FACS.genes(dataObj, ids)
 \description{
 this function removes a list of FACS genes from the analysis
 }
-

@@ -34,4 +34,3 @@ The quality of the groupings will be accessed in two stated (1) there should not
 
 using a straight forward anova approach (excluding the not called genes for a Rscexv object).
 }
-

@@ -2,8 +2,8 @@
 % Please edit documentation in R/RFgrouping_bestGrouping.R
 \docType{methods}
 \name{bestGrouping}
-\alias{'bestGrouping,Rscexv-method}
 \alias{bestGrouping}
+\alias{'bestGrouping,Rscexv-method}
 \title{description of function randomForest}
 \usage{
 bestGrouping(x, group, bestColname = "QualifiedGrouping", cutoff = 0.5)
@@ -27,4 +27,3 @@ All groups that fail to be prediceted using the random forest are deemed ungroup
 
 All groups where less than 50 percent of the total samples geting classified as being from that group fail.
 }
-

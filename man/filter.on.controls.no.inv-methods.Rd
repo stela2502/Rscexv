@@ -20,4 +20,3 @@ filter.on.controls.no.inv(dataObj, ref.nms, thresh, howm)
 \description{
 This function filteres out samples that have an expression of less than thresh in there ref.nms(gene names)
 }
-

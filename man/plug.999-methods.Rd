@@ -16,4 +16,3 @@ plug.999(x, plug = 45)
 \description{
 this function replaces the 999 (failed) values by the plug value.
 }
-

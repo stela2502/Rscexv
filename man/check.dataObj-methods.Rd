@@ -16,4 +16,3 @@ check.dataObj(PCR, FACS)
 \description{
 checks the two data frames and creates a sample and annotation table
 }
-

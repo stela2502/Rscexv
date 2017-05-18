@@ -28,4 +28,3 @@ falied correlations will have a NA value but still a p value of 1.
 \description{
 calculates the coexpression for all genes in all groups in the data set
 }
-

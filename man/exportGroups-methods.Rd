@@ -19,4 +19,3 @@ exportGroups(obj, sample.file = "SCExV_Grps.txt",
 \description{
 This function exports the group names necessary for the SCExV server
 }
-

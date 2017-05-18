@@ -18,4 +18,3 @@ colors_4(x, name, colFunc = NULL)
 \description{
 Create the colour information for a samples or annotation column
 }
-

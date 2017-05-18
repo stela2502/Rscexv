@@ -14,4 +14,3 @@ sd.filter(dataObj)
 \description{
 This function is removing cells and genes that do not show any variation in the data.
 }
-

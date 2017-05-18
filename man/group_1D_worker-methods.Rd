@@ -18,4 +18,3 @@ group_1D_worker(ma, gene, ranges)
 \description{
 grouping worker for the 1D grouping.
 }
-

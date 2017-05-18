@@ -23,4 +23,3 @@ A list containing the updated 'x' Rscexv object and res - a vector of pasted gen
 \description{
 This function calculates an anova test for the groupCol and all data.
 }
-

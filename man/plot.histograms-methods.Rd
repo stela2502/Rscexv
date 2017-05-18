@@ -18,4 +18,3 @@ plot.histograms(dataObj, cuts = vector("list", 1), subpath = "preprocess")
 \description{
 This function plots all genes as histograms to check whether there ar4e clear expression differences in different plates.
 }
-
