@@ -31,7 +31,7 @@ setGeneric('rfCluster',
 		}
 )
 setMethod('rfCluster', signature = c ('Rscexv'),
-		definition = function ( x, rep=5, SGE=F, email, k=16, slice=30, subset=200, pics=F ,nforest=500, ntree=1000, name='RFclust', recover=F) {
+		definition = function ( x, rep=1, SGE=F, email, k=16, slice=4, subset=200, pics=F ,nforest=500, ntree=1000, name='RFclust', recover=F) {
 			summaryCol=paste( 'All_groups', name,sep='_')
 			usefulCol=paste ('Usefull_groups',name, sep='_')
 			n= paste(x@name, name,sep='_')
