@@ -2,11 +2,11 @@
 #' @rdname as_BioData-methods
 #' @docType methods
 #' @description create a BioData object from a Rscexv object
-#' @param dat the cellexalvr object
+#' @param dat the Rscexv object
 #' @title description of function as
 #' @export as_BioData
 if ( ! isGeneric('as_BioData') ){ setGeneric('as_BioData', ## Name
-			function ( cellexalObj, name, genes, lables=NULL,... ) { ## Argumente der generischen Funktion
+			function ( dat ) { ## Argumente der generischen Funktion
 				standardGeneric('as_BioData') ## der Aufruf von standardGeneric sorgt für das Dispatching
 			}
 	)
