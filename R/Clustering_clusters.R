@@ -35,7 +35,11 @@ setMethod('clusters', signature = c ('Rscexv'),
 			if ( ! is.null(useGrouping) ) {
 				clusters <- dataObj@samples[,useGrouping]
 				if ( is.factor( clusters)) {
-					clusters = as.numeric(clusters)
+					if ( class( clusters) == 'factor'){
+						clusters = as.numeric(as.character(clusters))## this is important for the factors!
+					}else {
+						clusters = as.numeric(clusters)## this is important for the factors!
+					}
 				}
 				dataObj <- colors_4 (dataObj, useGrouping )
 			}else if(clusterby=="MDS"){
