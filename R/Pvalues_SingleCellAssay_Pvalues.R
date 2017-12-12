@@ -19,11 +19,18 @@ setMethod('SingleCellAssay_Pvalues', signature = c ('Rscexv'),
 			d[which(d==-20)] <- NA
 			x <- as.matrix(d)
 			d[is.na(d)] <- 0
-			sca <- FromMatrix(class='SingleCellAssay', exprsArray= t(as.matrix(d)), cData= data.frame(wellKey=rownames(d)), fData=data.frame(primerid=colnames(d)) )
+			sca <- MAST::FromMatrix(class='SingleCellAssay', 
+					#exprsArray= t(as.matrix(d)), 
+					exprsArray= as.matrix(d), 
+					cData= data.frame(
+							wellKey=rownames(d),
+							GroupName = obj@usedObj[['clusters']] 
+					), 
+					fData=data.frame(primerid=colnames(d)) 
+			)
 			#sca <- FromMatrix('SingleCellAssay', as.matrix(d), data.frame(wellKey=rownames(d)), data.frame(primerid=colnames(d)) )
-			groups <- colData(sca)$GroupName <- obj@usedObj[['clusters']]
-			zlm.output <- zlm.SingleCellAssay(~ GroupName, sca, method='glm', ebayes=T)
-			zlm.lr <- lrTest(zlm.output,'GroupName')
+			zlm.output <- MAST::zlm.SingleCellAssay(~ GroupName, sca, method='glm', ebayes=T)
+			zlm.lr <- MAST::lrTest(zlm.output,'GroupName')
 			pvalue <- ggplot(melt(zlm.lr[,,'Pr(>Chisq)']), aes(x=primerid, y=-log10(value)))+ geom_bar(stat='identity')+facet_wrap(~test.type) + coord_flip()
 			png ( file.path( obj@outpath,'Analysis1.png'), width=800, height=800)
 			print(pvalue)
