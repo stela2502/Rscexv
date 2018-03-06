@@ -123,7 +123,7 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 							hc.col= obj@usedObj[['hc']],
 							margins = c(1,11), 
 							lwid = c( 1,6), lhei=c(1,5),
-							hclustfun = function(c){hclust( c, method=cmethod)}
+						#	hclustfun = function(c){hclust( c, method=cmethod)}
 					), silent=T)
 			
 			try( FACS.heatmap ( obj, 
@@ -137,7 +137,7 @@ setMethod('analyse.data', signature = c ('Rscexv'),
 							margins = c(1,11), 
 							lwid = c( 1,6), lhei=c(1,5),
 							Colv=F,
-							hclustfun = function(c){hclust( c, method=cmethod)}
+						#	hclustfun = function(c){hclust( c, method=cmethod)}
 					), silent=T)
 			
 			ma  <- NULL

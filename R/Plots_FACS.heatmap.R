@@ -28,13 +28,17 @@ setMethod('FACS.heatmap', signature = c ('Rscexv'),
 			if ( ncol(dataObj@facs) > nmax ) {
 				stop (paste('No plotting for file ',ofile,'- too many genes selected (',ncol(data),')' ))
 			}
+			#browser()
 			if( ncol(dataObj@facs) > 2 ){
 				data <- as.matrix(t(dataObj@facs))
 				if ( reorder ){
 					data <- data[,order(dataObj@usedObj[['clusters']])]
 				}
 				if ( length(which(is.na(data))) > 0) {
-					data[which(is.na(data)) ] = rnorm(length(which(is.na(data))))
+					v <- rnorm(length(which(is.na(data))))
+					v = v + min(v) +1 
+					v <- log10(v)
+					data[which(is.na(data)) ] = v
 				}
 				if ( is.na(hc.row) ){
 					## this breaks if we have NA values 
