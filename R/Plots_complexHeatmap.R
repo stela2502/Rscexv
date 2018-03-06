@@ -77,9 +77,14 @@ setMethod('complexHeatmap', signature = c ('Rscexv'),
 			brks <- unique(as.vector(c(-20,quantile(data[which(data!= -20)],seq(0,1,by=0.1)),max(data))))
 			if ( ! is.null(ofile)){
 				if ( pdf ) {
-					pdf( file=paste(file.path(x@outpath,ofile),'pdf',sep='.'), width=10, height=8)
+					width= ceiling(nrow(x@samples)/300) * 10
+					height = ceiling( nrow(x@annotation) / 100 ) * 10
+					if ( height < 8){
+						height = 8
+					}
+					pdf( file=paste( file.path(x@outpath,ofile),'pdf',sep='.'), width=10, height=height)
 				}else{
-					png( file=paste(file.path(x@outpath,ofile),'png',sep='.'), width=1600, height=800)
+					png( file=paste( file.path(x@outpath,ofile),'png',sep='.'), width=1600, height=800)
 				}
 			}
 			heatmap.3(

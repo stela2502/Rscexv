@@ -4,17 +4,24 @@
 #' @docType methods
 #' @description set a lock for a file (threading)
 #' @param filename  the locked file
+#' @param msg A message that should be written into the log file ( default 'no mgs')
 #' @title description of function set_lock
 #' @export 
 setGeneric('set.lock', ## Name
-		function ( filename ) { ## Argumente der generischen Funktion
+		function ( filename , msg= "no mgs" ) { ## Argumente der generischen Funktion
 			standardGeneric('set.lock') ## der Aufruf von standardGeneric sorgt für das Dispatching
 		}
 )
 
 setMethod('set.lock', signature = c ('character'),
-		definition = function ( filename ) {
+		definition = function ( filename, msg= "no mgs" ) {
 			system ( paste('touch ',filename,'.lock', sep='') )
+			sc <- sys.calls()
+			sclen <- length(sc)  # last call is this function call
+			if(sclen > 1L) {
+				cat("myError:\n", paste(msg, sys.calls()), file=paste(filename,'.lock', sep=''), append=T)
+			}
+			
 		} )
 #' @name release.lock
 #' @aliases release.lock,Rscexv-method

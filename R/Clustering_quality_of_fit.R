@@ -12,7 +12,7 @@ setGeneric('quality_of_fit', ## Name
 		}
 )
 
-setMethod('quality_of_fit', signature = c ('BioData'),
+setMethod('quality_of_fit', signature = c ('Rscexv'),
 		definition = function ( obj ) {
 			test <- as.matrix(obj@data)
 			rem <- which(test ==  -20 )
