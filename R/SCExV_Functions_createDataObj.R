@@ -22,7 +22,7 @@ setGeneric('createDataObj', ## Name
 )
 setMethod('createDataObj', signature = c ('character'),
 		definition = function ( PCR=NULL,  FACS=NULL, max.value=40,	ref.genes=NULL, max.ct=25, max.control=0,  norm.function='none', negContrGenes=NULL, use_pass_fail = T, ... ){
-			
+
 			data <- Rscexv( PCR, FACS, use_pass_fail)
 			
 			data <- kick.expressed.negContr.samples(data, negContrGenes )

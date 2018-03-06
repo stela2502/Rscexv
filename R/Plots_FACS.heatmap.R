@@ -22,16 +22,28 @@ setGeneric('FACS.heatmap', ## Name
 
 setMethod('FACS.heatmap', signature = c ('Rscexv'),
 		definition = function ( dataObj, ofile, title='Heatmap', reorder =F, nmax=500, hc.row=NA, ColSideColors=NA, RowSideColors=NA,
-				width=6, height=6, margins = c(15, 10), hclustfun = function(c){hclust( c, method='ward')}, distfun = function (x) as.dist( 1- cor(t(x), method='pearson') ), ... ) {
+				width=6, height=6, margins = c(15, 10), hclustfun = function(c){hclust( c, method='ward.D2')}, distfun = function (x) as.dist( 1- cor(t(x), method='pearson') ), ... ) {
 			##plot the heatmap as svg image
-			if ( nrow(dataObj@facs) > nmax ) {
-				stop (paste('No plotting for file ',ofile,'- too many genes selected (',nrow(data),')' ))
+			
+			if ( ncol(dataObj@facs) > nmax ) {
+				stop (paste('No plotting for file ',ofile,'- too many genes selected (',ncol(data),')' ))
 			}
-			if( nrow(dataObj@facs) > 2 ){
+			if( ncol(dataObj@facs) > 2 ){
 				data <- as.matrix(t(dataObj@facs))
 				if ( reorder ){
 					data <- data[,order(dataObj@usedObj[['clusters']])]
 				}
+				if ( length(which(is.na(data))) > 0) {
+					data[which(is.na(data)) ] = rnorm(length(which(is.na(data))))
+				}
+				if ( is.na(hc.row) ){
+					## this breaks if we have NA values 
+					hc.row <- hclustfun(distfun(data)) #hclust( as.dist( 1- cor(t(data), method='spearman')), method='ward')
+				}
+				ma <- data[hc.row$order,]
+				if ( ! is.na(RowSideColors) ) {
+					RowSideColors <- RowSideColors[ hc.row$order ]
+				} 
 				for ( i in 1:2 ){
 					#rownames( data ) <- paste( dataObj$genes, dataObj$names)
 					if ( i == 1 && plotsvg == 1 ) {
@@ -40,14 +52,6 @@ setMethod('FACS.heatmap', signature = c ('Rscexv'),
 					else {
 						png( file=paste(ofile,'_Heatmap.png',sep='') , width=width*150, height=nrow( data ) * 15 + 400 )
 					}
-					if ( is.na(hc.row) ){
-						
-						hc.row <- hclustfun(distfun(data)) #hclust( as.dist( 1- cor(t(data), method='spearman')), method='ward')
-					}
-					ma <- data[hc.row$order,]
-					if ( ! is.na(RowSideColors) ) {
-						RowSideColors <- RowSideColors[ hc.row$order ]
-					} 
 					if ( ! is.na(ColSideColors) ) {
 						if ( ! is.na(RowSideColors)) {
 							heatmap.2(as.matrix(ma), col=bluered, Rowv=F,  key=F, symkey=FALSE,

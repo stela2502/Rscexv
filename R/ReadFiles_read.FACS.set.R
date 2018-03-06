@@ -25,6 +25,10 @@ setMethod('read.FACS.set', signature = c ('character'),
 						rownames(ttab) <- paste(rownames(ttab),".P",i-1,sep="")
 					}
 					## check whether the gene names are axactly the same
+					if ( length(grep( '^\\.' , colnames(ttab)) ) >0 ){
+						## some files have a .Events and .Parent column - useless...
+						ttab <- ttab[,-grep( '^\\.' , colnames(ttab))]
+					}
 					if ( is.null(etab)){
 						etab <-ttab
 						order <- c(order, rep(i, nrow(ttab) ) )
@@ -40,7 +44,9 @@ setMethod('read.FACS.set', signature = c ('character'),
 					}
 				}
 			}
-			etab[which(is.na(etab))] <- 0
+			tab <- as.matrix(etab)
+			tab[which(is.na(tab))] <- 0
+			etab <- as.data.frame( tab )
 			list ( data = scale.FACS.data(etab), order = order )
 		}
 )
