@@ -20,7 +20,6 @@ setMethod('norm.PCR', signature = c ('Rscexv'),
 			if ( !x@norm ){
 			tab.new <- NULL
 			tab.na <- which(x@data == max.cyc )
-			
 			if(meth=="none"){
 				tab.new <- as.matrix(x@data)
 			}
@@ -33,7 +32,8 @@ setMethod('norm.PCR', signature = c ('Rscexv'),
 					}
 					for(i in 1:nrow(x@data)){
 						tab.new <- rbind(tab.new,(x@data[i,]-mean.ctrl[i]))
-					} 
+					}
+					x@samples$norm_to <- mean.ctrl
 				}
 			}
 			else if (meth== "max expression" ){
@@ -41,13 +41,15 @@ setMethod('norm.PCR', signature = c ('Rscexv'),
 				for(i in 1:nrow(x@data)){
 					tab.new <- rbind(tab.new,(x@data[i,]-max.expr[i]))
 				} 
+				x@samples$norm_to <- max.expr
 			} 
 			else if (meth== "median expression" ){
 				my.median <- function (x, max.cyc)  {median( x[which( x != max.cyc )] ) } 
 				median.expr <- apply( x@data,1,my.median, max.cyc  )
 				for(i in 1:nrow(x@data)){
 					tab.new <- rbind(tab.new,(x@data[i,]-median.expr[i]))
-				} 
+				}
+				x@samples$norm_to <- median.expr
 			} 
 			else if(meth=="quantile"){
 				rank.normalize <- function(ap) {
