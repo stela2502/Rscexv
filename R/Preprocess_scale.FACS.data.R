@@ -15,9 +15,15 @@ setGeneric('scale.FACS.data', ## Name
 setMethod('scale.FACS.data', signature = c ('data.frame'),
 		definition = function (dataObj) {
 			rown <- rownames( dataObj )
-			dataObj <-  apply( dataObj,2, as.numeric)			
-			dataObj[which(dataObj < 1)] <- 1
-			dataObj <- log10(dataObj)
+			dataObj <-  apply( dataObj,2, function(x) {x = as.vector(x); x <- str_replace_all(x,',','.');as.numeric(x) })
+			t <- as.matrix( dataObj )
+			if ( all(floor(t) == t, na.rm = TRUE)) {
+				## this data is not in log space - log it
+				dataObj[which(dataObj < 1)] <- 1
+				dataObj <- log10(dataObj)
+			}else {
+				warn ("FACS data was detected as logged - no log applied")
+			}
 			rownames(dataObj) <- rown
 			dataObj
 		} 

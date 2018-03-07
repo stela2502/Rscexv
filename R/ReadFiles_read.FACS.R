@@ -34,6 +34,9 @@ setMethod('read.FACS', signature = c ('character'),
 					ftab <- ftab[, grep ('All.Events.', colnames( ftab )) ]
 					colnames( ftab ) <- str_replace_all( colnames( ftab ), 'All.Events.', '' )
 				}
+				if (length(grep ('^\\.', colnames( ftab ))) > 0 ) {
+					ftab <- ftab[,-grep( '^\\.' , colnames(ftab))]
+				}
 			}
 			data.frame(ftab)
 		} 

@@ -92,7 +92,7 @@ setMethod('rfCluster', signature = c ('Rscexv'),
 					
 					if ( length( x@usedObj[['rfExpressionSets']] ) < i  ) {
 						x@usedObj[['rfExpressionSets']][[ tname ]] <- remove.samples( x, sample(c(1:total),total-subset) )
-						x@usedObj[['rfObj']][[ tname ]] <- RFclust.SGE ( dat=data.frame(t(x@usedObj[['rfExpressionSets']][[ tname ]]@data)), SGE=SGE, slice=slice, email=email, tmp.path=opath, name= tname )
+						x@usedObj[['rfObj']][[ tname ]] <- RFclust.SGE ( dat=data.frame(t(x@usedObj[['rfExpressionSets']][[ tname ]]@data)), SGE=SGE, slices=slice, email=email, tmp.path=opath, name= tname )
 					}
 					#names(x@usedObj[['rfExpressionSets']]) [i] <- tname
 					#names(x@usedObj[['rfObj']]) [i] <- tname
