@@ -44,7 +44,6 @@ setMethod('createDataObj', signature = c ('character'),
 			data.filtered <- sd.filter( data )
 						
 			plot.histograms( data.filtered ) ## this is needed for the web tool
-			
 			data.filtered <- norm.PCR(data.filtered,norm.function,max.cyc=max.value, ctrl=ref.genes )
 			#plot.heatmap( list( data = t(data.filtered$PCR), genes=colnames(data.filtered$PCR)), 'Contr_filtered_inverted_norm', title='SD filtered inverted data', width=12,height=6,Colv=F,hclustfun = function(c){hclust( c, method=cmethod)},distfun = function(x){ 1- cor(t(x),method='spearman')} )
 			write.table( t(data.filtered@data), file=file.path( data.filtered@outpath,"PCR_data_normalized_4_GEO.xls"), sep='\t' )
