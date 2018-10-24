@@ -20,7 +20,7 @@ Depends:
 	MASS,
 	randomForest,
 	reshape2,
-	rgl  (== 0.98.1),
+	rgl,
 	RSvgDevice,
 	stringr,
 	survival,
@@ -30,6 +30,7 @@ Depends:
 	sm,
 	DDRTree,
 	RDRToolbox,
+	misc3d,
 	destiny
 Suggests:
 	MAST
