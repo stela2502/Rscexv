@@ -39,6 +39,7 @@ setMethod('as_BioData', signature = c ('Rscexv'),
 			}
 			
 			d <- data.frame(cbind( dat@annotation,t(dat@data) ))
+			
 			ret <- BioData$new( d, Samples=dat@samples, name= 'from.Rscexv', namecol= namecol, namerow=namerow, outpath='./' )
 			ret$usedObj <- dat@usedObj
 			ret

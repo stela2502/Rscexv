@@ -33,6 +33,7 @@ setGeneric('rfCluster',
 setMethod('rfCluster', signature = c ('Rscexv'),
 		definition = function ( x, rep=1, SGE=F, email, k=16, slice=4, subset=200, pics=F ,nforest=500, ntree=1000, name='RFclust', recover=F) {
 			summaryCol=paste( 'All_groups', name,sep='_')
+			rep=1 ## the doing multiple reps is broken!
 			usefulCol=paste ('Usefull_groups',name, sep='_')
 			n= paste(x@name, name,sep='_')
 			m <- max(k)
@@ -90,7 +91,7 @@ setMethod('rfCluster', signature = c ('Rscexv'),
 						stop( paste( 'You have only', total, 'samples in this dataset and request to draw random',subset, "samples, which leaves less than 2 cells to draw on random!") )
 					}
 					
-					if ( length( x@usedObj[['rfExpressionSets']] ) < i  ) {
+					if ( is.null(x@usedObj[['rfExpressionSets']][[ tname ]])  ) {
 						x@usedObj[['rfExpressionSets']][[ tname ]] <- remove.samples( x, sample(c(1:total),total-subset) )
 						x@usedObj[['rfObj']][[ tname ]] <- RFclust.SGE ( dat=data.frame(t(x@usedObj[['rfExpressionSets']][[ tname ]]@data)), SGE=SGE, slices=slice, email=email, tmp.path=opath, name= tname )
 					}

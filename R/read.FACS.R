@@ -35,7 +35,11 @@ setMethod('read.FACS', signature = c ('character'),
 					colnames( ftab ) <- str_replace_all( colnames( ftab ), 'All.Events.', '' )
 				}
 				if (length(grep ('^\\.', colnames( ftab ))) > 0 ) {
-					ftab <- ftab[,-grep( '^\\.' , colnames(ftab))]
+					if ( length(length(grep ('^\\.', colnames( ftab )))) == ncol(ftab) ) {
+						message( "FACS Data is not as expected - keeping all columns to be sure!" )
+					}else {
+						ftab <- ftab[,-grep( '^\\.' , colnames(ftab))]
+					}
 				}
 			}
 			data.frame(ftab)
