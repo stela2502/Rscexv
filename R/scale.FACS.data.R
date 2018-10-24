@@ -22,7 +22,7 @@ setMethod('scale.FACS.data', signature = c ('data.frame'),
 				dataObj[which(dataObj < 1)] <- 1
 				dataObj <- log10(dataObj)
 			}else {
-				warn ("FACS data was detected as logged - no log applied")
+				message ("FACS data was detected as logged - no log applied")
 			}
 			rownames(dataObj) <- rown
 			dataObj
