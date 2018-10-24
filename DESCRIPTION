@@ -20,7 +20,7 @@ Depends:
 	MASS,
 	randomForest,
 	reshape2,
-	rgl,
+	rgl  (== 0.98.1),
 	RSvgDevice,
 	stringr,
 	survival,
