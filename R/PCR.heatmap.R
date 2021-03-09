@@ -12,11 +12,12 @@
 #' @param RowSideColors  TEXT MISSING default=F
 #' @param PCR.heatmap  TEXT MISSING
 #' @param reorder if yes the data matrix will be reordered to the clusters object (default=F)
+#' @param key show the color key in heatmap (default FALSE)
 #' @title description of function PCR.heatmap
 #' @export 
 setGeneric('PCR.heatmap', ## Name
 		function ( dataObj, ofile,reorder =F,  title='Heatmap', nmax=4000, hc.row=NA, ColSideColors=NA, RowSideColors=F,
-				width=6, height=6, margins = c(1,11) ,lwid = c( 1,6), lhei=c(1,5), hclustfun = function(c){hclust( c, method='ward.D')}, distfun = function (x) as.dist( 1- cor(t(x), method='pearson') ), Rowv=T, ... ) {## Argumente der generischen Funktion
+				width=6, height=6, margins = c(1,11) ,lwid = c( 1,6), lhei=c(1,5), hclustfun = function(c){hclust( c, method='ward.D')}, distfun = function (x) as.dist( 1- cor(t(x), method='pearson') ), Rowv=T, key=FALSE, ... ) {## Argumente der generischen Funktion
 			standardGeneric('PCR.heatmap') ## der Aufruf von standardGeneric sorgt für das Dispatching
 		}
 )
@@ -25,7 +26,7 @@ setMethod('PCR.heatmap', signature = c ('Rscexv'),
 		definition = function ( dataObj, ofile,reorder =F,  title='Heatmap', nmax=4000, hc.row=NA, 
 				ColSideColors=NA, RowSideColors=F, width=6, height=6, margins = c(1,11),
 				lwid = c( 1,6), lhei=c(1,5), hclustfun = function(c){hclust( c, method='ward.D')}, 
-				distfun = function (x) as.dist( 1- cor(t(x), method='pearson') ), Rowv=T, ... ) {
+				distfun = function (x) as.dist( 1- cor(t(x), method='pearson') ), Rowv=T, key=FALSE, ... ) {
 			##plot the heatmap as svg image
 			if ( nrow(dataObj@data) > nmax ) {
 				stop (paste('No plotting for file ',ofile,'- too many genes selected (',nrow(data),')' ))
@@ -60,17 +61,17 @@ setMethod('PCR.heatmap', signature = c ('Rscexv'),
 					devSVG( file=paste(ofile,'_Heatmap.svg',sep='') , width=width, height=height)
 					if ( ! is.na(ColSideColors) ) {
 						if ( RowSideColors != F) {
-							heatmap.2(as.matrix(ma), breaks=brks,col=c("darkgrey",bluered(length(brks)-2)), key=F, symkey=FALSE,trace='none', 
+							heatmap.2(as.matrix(ma), breaks=brks,col=c("darkgrey",bluered(length(brks)-2)), key=key, symkey=FALSE,trace='none', 
 									cexRow=0.7,cexCol=0.7, main=title,margins = margins, ColSideColors=ColSideColors, RowSideColors=RowSideColors, Rowv=F,dendrogram=dendrogram,lwid = lwid, lhei=lhei, ... )
 						}
 						else {
-							heatmap.2(as.matrix(ma), breaks=brks,col=c("darkgrey",bluered(length(brks)-2)), key=F, symkey=FALSE,
+							heatmap.2(as.matrix(ma), breaks=brks,col=c("darkgrey",bluered(length(brks)-2)), key=key, symkey=FALSE,
 									trace='none', cexRow=0.7,cexCol=0.7, main=title,margins = margins, 
 									ColSideColors=ColSideColors, hclustfun = hclustfun, distfun = distfun, Rowv=T,dendrogram=dendrogram,lwid = lwid, lhei=lhei, ...)
 						}
 					}
 					else {
-						heatmap.2(as.matrix(ma), breaks=brks,col=c("darkgrey",bluered(length(brks)-2)), Rowv=F,  key=F, symkey=FALSE,
+						heatmap.2(as.matrix(ma), breaks=brks,col=c("darkgrey",bluered(length(brks)-2)), Rowv=F,  key=key, symkey=FALSE,
 								trace='none', cexRow=0.7,cexCol=0.7, main=title,margins = margins,
 								hclustfun = hclustfun, distfun = distfun, dendrogram=dendrogram,lwid = lwid, lhei=lhei )
 					}
@@ -84,17 +85,17 @@ setMethod('PCR.heatmap', signature = c ('Rscexv'),
 				}
 				if ( ! is.na(ColSideColors) ) {
 					if ( RowSideColors != F) {
-						heatmap.2(as.matrix(ma), breaks=brks,col=c("darkgrey",bluered(length(brks)-2)), key=F, symkey=FALSE,trace='none', 
+						heatmap.2(as.matrix(ma), breaks=brks,col=c("darkgrey",bluered(length(brks)-2)), key=key, symkey=FALSE,trace='none', 
 								cexRow=2,cexCol=0.7, main=title,margins = margins, ColSideColors=ColSideColors, RowSideColors=RowSideColors, Rowv=F,dendrogram=dendrogram,lwid = lwid, lhei=lhei, ... )
 					}
 					else {
-						heatmap.2(as.matrix(ma), breaks=brks,col=c("darkgrey",bluered(length(brks)-2)), key=F, symkey=FALSE,
+						heatmap.2(as.matrix(ma), breaks=brks,col=c("darkgrey",bluered(length(brks)-2)), key=key, symkey=FALSE,
 								trace='none', cexRow=2,cexCol=0.7, main=title,margins = margins, 
 								ColSideColors=ColSideColors, hclustfun = hclustfun, distfun = distfun, Rowv=T,dendrogram=dendrogram,lwid = lwid, lhei=lhei, ...)
 					}
 				}
 				else {
-					heatmap.2(as.matrix(ma), breaks=brks,col=c("darkgrey",bluered(length(brks)-2)), Rowv=F,  key=F, symkey=FALSE,
+					heatmap.2(as.matrix(ma), breaks=brks,col=c("darkgrey",bluered(length(brks)-2)), Rowv=F,  key=key, symkey=FALSE,
 							trace='none', cexRow=2,cexCol=0.7, main=title,margins = margins,
 							hclustfun = hclustfun, distfun = distfun, dendrogram=dendrogram,lwid = lwid, lhei=lhei )
 				}
