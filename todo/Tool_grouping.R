@@ -12,8 +12,8 @@
 #' @title description of function createGroups_randomForest
 #' @export 
 setGeneric('createGroups_randomForest', ## Name
-	function (dataObj, fname='RandomForest_groupings.txt' ) { ## Argumente der generischen Funktion
-		standardGeneric('createGroups_randomForest') ## der Aufruf von standardGeneric sorgt für das Dispatching
+	function (dataObj, fname='RandomForest_groupings.txt' ) { 
+		standardGeneric('createGroups_randomForest')
 	}
 )
 
@@ -57,8 +57,8 @@ setMethod('createGroups_randomForest', signature = c ('Tool_grouping'),
 #' @title description of function createGeneGroups_randomForest
 #' @export 
 setGeneric('createGeneGroups_randomForest', ## Name
-	function (dataObj, expected_grouping=10 ) { ## Argumente der generischen Funktion
-		standardGeneric('createGeneGroups_randomForest') ## der Aufruf von standardGeneric sorgt für das Dispatching
+	function (dataObj, expected_grouping=10 ) { 
+		standardGeneric('createGeneGroups_randomForest')
 	}
 )
 

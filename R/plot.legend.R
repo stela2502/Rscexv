@@ -14,8 +14,8 @@
 #' @title description of function plot.legend
 #' @export 
 setGeneric('plot.legend', ## Name
-		function ( x, colname, file=NULL, svg=F, pdf=F, col=NULL ) { ## Argumente der generischen Funktion
-			standardGeneric('plot.legend') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( x, colname, file=NULL, svg=F, pdf=F, col=NULL ) { 
+			standardGeneric('plot.legend')
 		}
 )
 
@@ -53,7 +53,7 @@ setMethod('plot.legend', signature = c ('Rscexv'),
 				file = file.path(x@outpath, paste( collapse='_',unlist(strsplit( c(file, colname), '\\s+', perl=T))))
 				h = 4 * ceiling(n / 9)
 				if ( svg ) {
-					devSVG( file=paste(file,'svg',sep='.'), width= 4, height=h )
+					svglite( file=paste(file,'svg',sep='.'), width= 4, height=h )
 				}
 				else if ( pdf ) {
 					pdf( file=paste(file, 'pdf', sep='.'), width= 4, height=h )

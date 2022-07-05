@@ -15,8 +15,8 @@
 #' @title description of function FACS.heatmap
 #' @export 
 setGeneric('FACS.heatmap', ## Name
-		function ( dataObj, ofile, title='Heatmap', reorder =F, nmax=500, hc.row=NA, ColSideColors=NA, RowSideColors=NA,width=6, height=6, margins = c(15, 10), hclustfun = function(c){hclust( c, method='ward')}, distfun = function (x) as.dist( 1- cor(t(x), method='pearson') ), ... ){ ## Argumente der generischen Funktion
-			standardGeneric('FACS.heatmap') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( dataObj, ofile, title='Heatmap', reorder =F, nmax=500, hc.row=NA, ColSideColors=NA, RowSideColors=NA,width=6, height=6, margins = c(15, 10), hclustfun = function(c){hclust( c, method='ward')}, distfun = function (x) as.dist( 1- cor(t(x), method='pearson') ), ... ){ 
+			standardGeneric('FACS.heatmap')
 		}
 )
 
@@ -51,7 +51,7 @@ setMethod('FACS.heatmap', signature = c ('Rscexv'),
 				for ( i in 1:2 ){
 					#rownames( data ) <- paste( dataObj$genes, dataObj$names)
 					if ( i == 1 && plotsvg == 1 ) {
-						devSVG( file=paste(ofile,'_Heatmap.svg',sep='') , width=width, height=height)
+						svglite( file=paste(ofile,'_Heatmap.svg',sep='') , width=width, height=height)
 					}
 					else {
 						png( file=paste(ofile,'_Heatmap.png',sep='') , width=width*150, height=nrow( data ) * 15 + 400 )

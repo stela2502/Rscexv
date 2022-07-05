@@ -8,8 +8,8 @@
 #' @title description of function read.PCR.set
 #' @export 
 setGeneric('read.PCR.set', ## Name
-		function (fnames, use_pass_fail=T) { ## Argumente der generischen Funktion
-			standardGeneric('read.PCR.set') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function (fnames, use_pass_fail=T) { 
+			standardGeneric('read.PCR.set')
 		}
 )
 

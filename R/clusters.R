@@ -14,8 +14,8 @@
 #' @export 
 setGeneric('clusters', ## Name
 		function (dataObj,clusterby="raw", useGrouping=NULL, mds.proj=NULL,groups.n = 3,
-				ctype='hierarchical clust',onwhat="Expression", cmethod='ward.D') { ## Argumente der generischen Funktion
-			standardGeneric('clusters') ## der Aufruf von standardGeneric sorgt für das Dispatching
+				ctype='hierarchical clust',onwhat="Expression", cmethod='ward.D') { 
+			standardGeneric('clusters')
 		}
 )
 

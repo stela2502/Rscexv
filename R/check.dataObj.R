@@ -8,8 +8,8 @@
 #' @title description of function check.dataObj
 #' @export 
 setGeneric('check.dataObj', ## Name
-		function ( PCR, FACS ) { ## Argumente der generischen Funktion
-			standardGeneric('check.dataObj') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( PCR, FACS ) { 
+			standardGeneric('check.dataObj')
 		}
 )
 

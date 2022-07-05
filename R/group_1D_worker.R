@@ -9,8 +9,8 @@
 #' @title description of function group_1D_worker
 #' @export 
 setGeneric('group_1D_worker', ## Name
-		function (ma, gene, ranges ) { ## Argumente der generischen Funktion
-			standardGeneric('group_1D_worker') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function (ma, gene, ranges ) { 
+			standardGeneric('group_1D_worker')
 		}
 )
 

@@ -6,8 +6,8 @@
 #' @title description of function as
 #' @export as_BioData
 if ( ! isGeneric('as_BioData') ){ setGeneric('as_BioData', ## Name
-			function ( dat ) { ## Argumente der generischen Funktion
-				standardGeneric('as_BioData') ## der Aufruf von standardGeneric sorgt für das Dispatching
+			function ( dat ) { 
+				standardGeneric('as_BioData')
 			}
 	)
 }else {

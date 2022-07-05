@@ -9,8 +9,8 @@
 #' @title description of function boot_p_value
 #' @export 
 setGeneric('boot_p_value', ## Name
-		function (cmp, real_val, i ) { ## Argumente der generischen Funktion
-			standardGeneric('boot_p_value') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function (cmp, real_val, i ) { 
+			standardGeneric('boot_p_value')
 		}
 )
 

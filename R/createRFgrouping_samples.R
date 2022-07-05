@@ -10,8 +10,8 @@
 #' @title description of function createRFgrouping_samples
 #' @export 
 setGeneric('createRFgrouping_samples', ## Name
-		function ( x, RFname, k=10, single_res_col = paste('RFgrouping',RFname)) { ## Argumente der generischen Funktion
-			standardGeneric('createRFgrouping_samples') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( x, RFname, k=10, single_res_col = paste('RFgrouping',RFname)) { 
+			standardGeneric('createRFgrouping_samples')
 		}
 )
 

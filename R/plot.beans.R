@@ -14,8 +14,8 @@
 #' @title description of function plot.beans
 #' @export 
 setGeneric('plot.beans', ## Name
-		function ( x, groups.n, clus,  plot.neg=TRUE, mv=-20, subpath='', names=NULL, col=NULL ) { ## Argumente der generischen Funktion
-			standardGeneric('plot.beans') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( x, groups.n, clus,  plot.neg=TRUE, mv=-20, subpath='', names=NULL, col=NULL ) { 
+			standardGeneric('plot.beans')
 		}
 )
 
@@ -62,7 +62,7 @@ setMethod('plot.beans', signature = c ('Rscexv'),
 				try(do.call(beanplot,lila), silent=F )
 				dev.off()
 				if ( plotsvg == 1 ) {
-					devSVG( file=paste(fn,'.svg',sep=''), width=6,height=6)
+					svglite( file=paste(fn,'.svg',sep=''), width=6,height=6)
 					#lila$cex.axis=0.5
 					try(do.call(beanplot,lila), silent=T )
 					dev.off()

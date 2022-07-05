@@ -9,8 +9,8 @@
 #' @title description of function plot.histograms
 #' @export 
 setGeneric('plot.histograms', ## Name
-		function ( dataObj, cuts=vector('list',1), subpath='preprocess' ) { ## Argumente der generischen Funktion
-			standardGeneric('plot.histograms') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( dataObj, cuts=vector('list',1), subpath='preprocess' ) { 
+			standardGeneric('plot.histograms')
 		}
 )
 

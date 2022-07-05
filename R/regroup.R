@@ -9,8 +9,8 @@
 #' @title description of function regroup
 #' @export 
 setGeneric('regroup', ## Name
-		function ( dataObj, group2sample = list ( '1' = c( 'Sample1', 'Sample2' ) ), name=NULL ) { ## Argumente der generischen Funktion
-			standardGeneric('regroup') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( dataObj, group2sample = list ( '1' = c( 'Sample1', 'Sample2' ) ), name=NULL ) { 
+			standardGeneric('regroup')
 		}
 )
 

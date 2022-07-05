@@ -8,8 +8,8 @@
 #' @title description of function SingleCellAssay_Pvalues
 #' @export 
 setGeneric('SingleCellAssay_Pvalues', ## Name
-		function ( obj, ofile="Significant_genes.csv" ) { ## Argumente der generischen Funktion
-			standardGeneric('SingleCellAssay_Pvalues') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( obj, ofile="Significant_genes.csv" ) { 
+			standardGeneric('SingleCellAssay_Pvalues')
 		}
 )
 

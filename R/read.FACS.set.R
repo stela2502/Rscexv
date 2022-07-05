@@ -7,8 +7,8 @@
 #' @title description of function read.FACS.set
 #' @export 
 setGeneric('read.FACS.set', ## Name
-		function (fnames) { ## Argumente der generischen Funktion
-			standardGeneric('read.FACS.set') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function (fnames) { 
+			standardGeneric('read.FACS.set')
 		}
 )
 

@@ -8,8 +8,8 @@
 #' @title description of function remove.genes
 #' @export 
 setGeneric('remove.genes', ## Name
-		function ( dataObj, ids ) { ## Argumente der generischen Funktion
-			standardGeneric('remove.genes') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( dataObj, ids ) { 
+			standardGeneric('remove.genes')
 		}
 )
 

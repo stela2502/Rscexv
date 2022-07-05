@@ -9,8 +9,8 @@
 #' @title description of function group_1D
 #' @export 
 setGeneric('group_1D', ## Name
-		function (dataObj, gene, ranges) { ## Argumente der generischen Funktion
-			standardGeneric('group_1D') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function (dataObj, gene, ranges) { 
+			standardGeneric('group_1D')
 		}
 )
 

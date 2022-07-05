@@ -10,8 +10,8 @@
 #' @title description of function filter.on.controls.no.inv
 #' @export 
 setGeneric('filter.on.controls.no.inv', ## Name
-		function (dataObj,ref.nms,thresh,howm) { ## Argumente der generischen Funktion
-			standardGeneric('filter.on.controls.no.inv') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function (dataObj,ref.nms,thresh,howm) { 
+			standardGeneric('filter.on.controls.no.inv')
 		}
 )
 

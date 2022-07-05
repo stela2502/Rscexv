@@ -10,8 +10,8 @@
 #' @title description of function create_p_values
 #' @export 
 setGeneric('create_p_values', ## Name
-		function ( obj, boot = 1000, lin_lang_file='lin_lang_stats.xls', sca_ofile="Significant_genes.csv" ) { ## Argumente der generischen Funktion
-			standardGeneric('create_p_values') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( obj, boot = 1000, lin_lang_file='lin_lang_stats.xls', sca_ofile="Significant_genes.csv" ) { 
+			standardGeneric('create_p_values')
 		}
 )
 

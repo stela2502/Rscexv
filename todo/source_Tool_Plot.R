@@ -9,8 +9,8 @@
 #' @title description of function collapsData
 #' @export 
 setGeneric('collapsData', ## Name
-	function ( dataObj, method='median' ) { ## Argumente der generischen Funktion
-		standardGeneric('collapsData') ## der Aufruf von standardGeneric sorgt für das Dispatching
+	function ( dataObj, method='median' ) { 
+		standardGeneric('collapsData')
 	}
 )
 
@@ -56,8 +56,8 @@ setMethod('collapsData', signature = c ('Tool_Plot'),
 #' @title description of function collapsed_heatmaps
 #' @export 
 setGeneric('collapsed_heatmaps', ## Name
-	function ( dataObj, what='PCR', functions = c('median', 'mean', 'var', 'quantile70' ) ) { ## Argumente der generischen Funktion
-		standardGeneric('collapsed_heatmaps') ## der Aufruf von standardGeneric sorgt für das Dispatching
+	function ( dataObj, what='PCR', functions = c('median', 'mean', 'var', 'quantile70' ) ) { 
+		standardGeneric('collapsed_heatmaps')
 	}
 )
 
@@ -93,8 +93,8 @@ setMethod('collapsed_heatmaps', signature = c ('Tool_Plot'),
 #' @title description of function calc.ann
 #' @export 
 setGeneric('calc.ann', ## Name
-	function (x, groups ) { ## Argumente der generischen Funktion
-		standardGeneric('calc.ann') ## der Aufruf von standardGeneric sorgt für das Dispatching
+	function (x, groups ) { 
+		standardGeneric('calc.ann')
 	}
 )
 
@@ -117,8 +117,8 @@ setMethod('calc.ann', signature = c ('Tool_Plot'),
 #' @title description of function get.GOI
 #' @export 
 setGeneric('get.GOI', ## Name
-	function ( ma, group, exclude = NULL ) { ## Argumente der generischen Funktion
-		standardGeneric('get.GOI') ## der Aufruf von standardGeneric sorgt für das Dispatching
+	function ( ma, group, exclude = NULL ) { 
+		standardGeneric('get.GOI')
 	}
 )
 

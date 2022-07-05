@@ -9,8 +9,8 @@
 #' @title description of function plotcoma
 #' @export 
 setGeneric('plotcoma', ## Name
-		function ( dataObj, fname='/CorrelationPlot' ) { ## Argumente der generischen Funktion
-			standardGeneric('plotcoma') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( dataObj, fname='/CorrelationPlot' ) { 
+			standardGeneric('plotcoma')
 		}
 )
 
@@ -28,7 +28,7 @@ setMethod('plotcoma', signature = c ('Rscexv'),
 			corrplot(dataObj@usedObj[['coma']], order = "hclust", method = "square", hclust.method ='single' )
 			dev.off()
 			if ( plotsvg == 1 ) {
-				devSVG ( file=paste(fname,'.svg',sep=''), width=6, height=6 )
+				svglite ( file=paste(fname,'.svg',sep=''), width=6, height=6 )
 				corrplot(dataObj@usedObj[['coma']], order = "hclust", method = "square", hclust.method ='single' )
 				dev.off()
 			}

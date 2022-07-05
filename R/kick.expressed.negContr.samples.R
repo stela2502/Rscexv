@@ -10,8 +10,8 @@
 #' @title description of function kick.expressed.negContr.samples
 #' @export 
 setGeneric('kick.expressed.negContr.samples', ## Name
-		function ( dataObj, negContrGenes=NULL ) { ## Argumente der generischen Funktion
-			standardGeneric('kick.expressed.negContr.samples') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( dataObj, negContrGenes=NULL ) { 
+			standardGeneric('kick.expressed.negContr.samples')
 		}
 )
 

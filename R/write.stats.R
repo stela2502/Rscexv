@@ -7,8 +7,8 @@
 #' @param file the outfile default='lin_lang_stats.xls'
 #' @title description of function write.stats
 setGeneric('write.stats', ## Name
-		function ( stats = NULL, file='lin_lang_stats.xls' ) { ## Argumente der generischen Funktion
-			standardGeneric('write.stats') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( stats = NULL, file='lin_lang_stats.xls' ) { 
+			standardGeneric('write.stats')
 		}
 )
 

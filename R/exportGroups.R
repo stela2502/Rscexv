@@ -9,8 +9,8 @@
 #' @title description of function analyse.data
 #' @export 
 setGeneric('exportGroups', ## Name
-		function ( obj, sample.file='SCExV_Grps.txt', gene.file='GeneGroupings.txt' ){	## Argumente der generischen Funktion
-			standardGeneric('exportGroups') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( obj, sample.file='SCExV_Grps.txt', gene.file='GeneGroupings.txt' ){	
+			standardGeneric('exportGroups')
 		}
 )
 

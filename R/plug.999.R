@@ -8,8 +8,8 @@
 #' @title description of function plug.999
 #' @export 
 setGeneric('plug.999', ## Name
-		function (x,plug=45) { ## Argumente der generischen Funktion
-			standardGeneric('plug.999') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function (x,plug=45) { 
+			standardGeneric('plug.999')
 		}
 )
 

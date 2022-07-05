@@ -7,8 +7,8 @@
 #' @title description of function force.unique.sample
 #' @export 
 setGeneric('force.unique.sample', ## Name
-	function ( x ) { ## Argumente der generischen Funktion
-		standardGeneric('force.unique.sample') ## der Aufruf von standardGeneric sorgt für das Dispatching
+	function ( x ) { 
+		standardGeneric('force.unique.sample')
 	}
 )
 

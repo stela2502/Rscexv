@@ -15,8 +15,8 @@
 #' @title description of function plot.beans
 #' @export 
 setGeneric('complexHeatmap', ## Name
-		function ( x,  ofile=NULL, colGroups=NULL, rowGroups=NULL, colColors=NULL, rowColors=NULL, pdf=FALSE, subpath='', main = '',  heapmapCols= function(x){ c("darkgrey",bluered(x))} ) { ## Argumente der generischen Funktion
-			standardGeneric('complexHeatmap') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( x,  ofile=NULL, colGroups=NULL, rowGroups=NULL, colColors=NULL, rowColors=NULL, pdf=FALSE, subpath='', main = '',  heapmapCols= function(x){ c("darkgrey",bluered(x))} ) { 
+			standardGeneric('complexHeatmap')
 		}
 )
 

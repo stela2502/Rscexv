@@ -20,8 +20,8 @@
 #' @export 
 setGeneric('analyse.data', ## Name
 		function (obj,onwhat='Expression',groups.n, cmethod, clusterby='MDS', 
-				ctype='hierarchical clust', beanplots=TRUE, move.neg = FALSE, plot.neg=TRUE, useGrouping=NULL, plotsvg = 0, mds.type='PCA', geneGroups=NULL, ...){	## Argumente der generischen Funktion
-			standardGeneric('analyse.data') ## der Aufruf von standardGeneric sorgt für das Dispatching
+				ctype='hierarchical clust', beanplots=TRUE, move.neg = FALSE, plot.neg=TRUE, useGrouping=NULL, plotsvg = 0, mds.type='PCA', geneGroups=NULL, ...){	
+			standardGeneric('analyse.data')
 		}
 )
 

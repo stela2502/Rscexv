@@ -8,8 +8,8 @@
 #' @title description of function implyCloseOrder
 #' @export 
 setGeneric('implyCloseOrder', ## Name
-		function ( dataObj,  groupName=NULL, hclust.method= 'complete' ) { ## Argumente der generischen Funktion
-			standardGeneric('implyCloseOrder') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( dataObj,  groupName=NULL, hclust.method= 'complete' ) { 
+			standardGeneric('implyCloseOrder')
 		}
 )
 

@@ -7,8 +7,8 @@
 #' @title description of function analyse.data
 #' @export 
 setGeneric('plotDensity', ## Name
-		function ( obj ){	## Argumente der generischen Funktion
-			standardGeneric('plotDensity') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( obj ){	
+			standardGeneric('plotDensity')
 		}
 )
 

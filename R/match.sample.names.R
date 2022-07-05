@@ -8,8 +8,8 @@
 #' @title description of function match.sample.names
 #' @export 
 setGeneric('match.sample.names', ## Name
-		function ( PCR.s, FACS.s ) { ## Argumente der generischen Funktion
-			standardGeneric('match.sample.names') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( PCR.s, FACS.s ) { 
+			standardGeneric('match.sample.names')
 		}
 )
 

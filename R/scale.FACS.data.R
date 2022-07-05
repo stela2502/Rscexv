@@ -7,8 +7,8 @@
 #' @title description of function scale.FACS.data
 #' @export 
 setGeneric('scale.FACS.data', ## Name
-		function (dataObj) { ## Argumente der generischen Funktion
-			standardGeneric('scale.FACS.data') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function (dataObj) { 
+			standardGeneric('scale.FACS.data')
 		}
 )
 

@@ -7,8 +7,8 @@
 #' @title description of function sd.filter
 #' @export 
 setGeneric('sd.filter', ## Name
-		function (dataObj) { ## Argumente der generischen Funktion
-			standardGeneric('sd.filter') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function (dataObj) { 
+			standardGeneric('sd.filter')
 		}
 )
 

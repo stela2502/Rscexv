@@ -8,8 +8,8 @@
 #' @title description of function col4bean
 #' @export 
 setGeneric('col4bean', ## Name
-		function (x, tic='black') { ## Argumente der generischen Funktion
-			standardGeneric('col4bean') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function (x, tic='black') { 
+			standardGeneric('col4bean')
 		}
 )
 

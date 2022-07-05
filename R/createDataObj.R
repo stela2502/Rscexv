@@ -16,8 +16,8 @@
 #' @export 
 setGeneric('createDataObj', ## Name
 		function ( PCR=NULL,  FACS=NULL, max.value=40, ref.genes=NULL, max.ct=25, 
-				max.control=0,  norm.function='none', negContrGenes=NULL, use_pass_fail = T, ...){ ## Argumente der generischen Funktion
-			standardGeneric('createDataObj') ## der Aufruf von standardGeneric sorgt für das Dispatching
+				max.control=0,  norm.function='none', negContrGenes=NULL, use_pass_fail = T, ...){ 
+			standardGeneric('createDataObj')
 		}
 )
 setMethod('createDataObj', signature = c ('character'),

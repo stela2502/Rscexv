@@ -8,8 +8,8 @@
 #' @title description of function createRFgrouping_col
 #' @export 
 setGeneric('this.color', ## Name
-		function ( x, name=NULL  ) { ## Argumente der generischen Funktion
-			standardGeneric('this.color') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( x, name=NULL  ) { 
+			standardGeneric('this.color')
 		}
 )
 

@@ -8,8 +8,8 @@
 #' @title description of function read.PCR.heatmap
 #' @export 
 setGeneric('read.PCR.heatmap', ## Name
-		function (fname,use_pass_fail=T) { ## Argumente der generischen Funktion
-			standardGeneric('read.PCR.heatmap') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function (fname,use_pass_fail=T) { 
+			standardGeneric('read.PCR.heatmap')
 		}
 )
 

@@ -8,8 +8,8 @@
 #' @title description of function checkGrouping
 #' @export 
 setGeneric('checkGrouping', ## Name
-		function ( userGroups,  data=NULL ) { ## Argumente der generischen Funktion
-			standardGeneric('checkGrouping') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( userGroups,  data=NULL ) { 
+			standardGeneric('checkGrouping')
 		}
 )
 

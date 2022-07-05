@@ -9,8 +9,8 @@
 #' @title description of function group_on_strings
 #' @export 
 setGeneric('group_on_strings', ## Name
-		function (dataObj, strings = c(), name='GroupOnStrings' ) { ## Argumente der generischen Funktion
-			standardGeneric('group_on_strings') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function (dataObj, strings = c(), name='GroupOnStrings' ) { 
+			standardGeneric('group_on_strings')
 		}
 )
 

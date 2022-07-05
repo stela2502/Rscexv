@@ -13,8 +13,8 @@
 #' @title description of function reorder_on_correlation
 #' @export 
 setGeneric('reorder_on_correlation', ## Name
-	function ( dataObj, order='hclust', hclust.method= 'single' ,... ) { ## Argumente der generischen Funktion
-		standardGeneric('reorder_on_correlation') ## der Aufruf von standardGeneric sorgt für das Dispatching
+	function ( dataObj, order='hclust', hclust.method= 'single' ,... ) { 
+		standardGeneric('reorder_on_correlation')
 	}
 )
 

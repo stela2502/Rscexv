@@ -7,8 +7,8 @@
 #' @title description of function calc.lin.lang.4_list
 #' @export 
 setGeneric('calc.lin.lang.4_list', ## Name
-		function ( l =list() ) { ## Argumente der generischen Funktion
-			standardGeneric('calc.lin.lang.4_list') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( l =list() ) { 
+			standardGeneric('calc.lin.lang.4_list')
 		}
 )
 

@@ -11,8 +11,8 @@
 #' @title description of function qualityTest
 #' @export 
 setGeneric('qualityTest', ## Name
-		function (x, groups=NULL, cut=0.05, numbers=F  ) { ## Argumente der generischen Funktion
-			standardGeneric('qualityTest') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function (x, groups=NULL, cut=0.05, numbers=F  ) { 
+			standardGeneric('qualityTest')
 		}
 )
 

@@ -7,8 +7,8 @@
 #' @title description of function coexpressionMatrix
 #' @export 
 setGeneric('coexpressionMatrix', ## Name
-		function ( dataObj ) { ## Argumente der generischen Funktion
-			standardGeneric('coexpressionMatrix') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( dataObj ) { 
+			standardGeneric('coexpressionMatrix')
 		}
 )
 

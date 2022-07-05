@@ -8,8 +8,8 @@
 #' @title description of function difference
 #' @export 
 setGeneric('difference', ## Name
-		function ( x, obj ) { ## Argumente der generischen Funktion
-			standardGeneric('difference') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( x, obj ) { 
+			standardGeneric('difference')
 		}
 )
 

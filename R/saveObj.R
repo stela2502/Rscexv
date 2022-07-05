@@ -8,8 +8,8 @@
 #' @title description of function analyse.data
 #' @export 
 setGeneric('saveObj', ## Name
-		function ( data, file='analysis.RData' ){	## Argumente der generischen Funktion
-			standardGeneric('saveObj') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( data, file='analysis.RData' ){	
+			standardGeneric('saveObj')
 		}
 )
 

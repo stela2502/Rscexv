@@ -10,8 +10,8 @@
 #' @title description of function norm.PCR
 #' @export 
 setGeneric('norm.PCR', ## Name
-		function (x,meth=c("none","mean control genes","max expression","median expression","quantile"),ctrl=NA,max.cyc) { ## Argumente der generischen Funktion
-			standardGeneric('norm.PCR') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function (x,meth=c("none","mean control genes","max expression","median expression","quantile"),ctrl=NA,max.cyc) { 
+			standardGeneric('norm.PCR')
 		}
 )
 

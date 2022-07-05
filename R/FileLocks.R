@@ -8,8 +8,8 @@
 #' @title description of function set_lock
 #' @export 
 setGeneric('set.lock', ## Name
-		function ( filename , msg= "no mgs" ) { ## Argumente der generischen Funktion
-			standardGeneric('set.lock') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( filename , msg= "no mgs" ) { 
+			standardGeneric('set.lock')
 		}
 )
 
@@ -32,8 +32,8 @@ setMethod('set.lock', signature = c ('character'),
 #' @title description of function release_lock
 #' @export 
 setGeneric('release.lock', ## Name
-		function ( filename ) { ## Argumente der generischen Funktion
-			standardGeneric('release.lock') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( filename ) { 
+			standardGeneric('release.lock')
 		}
 )
 
@@ -50,8 +50,8 @@ setMethod('release.lock', signature = c ('character'),
 #' @title description of function locked
 #' @export 
 setGeneric('locked', ## Name
-		function ( filename ) { ## Argumente der generischen Funktion
-			standardGeneric('locked') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( filename ) { 
+			standardGeneric('locked')
 		}
 )
 

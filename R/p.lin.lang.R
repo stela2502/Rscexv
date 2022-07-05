@@ -10,8 +10,8 @@
 #' @title description of function p.lin.lang
 #' @export 
 setGeneric('p.lin.lang', ## Name
-		function ( x, groups.n, clus, n=1000 ) { ## Argumente der generischen Funktion
-			standardGeneric('p.lin.lang') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( x, groups.n, clus, n=1000 ) { 
+			standardGeneric('p.lin.lang')
 		}
 )
 

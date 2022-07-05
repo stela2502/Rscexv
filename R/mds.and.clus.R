@@ -16,8 +16,8 @@
 #' @export 
 setGeneric('mds.and.clus', ## Name
 		function (dataObj, ..., clusterby="raw", mds.type="PCA", groups.n, LLEK=2, cmethod='ward.D', 
-				ctype='hierarchical clust',onwhat="Expression",useGrouping=NULL ) { ## Argumente der generischen Funktion
-			standardGeneric('mds.and.clus') ## der Aufruf von standardGeneric sorgt für das Dispatching
+				ctype='hierarchical clust',onwhat="Expression",useGrouping=NULL ) { 
+			standardGeneric('mds.and.clus')
 		}
 )
 

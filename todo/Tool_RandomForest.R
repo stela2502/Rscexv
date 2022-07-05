@@ -8,8 +8,8 @@
 #' @title description of function Rand
 #' @export 
 setGeneric('Rand', ## Name
-	function (tab,adjust=T) { ## Argumente der generischen Funktion
-		standardGeneric('Rand') ## der Aufruf von standardGeneric sorgt für das Dispatching
+	function (tab,adjust=T) { 
+		standardGeneric('Rand')
 	}
 )
 
@@ -68,8 +68,8 @@ setMethod('Rand', signature = c ('Tool_RandomForest'),
 #' @title description of function pamNew
 #' @export 
 setGeneric('pamNew', ## Name
-	function (x, k, diss1 = inherits(x, "dist"), metric1 = "euclidean")pamNew { ## Argumente der generischen Funktion
-		standardGeneric('pamNew') ## der Aufruf von standardGeneric sorgt für das Dispatching
+	function (x, k, diss1 = inherits(x, "dist"), metric1 = "euclidean")pamNew { 
+		standardGeneric('pamNew')
 	}
 )
 

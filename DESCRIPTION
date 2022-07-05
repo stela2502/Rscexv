@@ -1,7 +1,7 @@
 Package: Rscexv
 Type: Package
 Title: The backend for the SCExV (single cell expression view) server.
-Version: 1.0
+Version: 1.1
 Date: 2016-03-21
 Author: person("Stefan", "Lang", email = "stefan.lang@med.lu.se",
 	role( 'aut','cre'))
@@ -21,7 +21,7 @@ Depends:
 	randomForest,
 	reshape2,
 	rgl,
-	RSvgDevice,
+	svglite,
 	stringr,
 	survival,
 	beanplot,

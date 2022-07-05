@@ -16,8 +16,8 @@
 #' @export 
 setGeneric('PCR.heatmap', ## Name
 		function ( dataObj, ofile,reorder =F,  title='Heatmap', nmax=4000, hc.row=NA, ColSideColors=NA, RowSideColors=F,
-				width=6, height=6, margins = c(1,11) ,lwid = c( 1,6), lhei=c(1,5), hclustfun = function(c){hclust( c, method='ward.D')}, distfun = function (x) as.dist( 1- cor(t(x), method='pearson') ), Rowv=T, ... ) {## Argumente der generischen Funktion
-			standardGeneric('PCR.heatmap') ## der Aufruf von standardGeneric sorgt für das Dispatching
+				width=6, height=6, margins = c(1,11) ,lwid = c( 1,6), lhei=c(1,5), hclustfun = function(c){hclust( c, method='ward.D')}, distfun = function (x) as.dist( 1- cor(t(x), method='pearson') ), Rowv=T, ... ) {
+			standardGeneric('PCR.heatmap')
 		}
 )
 
@@ -57,7 +57,7 @@ setMethod('PCR.heatmap', signature = c ('Rscexv'),
 					}
 				}
 				if (  plotsvg == 1) {
-					devSVG( file=paste(ofile,'_Heatmap.svg',sep='') , width=width, height=height)
+					svglite( file=paste(ofile,'_Heatmap.svg',sep='') , width=width, height=height)
 					if ( ! is.na(ColSideColors) ) {
 						if ( RowSideColors != F) {
 							heatmap.2(as.matrix(ma), breaks=brks,col=c("darkgrey",bluered(length(brks)-2)), key=F, symkey=FALSE,trace='none', 

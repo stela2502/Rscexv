@@ -13,8 +13,8 @@
 #' @return falied correlations will have a NA value but still a p value of 1.
 #' @export 
 setGeneric('coexpressGenes', ## Name
-		function ( dataObj, grouping=NULL, pcutoff= 0.05, file=NULL, keepCrap=0  ) { ## Argumente der generischen Funktion
-			standardGeneric('coexpressGenes') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( dataObj, grouping=NULL, pcutoff= 0.05, file=NULL, keepCrap=0  ) { 
+			standardGeneric('coexpressGenes')
 		}
 )
 

@@ -7,8 +7,8 @@
 #' @title description of function quality_of_fit
 #' @export 
 setGeneric('quality_of_fit', ## Name
-		function ( obj ) { ## Argumente der generischen Funktion
-			standardGeneric('quality_of_fit') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( obj ) { 
+			standardGeneric('quality_of_fit')
 		}
 )
 

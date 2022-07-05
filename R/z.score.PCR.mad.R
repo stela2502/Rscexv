@@ -7,8 +7,8 @@
 #' @title description of function z.score.PCR.mad
 #' @export 
 setGeneric('z.score.PCR.mad', ## Name
-		function (dataObj) { ## Argumente der generischen Funktion
-			standardGeneric('z.score.PCR.mad') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function (dataObj) { 
+			standardGeneric('z.score.PCR.mad')
 		}
 )
 

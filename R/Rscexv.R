@@ -9,8 +9,8 @@
 #' @title description of function createDataObj
 #' @export 
 setGeneric('Rscexv', ## Name
-		function  ( PCR=NULL,  FACS=NULL, use_pass_fail = T ){ ## Argumente der generischen Funktion
-			standardGeneric('Rscexv') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function  ( PCR=NULL,  FACS=NULL, use_pass_fail = T ){ 
+			standardGeneric('Rscexv')
 		}
 )
 

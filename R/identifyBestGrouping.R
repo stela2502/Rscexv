@@ -16,8 +16,8 @@
 #' @title description of function identifyBestGrouping
 #' @export 
 setGeneric('identifyBestGrouping', ## Name
-		function (x, groups, namePrefix='identifyBestGrouping', cut=0.05) { ## Argumente der generischen Funktion
-			standardGeneric('identifyBestGrouping') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function (x, groups, namePrefix='identifyBestGrouping', cut=0.05) { 
+			standardGeneric('identifyBestGrouping')
 		}
 )
 

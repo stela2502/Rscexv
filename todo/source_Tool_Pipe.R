@@ -11,8 +11,8 @@
 #' @title description of function file.position
 #' @export 
 setGeneric('file.position', ## Name
-	function ( fname, previous=NULL, keyword='Array' ) { ## Argumente der generischen Funktion
-		standardGeneric('file.position') ## der Aufruf von standardGeneric sorgt für das Dispatching
+	function ( fname, previous=NULL, keyword='Array' ) { 
+		standardGeneric('file.position')
 	}
 )
 
@@ -43,8 +43,8 @@ setMethod('file.position', signature = c ('Tool_Pipe'),
 #' @title description of function hist.and.report.range
 #' @export 
 setGeneric('hist.and.report.range', ## Name
-	function (tab) { ## Argumente der generischen Funktion
-		standardGeneric('hist.and.report.range') ## der Aufruf von standardGeneric sorgt für das Dispatching
+	function (tab) { 
+		standardGeneric('hist.and.report.range')
 	}
 )
 
@@ -68,8 +68,8 @@ setMethod('hist.and.report.range', signature = c ('Tool_Pipe'),
 #' @title description of function filter.on.controls
 #' @export 
 setGeneric('filter.on.controls', ## Name
-	function (dataObj,ref.nms,thresh,howm) { ## Argumente der generischen Funktion
-		standardGeneric('filter.on.controls') ## der Aufruf von standardGeneric sorgt für das Dispatching
+	function (dataObj,ref.nms,thresh,howm) { 
+		standardGeneric('filter.on.controls')
 	}
 )
 
@@ -96,8 +96,8 @@ setMethod('filter.on.controls', signature = c ('Tool_Pipe'),
 #' @title description of function auto_problem
 #' @export 
 setGeneric('auto_problem', ## Name
-	function ( dataObj ) { ## Argumente der generischen Funktion
-		standardGeneric('auto_problem') ## der Aufruf von standardGeneric sorgt für das Dispatching
+	function ( dataObj ) { 
+		standardGeneric('auto_problem')
 	}
 )
 
@@ -121,8 +121,8 @@ setMethod('auto_problem', signature = c ('Tool_Pipe'),
 #' @title description of function clus.PCR
 #' @export 
 setGeneric('clus.PCR', ## Name
-	function (tab) { ## Argumente der generischen Funktion
-		standardGeneric('clus.PCR') ## der Aufruf von standardGeneric sorgt für das Dispatching
+	function (tab) { 
+		standardGeneric('clus.PCR')
 	}
 )
 
@@ -151,8 +151,8 @@ setMethod('clus.PCR', signature = c ('Tool_Pipe'),
 #' @title description of function clus.z.PCR
 #' @export 
 setGeneric('clus.z.PCR', ## Name
-	function (tab,k) { ## Argumente der generischen Funktion
-		standardGeneric('clus.z.PCR') ## der Aufruf von standardGeneric sorgt für das Dispatching
+	function (tab,k) { 
+		standardGeneric('clus.z.PCR')
 	}
 )
 
@@ -185,8 +185,8 @@ setMethod('clus.z.PCR', signature = c ('Tool_Pipe'),
 #' @title description of function update.FACS.rownames
 #' @export 
 setGeneric('update.FACS.rownames', ## Name
-	function (dataObj, old.names, new.names ) { ## Argumente der generischen Funktion
-		standardGeneric('update.FACS.rownames') ## der Aufruf von standardGeneric sorgt für das Dispatching
+	function (dataObj, old.names, new.names ) { 
+		standardGeneric('update.FACS.rownames')
 	}
 )
 
@@ -207,8 +207,8 @@ setMethod('update.FACS.rownames', signature = c ('Tool_Pipe'),
 #' @title description of function files.sorted
 #' @export 
 setGeneric('files.sorted', ## Name
-	function ( x, keyword = 'Array' ) { ## Argumente der generischen Funktion
-		standardGeneric('files.sorted') ## der Aufruf von standardGeneric sorgt für das Dispatching
+	function ( x, keyword = 'Array' ) { 
+		standardGeneric('files.sorted')
 	}
 )
 

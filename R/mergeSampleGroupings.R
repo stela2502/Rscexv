@@ -10,8 +10,8 @@
 #' @title description of function mergeSampleGroupings
 #' @export 
 setGeneric('mergeSampleGroupings', ## Name
-		function ( x,  g1, g2, newName ) { ## Argumente der generischen Funktion
-			standardGeneric('mergeSampleGroupings') ## der Aufruf von standardGeneric sorgt für das Dispatching
+		function ( x,  g1, g2, newName ) { 
+			standardGeneric('mergeSampleGroupings')
 		}
 )
 
