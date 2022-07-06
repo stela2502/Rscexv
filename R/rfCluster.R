@@ -1,7 +1,6 @@
 #' @name rfCluster
 #' @aliases 'rfCluster,Rscexv-method
 #' @title rfCluster
-#' @name rfCluster-methods
 #' @docType methods
 #' @description This fucntion uses the RFclust.SGE to create fandomForest based unsupervised clusters on a subset of the data.
 #' @description Default is on 200 cells using all (provided) genes with 500 forests and 500 trees per forest for 5 repetitions.

@@ -5,7 +5,9 @@
 \alias{analyzed}
 \alias{data}
 \title{This is the analyzed data used for downstream testing}
-\format{Rscexv object}
+\format{
+Rscexv object
+}
 \usage{
 data(analyzed)
 }

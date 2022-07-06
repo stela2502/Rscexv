@@ -6,8 +6,6 @@ Date: 2016-03-21
 Author: person("Stefan", "Lang", email = "stefan.lang@med.lu.se",
 	role( 'aut','cre'))
 Description: This package does read and analyze data from the fluidigm biomark device. In addition it can add INDEXS sort data too.
-License: What license is it under?
-RoxygenNote: 6.0.1
 Depends:
 	R (>= 3.2.0),
 	abind,
@@ -31,9 +29,16 @@ Depends:
 	DDRTree,
 	RDRToolbox,
 	misc3d,
-	destiny
+	destiny,
+	webshot2
 Suggests:
 	MAST
 biocViews:
 	RDRToolbox,
 	destiny
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+LazyDataCompression: bzip2
+RoxygenNote: 7.2.0
+VignetteBuilder: knitr

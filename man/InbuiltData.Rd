@@ -4,7 +4,9 @@
 \name{InbuiltData}
 \alias{InbuiltData}
 \title{This is the test dataset also available at the SCExV server page}
-\format{Rscexv object}
+\format{
+Rscexv object
+}
 \usage{
 data(InbuiltData)
 }
